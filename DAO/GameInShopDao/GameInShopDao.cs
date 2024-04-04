@@ -1,4 +1,5 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Slush.Data;
 using Slush.Entity.Store.Product;
 
 namespace Slush.DAO.GameInShopDao
@@ -12,9 +13,21 @@ namespace Slush.DAO.GameInShopDao
             _context = context;
         }
 
-        public virtual List<GameInShop> GetAll()
+        public async  Task<List<GameInShop>> GetAll()
         {
-            return _context.dbGamesInShops.ToList();
+            var _gameinShopEntities = await _context.dbGamesInShops.AsNoTracking().ToListAsync();
+
+            var _games = _gameinShopEntities.Select(g => new GameInShop(g.id,
+                                                                        g.name,
+                                                                        g.price,
+                                                                        g.discount,
+                                                                        g.previeImage,
+                                                                        g.dateOfRelease,
+                                                                        g.developerId,
+                                                                        g.publisherId,
+                                                                        g.urlForContent)).ToList();
+
+            return _games;
         }
 
         public void Add(GameInShop game)

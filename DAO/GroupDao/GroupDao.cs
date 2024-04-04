@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data;
 using Slush.Data.Entity.Community;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.GroupDao
 {
@@ -13,9 +14,15 @@ namespace Slush.DAO.GroupDao
             _context = context;
         }
 
-        public virtual List<Group> GetAll()
+        public async Task<List<Group>> GetAllGroups()
         {
-            return _context.dbGroups.ToList();
+            var _groupEntities = await _context.dbGroups.AsNoTracking().ToListAsync();
+
+            var _groups = _groupEntities.Select(g => new Group(g.id,
+                                                                g.attachedId,
+                                                                g.name,
+                                                                g.description)).ToList();
+            return _groups;
         }
 
         public void Add(Group group)

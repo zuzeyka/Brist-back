@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Community;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -13,9 +14,14 @@ namespace Slush.DAO.ProfileDao
             _context = context;
         }
 
-        public virtual List<Friends> GetAll()
+        public async Task<List<Friends>> GetAllFriends()
         {
-            return _context.dbFriends.ToList();
+            var _friendsEntity = await _context.dbFriends.AsNoTracking().ToListAsync();
+
+            var _friends = _friendsEntity.Select(f => new Friends(f.id,
+                                                                   f.userId,
+                                                                   f.friendId)).ToList();
+            return _friends;
         }
 
         public void Add(Friends friend)

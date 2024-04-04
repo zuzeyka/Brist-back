@@ -5,6 +5,19 @@ namespace Slush.Entity.Store.Product
 {
     public class GameInShop
     {
+        public GameInShop(string id, string name, float price, int discount, string previeImage, DateTime dateOfRelease, string developerId, string publisherId, string urlForContent)
+        {
+            this.id = id;
+            this.name = name;
+            this.price = price;
+            this.discount = discount;
+            this.previeImage = previeImage;
+            this.dateOfRelease = dateOfRelease;
+            this.developerId = developerId;
+            this.publisherId = publisherId;
+            this.urlForContent = urlForContent;
+        }
+
         public String id { get; set; }
         public String name { get; set; }
         public float price { get; set; }

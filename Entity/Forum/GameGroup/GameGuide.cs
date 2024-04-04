@@ -2,6 +2,19 @@
 {
     public class GameGuide
     {
+        public GameGuide(string id, string title, string? description, int likesCount, string discussionId, string gameId, string authorId, string gameGroupId, string content)
+        {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.likesCount = likesCount;
+            this.discussionId = discussionId;
+            this.gameId = gameId;
+            this.authorId = authorId;
+            this.gameGroupId = gameGroupId;
+            this.content = content;
+        }
+
         public String id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }

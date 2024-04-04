@@ -4,6 +4,19 @@ namespace Slush.Data.Entity.Community
 {
     public class Post
     {
+        public Post(string id, string title, string? description, int likesCount, int dislikesCount, string discussionId, string gameId, string authorId, string content)
+        {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.likesCount = likesCount;
+            this.dislikesCount = dislikesCount;
+            this.discussionId = discussionId;
+            this.gameId = gameId;
+            this.authorId = authorId;
+            this.content = content;
+        }
+
         public String id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }

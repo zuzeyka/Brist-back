@@ -150,7 +150,6 @@ C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.FullStackBrist.Server.props
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\scopedcss\bundle\FullStackBrist.Server.styles.css
-C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStackBrist.Server.csproj.CopyComplete
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStackBrist.Server.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\refint\FullStackBrist.Server.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStackBrist.Server.pdb
@@ -158,3 +157,4 @@ C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\ref\FullStackBrist.Server.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\bin\Debug\net8.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStac.748F13AA.Up2Date

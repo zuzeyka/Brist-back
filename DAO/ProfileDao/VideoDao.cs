@@ -1,5 +1,6 @@
 ﻿using Slush.Data.Entity.Profile;
 using Slush.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -12,9 +13,20 @@ namespace Slush.DAO.ProfileDao
             _context = context;
         }
 
-        public virtual List<Video> GetAll()
+        public async Task<List<Video>> GetAllVideos()
         {
-            return _context.dbVideos.ToList();
+            var _videoEntities = await _context.dbVideos.AsNoTracking().ToListAsync();
+
+            var _videos = _videoEntities.Select(v => new Video(v.id,
+                                                                v.title,
+                                                                v.description,
+                                                                v.likesCount,
+                                                                v.dislikesCount,
+                                                                v.gameId,
+                                                                v.authorId,
+                                                                v.videoUrl)).ToList();
+            return _videos;
+
         }
 
         public void Add(Video video)

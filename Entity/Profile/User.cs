@@ -7,6 +7,16 @@ namespace Slush.Data.Entity.Profile
 {
     public class User 
     {
+        public User(string id, string name, string passwordSalt, string salt, string email, string phone)
+        {
+            this.id = id;
+            this.name = name;
+            this.passwordSalt = passwordSalt;
+            this.salt = salt;
+            this.email = email;
+            this.phone = phone;
+        }
+
         public String id { get; set; }
         public String name { get;set; }
         public String passwordSalt { get;set; }

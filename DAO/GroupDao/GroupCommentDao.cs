@@ -1,5 +1,7 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Slush.Data;
 using Slush.Data.Entity.Community;
+using System.Net.WebSockets;
 
 namespace Slush.DAO.GroupDao
 {
@@ -12,9 +14,16 @@ namespace Slush.DAO.GroupDao
             _context = context;
         }
 
-        public virtual List<GroupComment> GetAll()
+        public async Task<List<GroupComment>> GetAllGroupComments()
         {
-            return _context.dbGroupComments.ToList();
+            var _groupCommentsEntities = await _context.dbGroupComments.AsNoTracking().ToListAsync();
+
+            var _groupComments = _groupCommentsEntities.Select(g => new GroupComment(g.id,
+                                                                                     g.groupId,
+                                                                                     g.content,
+                                                                                     g.userId)).ToList();
+
+            return _groupComments;
         }
 
         public void Add(GroupComment comment)

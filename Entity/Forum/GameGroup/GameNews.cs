@@ -2,6 +2,18 @@
 {
     public class GameNews
     {
+        public GameNews(string id, string title, string? description, int likesCount, int dislikesCount, string gameId, string authorId, string content)
+        {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.likesCount = likesCount;
+            this.dislikesCount = dislikesCount;
+            this.gameId = gameId;
+            this.authorId = authorId;
+            this.content = content;
+        }
+
         public String id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }

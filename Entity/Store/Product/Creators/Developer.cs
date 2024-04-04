@@ -2,6 +2,17 @@
 {
     public class Developer
     {
+        public Developer(string id, int subscribersCount, string name, string description, string avatar, string backgroundImage, string? urlForNewsPage)
+        {
+            this.id = id;
+            this.subscribersCount = subscribersCount;
+            this.name = name;
+            this.description = description;
+            this.avatar = avatar;
+            this.backgroundImage = backgroundImage;
+            this.urlForNewsPage = urlForNewsPage;
+        }
+
         public String id { get; set; }
         public int subscribersCount { get; set; }
         public String name { get; set; }

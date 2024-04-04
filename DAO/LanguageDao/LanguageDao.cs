@@ -1,6 +1,7 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using Slush.Data;
 using Slush.Data.Entity;
-using Slush.Entity.Store.Product.Creators;
 
 namespace Slush.DAO.LanguageDao
 {
@@ -13,9 +14,13 @@ namespace Slush.DAO.LanguageDao
             _context = context;
         }
 
-        public virtual List<Language> GetAll()
+        public async Task<List<Language>> GetAllLanguages()
         {
-            return _context.dbLanguages.ToList();
+            var _languageEntities = await _context.dbLanguages.AsNoTracking().ToListAsync();
+
+            var _languages = _languageEntities.Select(l => new Language(l.id,
+                                                                        l.name)).ToList();
+            return _languages;
         }
 
         public void Add(Language language)

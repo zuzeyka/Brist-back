@@ -1,5 +1,6 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.CategoriesDao
 {
@@ -12,9 +13,15 @@ namespace Slush.DAO.CategoriesDao
             _context = context;
         }
 
-        public virtual List<CategoryByAuthor> GetAll()
+        public async Task<List<CategoryByAuthor>> GetAllCategoriesByAuthor()
         {
-            return _context.dbCategoriesByAuthors.ToList();
+            var _categoriesByAuthorEntities = await _context.dbCategoriesByAuthors.AsNoTracking().ToListAsync();
+            
+            var _categoriesByAuthor = _categoriesByAuthorEntities.Select(c => new CategoryByAuthor(c.id,
+                                                                                                    c.name,
+                                                                                                    c.description,
+                                                                                                    c.image)).ToList();
+            return _categoriesByAuthor;
         }
 
         public void Add(CategoryByAuthor category)

@@ -5,6 +5,13 @@ namespace Slush.Data.Entity.Community
 {
     public class Group
     {
+        public Group(string id, string attachedId, string name, string description)
+        {
+            this.id = id;
+            this.attachedId = attachedId;
+            this.name = name;
+            this.description = description;
+        }
 
         public String id { get; set; }
         public String attachedId { get; set; }

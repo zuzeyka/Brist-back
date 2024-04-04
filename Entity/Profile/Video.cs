@@ -4,6 +4,18 @@ namespace Slush.Data.Entity.Profile
 {
     public class Video
     {
+        public Video(string id, string title, string? description, int likesCount, int dislikesCount, string gameId, string authorId, string videoUrl)
+        {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.likesCount = likesCount;
+            this.dislikesCount = dislikesCount;
+            this.gameId = gameId;
+            this.authorId = authorId;
+            this.videoUrl = videoUrl;
+        }
+
         public String id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }

@@ -1,4 +1,5 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Slush.Data;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
 
@@ -13,9 +14,21 @@ namespace Slush.DAO.ProfileDao
             _context = context;
         }
 
-        public virtual List<Screenshot> GetAll()
+        public async Task<List<Screenshot>> GetAllScreenshots()
         {
-            return _context.dbScreenshots.ToList();
+            var _screenshotsEntities = await _context.dbScreenshots.AsNoTracking().ToListAsync();
+
+            var _screenshots = _screenshotsEntities.Select(s => new Screenshot(s.id,
+                                                                                s.title,
+                                                                                s.description,
+                                                                                s.likesCount,
+                                                                                s.dislikesCount,
+                                                                                s.discussionId,
+                                                                                s.gameId,
+                                                                                s.authorId,
+                                                                                s.screenshotUrl)).ToList();
+
+            return _screenshots;
         }
 
         public void Add(Screenshot screenshot)

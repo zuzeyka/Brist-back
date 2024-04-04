@@ -1,5 +1,6 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.RequirementsDao
 {
@@ -12,9 +13,18 @@ namespace Slush.DAO.RequirementsDao
             _context = context;
         }
 
-        public virtual List<MinimalSystemRequirement> GetAll()
+        public async Task<List<MinimalSystemRequirement>> GetAllMinimalSystemRequirements()
         {
-            return _context.dbMinimalSystemRequirements.ToList();
+            var _requirementsEntities = await _context.dbMinimalSystemRequirements.AsNoTracking().ToListAsync();
+
+            var _requirements = _requirementsEntities.Select(r => new MinimalSystemRequirement(r.id,
+                                                                                                r.gameId,
+                                                                                                r.OS,
+                                                                                                r.processor,
+                                                                                                r.RAM,
+                                                                                                r.video,
+                                                                                                r.freeDiskSpace)).ToList();
+            return _requirements;
         }
 
         public void Add(MinimalSystemRequirement systemRequirements)

@@ -1,4 +1,5 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Slush.Data;
 using Slush.Entity.Profile;
 
 namespace Slush.DAO.ProfileDao
@@ -12,9 +13,14 @@ namespace Slush.DAO.ProfileDao
             _context = context;
         }
 
-        public virtual List<OwnedGame> GetAll()
+        public async Task<List<OwnedGame>> GetAllOwnedGames()
         {
-            return _context.dbOwnedGames.ToList();
+            var _ownedGamesEntities = await _context.dbOwnedGames.AsNoTracking().ToListAsync();
+
+            var _ownedGames = _ownedGamesEntities.Select(o => new OwnedGame(o.id,
+                                                                            o.ownedGameId,
+                                                                            o.userId)).ToList();
+            return _ownedGames;
         }
 
         public void Add(OwnedGame game)

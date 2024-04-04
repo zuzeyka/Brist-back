@@ -1,4 +1,5 @@
-﻿using Slush.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Store.Product;
 
@@ -13,9 +14,14 @@ namespace Slush.DAO.GameGroupDao
             _context = context;
         }
 
-        public virtual List<GameComment> GetAll()
+        public async Task<List<GameComment>> GetAllGameComments()
         {
-            return _context.dbGameComments.ToList();
+            var _gameCommentEntities = await _context.dbGameComments.AsNoTracking().ToListAsync();
+
+            var _gameComment = _gameCommentEntities.Select(g => new GameComment(g.id,
+                                                                                g.gamePostId,
+                                                                                g.content)).ToList(); 
+            return _gameComment;
         }
 
         public void Add(GameComment comment)

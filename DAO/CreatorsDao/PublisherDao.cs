@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.CreatorsDao
 {
@@ -13,12 +14,21 @@ namespace Slush.DAO.CreatorsDao
             _context = context;
         }
 
-        public virtual List<Publisher> GetAll()
+        public async Task<List<Publisher>> GetAllPublishers()
         {
-            return _context.dbPublishers.ToList();
+            var _publisherEntities = await _context.dbPublishers.AsNoTracking().ToListAsync();
+
+            var _publishers = _publisherEntities.Select(p => new Publisher(p.id,
+                                                                           p.subscribersCount,
+                                                                           p.name,
+                                                                           p.description,
+                                                                           p.avatar,
+                                                                           p.backgroundImage,
+                                                                           p.urlForNewsPage)).ToList();
+            return _publishers;
         }
 
-        public void Add(Publisher publisher)
+        public void Add(Developer publisher)
         {
             _context.dbPublishers.Add(publisher);
             _context.SaveChanges();

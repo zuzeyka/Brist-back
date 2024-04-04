@@ -4,6 +4,13 @@ namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameComment
     {
+        public GameComment(string id, string gamePostId, string content)
+        {
+            this.id = id;
+            this.gamePostId = gamePostId;
+            this.content = content;
+        }
+
         public String id { get; set; }
         public String gamePostId { get; set; }
         public String content { get; set; }

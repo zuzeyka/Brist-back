@@ -1,5 +1,6 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.LanguageDao
 {
@@ -12,9 +13,15 @@ namespace Slush.DAO.LanguageDao
             _context = context;
         }
 
-        public virtual List<LanguageInGame> GetAll()
+        public async Task<List<LanguageInGame>> GetAllLanguageInGames()
         {
-            return _context.dbLanguagesInGame.ToList();
+            var _languageInGameEntities = await _context.dbLanguagesInGame.AsNoTracking().ToListAsync();
+
+            var _languageInGame = _languageInGameEntities.Select(l => new LanguageInGame(l.id,
+                                                                                         l.gameId,
+                                                                                         l.languageId)).ToList(); 
+
+            return _languageInGame;
         }
 
         public void Add(LanguageInGame language)
