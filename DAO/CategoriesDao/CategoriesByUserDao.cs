@@ -23,7 +23,6 @@ namespace Slush.DAO.CategoriesDao
                                                                         )).ToList();
             return _categoriesByUser;
         }
-
         public void Add(CategoryByUser category)
         {
             _context.dbCategoriesByUsers.Add(category);

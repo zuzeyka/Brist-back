@@ -4,8 +4,8 @@ namespace Slush.BD.IntermediateTables
 {
     public class GameByDeveloper : DBRecord
     {
-        public string gameId { get; set; }
-        public string developerId { get; set; }
-        public string publisherId { get; set; }
+        public String gameId { get; set; }
+        public String developerId { get; set; }
+        public String publisherId { get; set; }
     }
 }

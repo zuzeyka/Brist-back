@@ -4,7 +4,7 @@ namespace FullStackBrist.Server.Services.Random
 {
     public class RandomService : IRandomService
     {
-        private readonly String usableChars = new string(Enumerable.Range(20, 107).Select(x => (char)x).ToArray());
+        private readonly String usableChars = new String(Enumerable.Range(20, 107).Select(x => (char)x).ToArray());
 
         private readonly System.Random random = new();
 

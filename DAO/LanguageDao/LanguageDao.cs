@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using Slush.Data;
 using Slush.Data.Entity;
+using Slush.Entity.Store.Product.Creators;
 
 namespace Slush.DAO.LanguageDao
 {
@@ -22,7 +23,6 @@ namespace Slush.DAO.LanguageDao
                                                                         l.name)).ToList();
             return _languages;
         }
-
         public void Add(Language language)
         {
             _context.dbLanguages.Add(language);

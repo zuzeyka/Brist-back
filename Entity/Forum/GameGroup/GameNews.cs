@@ -2,7 +2,7 @@
 {
     public class GameNews
     {
-        public GameNews(string id, string title, string? description, int likesCount, int dislikesCount, string gameId, string authorId, string content)
+        public GameNews(Guid id, String title, String? description, int likesCount, int dislikesCount, String gameId, String authorId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -12,9 +12,10 @@
             this.gameId = gameId;
             this.authorId = authorId;
             this.content = content;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }
         public int likesCount { get; set; }
@@ -23,7 +24,7 @@
         public String gameId { get; set; }
         public String authorId { get; set; }
         public String content { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
         public virtual GameGroup gameGroup { get; set; } = null!;
     }

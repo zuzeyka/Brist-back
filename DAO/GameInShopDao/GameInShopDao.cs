@@ -13,7 +13,7 @@ namespace Slush.DAO.GameInShopDao
             _context = context;
         }
 
-        public async  Task<List<GameInShop>> GetAll()
+        public async Task<List<GameInShop>> GetAll()
         {
             var _gameinShopEntities = await _context.dbGamesInShops.AsNoTracking().ToListAsync();
 
@@ -29,7 +29,6 @@ namespace Slush.DAO.GameInShopDao
 
             return _games;
         }
-
         public void Add(GameInShop game)
         {
             _context.dbGamesInShops.Add(game);

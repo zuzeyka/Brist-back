@@ -27,7 +27,6 @@ namespace Slush.DAO.GameGroupDao
                                                                         g.content)).ToList();
             return _gameNews;
         }
-
         public void Add(GameNews news)
         {
             _context.dbGameNews.Add(news);

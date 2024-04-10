@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Data.Entity.Profile;
@@ -30,8 +31,28 @@ namespace FullStackBrist.Server.Controllers
                                                                 v.dislikesCount,
                                                                 v.gameId,
                                                                 v.authorId,
-                                                                v.videoUrl)).ToList();
+                                                                v.videoUrl,
+                                                                v.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Video>> CreateVideo([FromBody] VideoModel model)
+        {
+            var result = new Video(Guid.NewGuid(),
+                model.title,
+                model.description,
+                0,
+                0,
+                model.gameId,
+                model.authorId,
+                model.videoUrl,
+                DateTime.Now);
+
+            _dataContext.dbVideos.AddAsync(result);
+
+            return result;
         }
 
     }

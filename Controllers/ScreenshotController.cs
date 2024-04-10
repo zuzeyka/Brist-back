@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Creators;
+using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Data.Entity.Profile;
@@ -31,8 +33,29 @@ namespace FullStackBrist.Server.Controllers
                                                                                 s.discussionId,
                                                                                 s.gameId,
                                                                                 s.authorId,
-                                                                                s.screenshotUrl)).ToList();
+                                                                                s.screenshotUrl,
+                                                                                s.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model)
+        {
+            var result = new Screenshot(Guid.NewGuid(),
+                model.title,
+                model.description,
+                0,
+                0,
+                model.discussionId,
+                model.gameId,
+                model.authorId,
+                model.screenshotUrl,
+                DateTime.Now);
+
+            _dataContext.dbScreenshots.AddAsync(result);
+
+            return result;
         }
     }
 }

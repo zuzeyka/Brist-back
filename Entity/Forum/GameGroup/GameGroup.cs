@@ -6,15 +6,16 @@ namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameGroup
     {
-        public GameGroup(string id, string gameId)
+        public GameGroup(Guid id, String gameId, DateTime? createdAt)
         {
             this.id = id;
             this.gameId = gameId;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String gameId { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
 
         public virtual List<GameNews> news { get; set; }                = null!;

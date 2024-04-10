@@ -22,7 +22,6 @@ namespace Slush.DAO.GameGroupDao
 
             return _gameGroups;
         }
-
         public void Add(GameGroup group)
         {
             _context.dbGameGroups.Add(group);

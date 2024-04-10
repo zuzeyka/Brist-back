@@ -2,7 +2,7 @@
 {
     public class MD5HashService : IHashService
     {
-        public string Hash(string text)
+        public String Hash(String text)
         {
             using var md5 = System.Security.Cryptography.MD5.Create();
             return

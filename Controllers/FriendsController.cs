@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Profile;
+using FullStackBrist.Server.Models.ShopContent;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Entity.Store.Product;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -25,9 +28,23 @@ namespace FullStackBrist.Server.Controllers
 
             var response = _friends.Select(f => new Friends(f.id,
                                                                    f.userId,
-                                                                   f.friendId)).ToList();
+                                                                   f.friendId,
+                                                                   f.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Friends>> CreateFriend([FromBody] FriendsModel model)
+        {
+            var result = new Friends(Guid.NewGuid(),
+                                            model.userId,
+                                            model.friendId,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbFriends.AddAsync(result);
+
+            return result;
         }
     }
 }

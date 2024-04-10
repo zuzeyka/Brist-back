@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Group;
+using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
+using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -26,8 +29,23 @@ namespace FullStackBrist.Server.Controllers
             var response = _userComments.Select(s => new UserComment(s.id,
                                                                                 s.userId,
                                                                                 s.authorId,
-                                                                                s.content)).ToList();
+                                                                                s.content,
+                                                                                s.createdAt)).ToList();
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserComment>> CreateUserComment([FromBody] UserCommentModel model)
+        {
+            var result = new UserComment(Guid.NewGuid(),
+                model.userId,
+                model.authorId,
+                model.content,
+                DateTime.Now);
+
+            _dataContext.dbUserComments.AddAsync(result);
+
+            return result;
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Slush.DAO.ProfileDao
                                                                    f.friendId)).ToList();
             return _friends;
         }
-
         public void Add(Friends friend)
         {
             _context.dbFriends.Add(friend);

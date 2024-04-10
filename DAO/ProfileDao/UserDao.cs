@@ -25,7 +25,6 @@ namespace Slush.DAO.ProfileDao
                                                             u.phone)).ToList();
             return _users;
         }
-
         public void Add(User user)
         {
             _context.dbUsers.Add(user);

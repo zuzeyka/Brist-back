@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Data.Entity.Profile;
@@ -27,9 +28,27 @@ namespace FullStackBrist.Server.Controllers
                                                             u.passwordSalt,
                                                             u.salt,
                                                             u.email,
-                                                            u.phone)).ToList();
+                                                            u.phone,
+                                                            u.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateUser([FromBody] UserModel model)
+        {
+            var result = new User(Guid.NewGuid(),
+                model.name,
+                model.passwordSalt,
+                model.salt,
+                model.email,
+                model.phone,
+                DateTime.Now);
+
+            _dataContext.dbUsers.AddAsync(result);
+
+            return result;
         }
     }
 }

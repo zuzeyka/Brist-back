@@ -29,7 +29,6 @@ namespace Slush.DAO.GameGroupDao
 
             return _gameGuides;
         }
-
         public void Add(GameGuide guide)
         {
             _context.dbGameGuides.Add(guide);

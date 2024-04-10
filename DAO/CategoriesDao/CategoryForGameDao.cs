@@ -23,7 +23,6 @@ namespace Slush.DAO.CategoriesDao
                                                                                             c.categoryId)).ToList();
             return _categoryForGame;
         }
-
         public void Add(CategoryForGame category)
         {
             _context.dbCategoriesForGame.Add(category);

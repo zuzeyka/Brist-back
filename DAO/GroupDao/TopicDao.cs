@@ -21,11 +21,10 @@ namespace Slush.DAO.GroupDao
                                                                 t.attachedId,
                                                                 t.name,
                                                                 t.description,
-                                                                t.authorId)).ToList();  
+                                                                t.authorId)).ToList();
 
             return _topics;
         }
-
         public void Add(Topic topic)
         {
             _context.dbTopics.Add(topic);

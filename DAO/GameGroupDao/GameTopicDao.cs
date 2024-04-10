@@ -23,7 +23,6 @@ namespace Slush.DAO.GameGroupDao
                                                                             g.description)).ToList();
             return _gameTopics;
         }
-
         public void Add(GameTopic topics)
         {
             _context.dbGameTopics.Add(topics);

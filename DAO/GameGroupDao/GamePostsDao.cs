@@ -28,7 +28,6 @@ namespace Slush.DAO.GameGroupDao
                                                                             g.content)).ToList();
             return _gamePosts;
         }
-
         public void Add(GamePosts posts)
         {
             _context.dbGamePosts.Add(posts);

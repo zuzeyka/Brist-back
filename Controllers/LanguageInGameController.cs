@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Language;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.LanguageDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -25,8 +26,23 @@ namespace FullStackBrist.Server.Controllers
 
             var response = _languages.Select(l => new LanguageInGame(l.id,
                                                                                          l.gameId,
-                                                                                         l.languageId)).ToList();
+                                                                                         l.languageId,
+                                                                                         l.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<LanguageInGame>> CreateLanguageInGame([FromBody] LanguageInGame model)
+        {
+            var result = new LanguageInGame(Guid.NewGuid(),
+                                            model.gameId,
+                                            model.languageId,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbLanguagesInGame.AddAsync(result);
+
+            return result;
         }
     }
 }

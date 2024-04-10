@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Profile;
+using FullStackBrist.Server.Models.Requirements;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -25,8 +28,22 @@ namespace FullStackBrist.Server.Controllers
 
             var response = _ownedGames.Select(o => new OwnedGame(o.id,
                                                                             o.ownedGameId,
-                                                                            o.userId)).ToList();
+                                                                            o.userId,
+                                                                            o.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<OwnedGame>> CreateOwnedGame([FromBody] OwnedGameModel model)
+        {
+            var result = new OwnedGame(Guid.NewGuid(),
+                model.ownedGameId,
+                model.userId,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbOwnedGames.AddAsync(result);
+            return Ok(result);
         }
     }
 }

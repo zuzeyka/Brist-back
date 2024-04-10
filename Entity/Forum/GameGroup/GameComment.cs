@@ -4,17 +4,17 @@ namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameComment
     {
-        public GameComment(string id, string gamePostId, string content)
+        public GameComment(Guid id, String gamePostId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.gamePostId = gamePostId;
             this.content = content;
+            this.createdAt = createdAt;
         }
-
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String gamePostId { get; set; }
         public String content { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
         public virtual Author Author { get; set; } = null!;
     }

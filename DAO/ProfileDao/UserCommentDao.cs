@@ -24,7 +24,6 @@ namespace Slush.DAO.ProfileDao
 
             return _userComment;
         }
-
         public void Add(UserComment comment)
         {
             _context.dbUserComments.Add(comment);

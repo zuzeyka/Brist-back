@@ -22,7 +22,6 @@ namespace Slush.DAO.ProfileDao
                                                                             o.userId)).ToList();
             return _ownedGames;
         }
-
         public void Add(OwnedGame game)
         {
             _context.dbOwnedGames.Add(game);

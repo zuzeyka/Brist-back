@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Categories;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CategoriesDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -25,10 +26,22 @@ namespace FullStackBrist.Server.Controllers
 
             var response = categoriesByUser.Select(c => new CategoryByUser(c.id,
                                                                         c.name,
-                                                                        c.description
+                                                                        c.description,
+                                                                        c.createdAt
                                                                         )).ToList();
 
             return Ok(response);
+        }
+        [HttpPost]
+        public async Task<ActionResult<CategoryByUser>> CreateCategoryByUser([FromBody] CategoryByUserModel model)
+        {
+            var result = new CategoryByUser(Guid.NewGuid(),
+                                        model.name,
+                                        model.description,
+                                        DateTime.Now);
+            _dataContext.dbCategoriesByUsers.AddAsync(result);
+
+            return result;
         }
     }
 }

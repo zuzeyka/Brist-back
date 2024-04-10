@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Group;
+using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GroupDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
+using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -31,9 +34,29 @@ namespace FullStackBrist.Server.Controllers
                                                            p.discussionId,
                                                            p.gameId,
                                                            p.authorId,
-                                                           p.content)).ToList();
+                                                           p.content,
+                                                           p.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Post>> CreatePost([FromBody] PostModel model)
+        {
+            var result = new Post(Guid.NewGuid(),
+                model.title,
+                model.description,
+                0,
+                0,
+                model.discussionId,
+                model.gameId,
+               model.authorId,
+               model.content,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbPosts.AddAsync(result);
+            return Ok(result);
         }
     }
 }

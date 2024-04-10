@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.GameGroup;
+using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
 using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -25,9 +28,23 @@ namespace FullStackBrist.Server.Controllers
 
             var response = _gameComment.Select(g => new GameComment(g.id,
                                                                                 g.gamePostId,
-                                                                                g.content)).ToList();
+                                                                                g.content,
+                                                                                g.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<GameComment>> CreateGameComment([FromBody] GameCommentModel model)
+        {
+            var result = new GameComment(Guid.NewGuid(),
+                                            model.gamePostId, 
+                                            model.content,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbGameComments.AddAsync(result);
+
+            return result;
         }
     }
 }

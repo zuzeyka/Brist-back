@@ -2,6 +2,9 @@
 using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
 using Slush.Data;
+using FullStackBrist.Server.Models.Creators;
+using Slush.Entity.Store.Product.Creators;
+using FullStackBrist.Server.Models.Categories;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -26,9 +29,22 @@ namespace FullStackBrist.Server.Controllers
             var response = _categoriesByAuthor.Select(c => new CategoryByAuthor(c.id,
                                                                                                     c.name,
                                                                                                     c.description,
-                                                                                                    c.image)).ToList();
+                                                                                                    c.image,
+                                                                                                    c.createdAt)).ToList();
 
             return Ok(response);
+        }
+        [HttpPost]
+        public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model)
+        {
+            var result = new CategoryByAuthor(Guid.NewGuid(),
+                                        model.name,
+                                        model.description,
+                                        model.image,
+                                        DateTime.Now);
+            _dataContext.dbCategoriesByAuthors.AddAsync(result);
+
+            return result;
         }
     }
 }

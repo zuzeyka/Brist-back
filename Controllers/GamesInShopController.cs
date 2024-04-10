@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.GameGroup;
+using FullStackBrist.Server.Models.ShopContent;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameInShopDao;
 using Slush.Data;
+using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Store.Product;
 
 namespace FullStackBrist.Server.Controllers
@@ -31,9 +34,31 @@ namespace FullStackBrist.Server.Controllers
                                                                         g.dateOfRelease,
                                                                         g.developerId,
                                                                         g.publisherId,
-                                                                        g.urlForContent)).ToList();
+                                                                        g.urlForContent,
+                                                                        g.createdAt)).ToList();
             return Ok(response);
         }
-            
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model)
+        {
+            var result = new GameInShop(Guid.NewGuid(),
+                                            model.name,
+                                            model.price,
+                                            model.discount,
+                                            model.previeImage,
+                                            model.dateOfRelease,
+                                            model.developerId,
+                                            model.publisherId,
+                                            model.urlForContent,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbGamesInShops.AddAsync(result);
+
+            return result;
+        }
+
     }
 }

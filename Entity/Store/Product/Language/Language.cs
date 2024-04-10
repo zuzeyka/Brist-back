@@ -4,15 +4,16 @@ namespace Slush.Data.Entity
 {
     public class Language
     {
-        public Language(string id, string name)
+        public Language(Guid id, String name, DateTime? createdAt)
         {
             this.id = id;
             this.name = name;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String name { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        bool SendMessage(string message, object model);
+        bool SendMessage(String message, object model);
     }
 }

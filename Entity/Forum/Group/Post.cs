@@ -4,7 +4,7 @@ namespace Slush.Data.Entity.Community
 {
     public class Post
     {
-        public Post(string id, string title, string? description, int likesCount, int dislikesCount, string discussionId, string gameId, string authorId, string content)
+        public Post(Guid id, String title, String? description, int likesCount, int dislikesCount, String discussionId, String gameId, String authorId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -15,9 +15,10 @@ namespace Slush.Data.Entity.Community
             this.gameId = gameId;
             this.authorId = authorId;
             this.content = content;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String title { get; set; }
         public String? description { get; set; }
         public int likesCount { get; set; }
@@ -26,7 +27,7 @@ namespace Slush.Data.Entity.Community
         public String gameId { get; set; }
         public String authorId { get; set; }
         public String content { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }
 }

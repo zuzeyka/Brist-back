@@ -5,7 +5,8 @@ namespace Slush.Entity.Store.Product
 {
     public class GameInShop
     {
-        public GameInShop(string id, string name, float price, int discount, string previeImage, DateTime dateOfRelease, string developerId, string publisherId, string urlForContent)
+
+        public GameInShop(Guid id, String name, float price, int discount, String previeImage, DateTime dateOfRelease, String developerId, String publisherId, String urlForContent, DateTime? createdAt)
         {
             this.id = id;
             this.name = name;
@@ -16,9 +17,12 @@ namespace Slush.Entity.Store.Product
             this.developerId = developerId;
             this.publisherId = publisherId;
             this.urlForContent = urlForContent;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+
+
+        public Guid id { get; set; }
         public String name { get; set; }
         public float price { get; set; }
         public int discount { get; set; }
@@ -27,7 +31,7 @@ namespace Slush.Entity.Store.Product
         public String developerId { get; set; }
         public String publisherId { get; set; }
         public String urlForContent { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
 
         public virtual List<String> categoriesId { get; set; }           = null!;

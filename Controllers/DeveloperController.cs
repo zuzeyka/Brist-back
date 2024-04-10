@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Creators;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CreatorsDao;
 using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
@@ -23,15 +24,32 @@ namespace FullStackBrist.Server.Controllers
         {
             var _developers = await _developerDao.GetAllDevelopersDao();
 
-            var response = _developers.Select(d => new Publisher(d.id,
+            var response = _developers.Select(d => new Developer(d.id,
                                                                             d.subscribersCount,
                                                                             d.name,
                                                                             d.description,
                                                                             d.avatar,
                                                                             d.backgroundImage,
-                                                                            d.urlForNewsPage)).ToList();
+                                                                            d.urlForNewsPage,
+                                                                            d.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Developer>> CreateDeveloper([FromBody] DeveloperModel model)
+        {
+            var result =  new Developer(Guid.NewGuid(),
+                                        0,
+                                        model.name,
+                                        model.description,
+                                        model.avatar,
+                                        model.backgroundImage,
+                                        null,
+                                        DateTime.Now);
+            _dataContext.dbDevelopers.AddAsync(result);
+
+            return result;
         }
     }
 }

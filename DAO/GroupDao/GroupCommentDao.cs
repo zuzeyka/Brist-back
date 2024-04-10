@@ -25,7 +25,6 @@ namespace Slush.DAO.GroupDao
 
             return _groupComments;
         }
-
         public void Add(GroupComment comment)
         {
             _context.dbGroupComments.Add(comment);

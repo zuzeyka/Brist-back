@@ -30,7 +30,6 @@ namespace Slush.DAO.ProfileDao
 
             return _screenshots;
         }
-
         public void Add(Screenshot screenshot)
         {
             _context.dbScreenshots.Add(screenshot);

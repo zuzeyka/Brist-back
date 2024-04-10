@@ -2,7 +2,8 @@
 {
     public class MinimalSystemRequirement
     {
-        public MinimalSystemRequirement(string id, string gameId, string oS, string processor, string rAM, string video, string freeDiskSpace)
+
+        public MinimalSystemRequirement(Guid id, String gameId, String oS, String processor, String rAM, String video, String freeDiskSpace, DateTime? createdAt)
         {
             this.id = id;
             this.gameId = gameId;
@@ -11,16 +12,19 @@
             RAM = rAM;
             this.video = video;
             this.freeDiskSpace = freeDiskSpace;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+
+
+        public Guid id { get; set; }
         public String gameId { get; set; }
         public String OS { get; set; }
         public String processor { get; set; }
         public String RAM { get; set; }
         public String video { get; set; }
         public String freeDiskSpace { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }
 }

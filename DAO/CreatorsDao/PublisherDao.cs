@@ -28,7 +28,7 @@ namespace Slush.DAO.CreatorsDao
             return _publishers;
         }
 
-        public void Add(Developer publisher)
+        public void Add(Publisher publisher)
         {
             _context.dbPublishers.Add(publisher);
             _context.SaveChanges();

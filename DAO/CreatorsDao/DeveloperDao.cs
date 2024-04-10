@@ -28,7 +28,6 @@ namespace Slush.DAO.CreatorsDao
 
             return _developers;
         }
-
         public void Add(Developer developer)
         {
             _context.dbDevelopers.Add(developer);

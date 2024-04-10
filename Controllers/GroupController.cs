@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Group;
+using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto.Operators;
 using Slush.DAO.GroupDao;
 using Slush.Data;
@@ -27,9 +28,25 @@ namespace FullStackBrist.Server.Controllers
             var response = _groups.Select(g => new Group(g.id,
                                                                 g.attachedId,
                                                                 g.name,
-                                                                g.description)).ToList();
+                                                                g.description,
+                                                                g.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Group>> CreateGroup([FromBody] GroupModel model)
+        {
+            var result = new Group(Guid.NewGuid(),
+                model.attachedId,
+                model.name,
+                model.description,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbGroups.AddAsync(result);
+
+            return result;
         }
     }
 }

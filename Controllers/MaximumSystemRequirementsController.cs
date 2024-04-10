@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Requirements;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.RequirementsDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -29,8 +30,27 @@ namespace FullStackBrist.Server.Controllers
                                                                                                r.processor,
                                                                                                r.RAM,
                                                                                                r.video,
-                                                                                               r.freeDiskSpace)).ToList();
+                                                                                               r.freeDiskSpace,
+                                                                                               r.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<MaximumSystemRequirement>> CreateMaximumSystemRequirement([FromBody] MaximumSystemRequirementModel model)
+        {
+            var result = new MaximumSystemRequirement(Guid.NewGuid(),
+                model.gameId,
+                model.OS,
+                model.processor,
+                model.RAM,
+                model.video,
+                model.freeDiskSpace,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbMaximumSystemRequirements.AddAsync(result);
+
+            return result;
         }
     }
 }

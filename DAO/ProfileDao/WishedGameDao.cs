@@ -23,7 +23,6 @@ namespace Slush.DAO.ProfileDao
 
             return _wishedGames;
         }
-
         public void Add(WishedGame game)
         {
             _context.dbWishedGames.Add(game);

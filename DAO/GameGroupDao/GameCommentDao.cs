@@ -20,10 +20,9 @@ namespace Slush.DAO.GameGroupDao
 
             var _gameComment = _gameCommentEntities.Select(g => new GameComment(g.id,
                                                                                 g.gamePostId,
-                                                                                g.content)).ToList(); 
+                                                                                g.content)).ToList();
             return _gameComment;
         }
-
         public void Add(GameComment comment)
         {
             _context.dbGameComments.Add(comment);

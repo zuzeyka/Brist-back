@@ -4,7 +4,7 @@ namespace Slush.BD.IntermediateTables
 {
     public class GameByRequirements : DBRecord
     {
-        public string recomendedRequirementsId { get; set; }
-        public string minimalRequirementsId { get; set; }
+        public String recomendedRequirementsId { get; set; }
+        public String minimalRequirementsId { get; set; }
     }
 }

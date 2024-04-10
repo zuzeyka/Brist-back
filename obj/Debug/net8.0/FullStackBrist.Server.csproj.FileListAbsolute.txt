@@ -158,3 +158,8 @@ C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\bin\Debug\net8.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStac.748F13AA.Up2Date
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStackBrist.Server.RazorAssemblyInfo.cache
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\FullStackBrist.Server.RazorAssemblyInfo.cs
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\bin\Debug\net8.0\FullStackBrist.Server.staticwebassets.runtime.json
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\neonmagUSER\source\repos\FullStackBrist\FullStackBrist.Server\obj\Debug\net8.0\scopedcss\projectbundle\FullStackBrist.Server.bundle.scp.css

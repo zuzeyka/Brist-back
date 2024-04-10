@@ -15,7 +15,7 @@ namespace Slush.DAO.GroupDao
 
         public async Task<List<Post>> GetAllPosts()
         {
-            var _postsEntity = _context.dbPosts.AsNoTracking().ToList();
+            var _postsEntity = await  _context.dbPosts.AsNoTracking().ToListAsync();
 
             var _posts = _postsEntity.Select(p => new Post(p.id,
                                                            p.title,

@@ -18,7 +18,7 @@ namespace FullStackBrist.Server.Migrations
                 name: "Author",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -45,11 +45,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbCategories",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -64,13 +64,13 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbCategoriesByAuthors",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    image = table.Column<string>(type: "longtext", nullable: false)
+                    image = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -85,11 +85,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbCategoriesByUsers",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -104,11 +104,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbCategoriesForGame",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    categoryId = table.Column<string>(type: "longtext", nullable: false)
+                    categoryId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -123,34 +123,34 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbDLCsInShop",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     price = table.Column<float>(type: "float", nullable: false),
                     discount = table.Column<int>(type: "int", nullable: false),
-                    previeImage = table.Column<string>(type: "longtext", nullable: false)
+                    previeImage = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameImages = table.Column<string>(type: "longtext", nullable: false)
+                    gameImages = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    developerId = table.Column<string>(type: "longtext", nullable: false)
+                    developerId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    publisherId = table.Column<string>(type: "longtext", nullable: false)
+                    publisherId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    categoriesId = table.Column<string>(type: "longtext", nullable: false)
+                    categoriesId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    languagesId = table.Column<string>(type: "longtext", nullable: false)
+                    languagesId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    systemRequirementsId = table.Column<string>(type: "longtext", nullable: false)
+                    systemRequirementsId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForContent = table.Column<string>(type: "longtext", nullable: false)
+                    urlForContent = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    categories = table.Column<string>(type: "longtext", nullable: false)
+                    categories = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -163,18 +163,18 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbDevelopers",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     subscribersCount = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    avatar = table.Column<string>(type: "longtext", nullable: false)
+                    avatar = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    backgroundImage = table.Column<string>(type: "longtext", nullable: false)
+                    backgroundImage = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForNewsPage = table.Column<string>(type: "longtext", nullable: true)
+                    urlForNewsPage = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -189,9 +189,9 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameGroups",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -206,30 +206,30 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGamesInShops",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     price = table.Column<float>(type: "float", nullable: false),
                     discount = table.Column<int>(type: "int", nullable: false),
-                    previeImage = table.Column<string>(type: "longtext", nullable: false)
+                    previeImage = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    developerId = table.Column<string>(type: "longtext", nullable: false)
+                    developerId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    publisherId = table.Column<string>(type: "longtext", nullable: false)
+                    publisherId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForContent = table.Column<string>(type: "longtext", nullable: false)
+                    urlForContent = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    categoriesId = table.Column<string>(type: "longtext", nullable: false)
+                    categoriesId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameImages = table.Column<string>(type: "longtext", nullable: false)
+                    gameImages = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    languagesId = table.Column<string>(type: "longtext", nullable: false)
+                    languagesId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    systemRequirementsId = table.Column<string>(type: "longtext", nullable: false)
+                    systemRequirementsId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -242,13 +242,13 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGroups",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<string>(type: "longtext", nullable: false)
+                    attachedId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -263,9 +263,9 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbLanguages",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -280,19 +280,19 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbMaximumSystemRequirements",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<string>(type: "longtext", nullable: false)
+                    OS = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<string>(type: "longtext", nullable: false)
+                    processor = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                    RAM = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<string>(type: "longtext", nullable: false)
+                    video = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -307,19 +307,19 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbMinimalSystemRequirements",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<string>(type: "longtext", nullable: false)
+                    OS = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<string>(type: "longtext", nullable: false)
+                    processor = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                    RAM = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<string>(type: "longtext", nullable: false)
+                    video = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -334,18 +334,18 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbPublishers",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     subscribersCount = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    avatar = table.Column<string>(type: "longtext", nullable: false)
+                    avatar = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    backgroundImage = table.Column<string>(type: "longtext", nullable: false)
+                    backgroundImage = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForNewsPage = table.Column<string>(type: "longtext", nullable: true)
+                    urlForNewsPage = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -360,19 +360,19 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbSystemRequirements",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<string>(type: "longtext", nullable: false)
+                    OS = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<string>(type: "longtext", nullable: false)
+                    processor = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                    RAM = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<string>(type: "longtext", nullable: false)
+                    video = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -387,17 +387,17 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbUsers",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    passwordSalt = table.Column<string>(type: "longtext", nullable: false)
+                    passwordSalt = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    salt = table.Column<string>(type: "longtext", nullable: false)
+                    salt = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<string>(type: "longtext", nullable: false)
+                    email = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    phone = table.Column<string>(type: "longtext", nullable: false)
+                    phone = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -412,23 +412,23 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameGuides",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameGroupId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    gameGroupId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -449,25 +449,25 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameNews",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    gameGroupid = table.Column<string>(type: "varchar(255)", nullable: false)
+                    gameGroupid = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -486,17 +486,17 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameTopics",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<string>(type: "longtext", nullable: false)
+                    attachedId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -514,17 +514,17 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbLanguagesInGame",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    languageId = table.Column<string>(type: "longtext", nullable: false)
+                    languageId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DLCInShopid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    DLCInShopid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    GameInShopid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GameInShopid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -547,11 +547,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGroupComments",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    groupId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    groupId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -573,18 +573,18 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbTopics",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<string>(type: "longtext", nullable: false)
+                    attachedId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    description = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Groupid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Groupid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -602,9 +602,9 @@ namespace FullStackBrist.Server.Migrations
                 name: "GroupUser",
                 columns: table => new
                 {
-                    groupsid = table.Column<string>(type: "varchar(255)", nullable: false)
+                    groupsid = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    usersid = table.Column<string>(type: "varchar(255)", nullable: false)
+                    usersid = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -629,11 +629,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbFriends",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    friendId = table.Column<string>(type: "longtext", nullable: false)
+                    friendId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -654,11 +654,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbOwnedGames",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ownedGameId = table.Column<string>(type: "longtext", nullable: false)
+                    ownedGameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -679,27 +679,27 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbScreenshots",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    screenshotUrl = table.Column<string>(type: "longtext", nullable: false)
+                    screenshotUrl = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Userid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Userid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -722,12 +722,12 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbUserComments",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -748,27 +748,27 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbVideos",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    videoUrl = table.Column<string>(type: "longtext", nullable: false)
+                    videoUrl = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Userid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Userid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -791,11 +791,11 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbWishedGames",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ownedGameId = table.Column<string>(type: "longtext", nullable: false)
+                    ownedGameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -816,27 +816,27 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGamePosts",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    gameGroupid = table.Column<string>(type: "varchar(255)", nullable: false)
+                    gameGroupid = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    GameTopicid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GameTopicid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -860,25 +860,25 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbPosts",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<string>(type: "longtext", nullable: false)
+                    title = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "longtext", nullable: true)
+                    description = table.Column<String>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<string>(type: "longtext", nullable: false)
+                    discussionId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<string>(type: "longtext", nullable: false)
+                    gameId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<string>(type: "longtext", nullable: false)
+                    authorId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Topicid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Topicid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -896,17 +896,17 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameComments",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    id = table.Column<String>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gamePostId = table.Column<string>(type: "longtext", nullable: false)
+                    gamePostId = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<string>(type: "longtext", nullable: false)
+                    content = table.Column<String>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Authorid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Authorid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    GamePostsid = table.Column<string>(type: "varchar(255)", nullable: true)
+                    GamePostsid = table.Column<String>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>

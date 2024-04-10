@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Categories;
+using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto.Operators;
 using Slush.DAO.CategoriesDao;
 using Slush.Data;
@@ -26,9 +27,22 @@ namespace FullStackBrist.Server.Controllers
 
             var response = categories.Select(c => new Categories(c.id,
                                                                              c.name,
-                                                                             c.description
+                                                                             c.description,
+                                                                             c.createdAt
                                                                              )).ToList();
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Categories>> CreateCategories([FromBody] CategoriesModel model)
+        {
+            var result = new Categories(Guid.NewGuid(),
+                                        model.name,
+                                        model.description,
+                                        DateTime.Now);
+            _dataContext.dbCategories.AddAsync(result);
+
+            return result;
         }
     }
 }

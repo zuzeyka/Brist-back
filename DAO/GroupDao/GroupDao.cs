@@ -24,7 +24,6 @@ namespace Slush.DAO.GroupDao
                                                                 g.description)).ToList();
             return _groups;
         }
-
         public void Add(Group group)
         {
             _context.dbGroups.Add(group);

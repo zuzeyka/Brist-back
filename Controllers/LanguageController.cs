@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FullStackBrist.Server.Models.Group;
+using FullStackBrist.Server.Models.Language;
+using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.LanguageDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -24,9 +26,22 @@ namespace FullStackBrist.Server.Controllers
             var _languages = await _languageDao.GetAllLanguages();
 
             var response = _languages.Select(l => new Language(l.id,
-                                                                        l.name)).ToList();
+                                                                        l.name,
+                                                                        l.createdAt)).ToList();
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Language>> CreateLanguage([FromBody] LanguageModel model)
+        {
+            var result = new Language(Guid.NewGuid(),
+                                            model.name,
+                                            DateTime.Now
+                                            );
+            _dataContext.dbLanguages.AddAsync(result);
+
+            return result;
         }
     }
 }

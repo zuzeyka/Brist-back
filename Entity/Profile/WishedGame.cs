@@ -4,17 +4,21 @@ namespace Slush.Entity.Profile
 {
     public class WishedGame :ProfileGame
     {
-        public WishedGame(string id, string ownedGameId, string userId)
+
+        public WishedGame(Guid id, String ownedGameId, String userId, DateTime? createdAt)
         {
             this.id = id;
             this.ownedGameId = ownedGameId;
             this.userId = userId;
+            this.createdAt = createdAt;
         }
 
-        public String id { get; set; }
+
+
+        public Guid id { get; set; }
         public String ownedGameId { get; set; }
         public String userId { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }
 }

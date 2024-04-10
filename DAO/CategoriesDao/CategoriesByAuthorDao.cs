@@ -22,7 +22,7 @@ namespace Slush.DAO.CategoriesDao
                                                                                                     c.description,
                                                                                                     c.image)).ToList();
             return _categoriesByAuthor;
-        }
+}
 
         public void Add(CategoryByAuthor category)
         {

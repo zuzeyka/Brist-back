@@ -2,6 +2,7 @@
 using Slush.Data;
 using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
+using FullStackBrist.Server.Models.Categories;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -26,8 +27,22 @@ namespace FullStackBrist.Server.Controllers
 
             var response = categoriesForGame.Select(c => new CategoryForGame(c.id,
                                                                                             c.gameId,
-                                                                                            c.categoryId)).ToList();
+                                                                                            c.categoryId,
+                                                                                            c.createdAt)).ToList();
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<CategoryForGame>> CreateCategoryForGame([FromBody] CategoryForGameModel model)
+        {
+            var result = new CategoryForGame(Guid.NewGuid(),
+                                        model.gameId,
+                                        model.categoryId,
+                                        DateTime.Now);
+            _dataContext.dbCategoriesForGame.AddAsync(result);
+
+            return result;
         }
     }
 }

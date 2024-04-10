@@ -4,7 +4,7 @@ namespace Slush.BD.IntermediateTables
 {
     public class PostByAythor : DBRecord
     {
-        public string postId { get; set; }
-        public string authorId { get; set; }
+        public String postId { get; set; }
+        public String authorId { get; set; }
     }
 }

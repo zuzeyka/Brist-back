@@ -38,7 +38,7 @@ namespace Slush.Data
         public DbSet<CategoryForGame>          dbCategoriesForGame         { get; set; }
 
         public DbSet<Developer>                dbDevelopers                { get; set; }
-        public DbSet<Developer>                dbPublishers                { get; set; }
+        public DbSet<Publisher>                dbPublishers                { get; set; }
 
         public DbSet<Language>                 dbLanguages                 { get; set; }
         public DbSet<LanguageInGame>           dbLanguagesInGame           { get; set; }
