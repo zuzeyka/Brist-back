@@ -21,7 +21,7 @@ namespace Slush.DAO.GroupDao
             var _groups = _groupEntities.Select(g => new Group(g.id,
                                                                 g.attachedId,
                                                                 g.name,
-                                                                g.description)).ToList();
+                                                                g.description, g.createdAt)).ToList();
             return _groups;
         }
         public void Add(Group group)

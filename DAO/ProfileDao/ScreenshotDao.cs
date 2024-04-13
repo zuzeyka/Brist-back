@@ -26,7 +26,8 @@ namespace Slush.DAO.ProfileDao
                                                                                 s.discussionId,
                                                                                 s.gameId,
                                                                                 s.authorId,
-                                                                                s.screenshotUrl)).ToList();
+                                                                                s.screenshotUrl,
+                                                                                s.createdAt)).ToList();
 
             return _screenshots;
         }

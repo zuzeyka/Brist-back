@@ -24,7 +24,7 @@ namespace Slush.DAO.ProfileDao
                                                                 v.dislikesCount,
                                                                 v.gameId,
                                                                 v.authorId,
-                                                                v.videoUrl)).ToList();
+                                                                v.videoUrl,v.createdAt)).ToList();
             return _videos;
 
         }

@@ -25,7 +25,7 @@ namespace Slush.DAO.GameGroupDao
                                                                           g.gameId,
                                                                           g.authorId,
                                                                           g.gameGroupId,
-                                                                          g.content)).ToList();
+                                                                          g.content, g.createdAt)).ToList();
 
             return _gameGuides;
         }

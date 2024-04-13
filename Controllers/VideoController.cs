@@ -7,7 +7,7 @@ using Slush.Data.Entity.Profile;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[videoController]")]
+    [Route("api/[controller]")]
     public class VideoController : Controller
     {
         private readonly DataContext _dataContext;

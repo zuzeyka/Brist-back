@@ -19,7 +19,7 @@ namespace Slush.DAO.ProfileDao
 
             var _wishedGames = _wishedGamesEntities.Select(s => new WishedGame(s.id,
                                                                                 s.ownedGameId,
-                                                                                s.userId)).ToList();
+                                                                                s.userId, s.createdAt)).ToList();
 
             return _wishedGames;
         }

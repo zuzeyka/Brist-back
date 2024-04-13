@@ -19,7 +19,7 @@ namespace Slush.DAO.LanguageDao
 
             var _languageInGame = _languageInGameEntities.Select(l => new LanguageInGame(l.id,
                                                                                          l.gameId,
-                                                                                         l.languageId)).ToList();
+                                                                                         l.languageId, l.createdAt)).ToList();
 
             return _languageInGame;
         }

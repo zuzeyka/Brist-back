@@ -18,7 +18,7 @@ namespace Slush.DAO.GameGroupDao
             var _gameGroupsEntites = await _context.dbGameGroups.AsNoTracking().ToListAsync();
 
             var _gameGroups = _gameGroupsEntites.Select(g => new GameGroup(g.id,
-                                                                           g.gameId)).ToList();
+                                                                           g.gameId, g.createdAt)).ToList();
 
             return _gameGroups;
         }

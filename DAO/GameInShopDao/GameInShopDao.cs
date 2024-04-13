@@ -1,33 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Store.Product;
+using System.Text.Json;
 
 namespace Slush.DAO.GameInShopDao
 {
     public class GameInShopDao
     {
         private readonly DataContext _context;
+        private readonly ILogger<GameInShopDao> _logger;
 
-        public GameInShopDao(DataContext context)
+        public GameInShopDao(DataContext context, ILogger<GameInShopDao> logger)
         {
             _context = context;
+            _logger = logger;
         }
-
+        public async Task<List<DateTime>> GetAllNames()
+        {
+            return await _context.dbGamesInShops.Select(g => g.dateOfRelease).ToListAsync();
+        }
         public async Task<List<GameInShop>> GetAll()
         {
-            var _gameinShopEntities = await _context.dbGamesInShops.AsNoTracking().ToListAsync();
-
-            var _games = _gameinShopEntities.Select(g => new GameInShop(g.id,
-                                                                        g.name,
-                                                                        g.price,
-                                                                        g.discount,
-                                                                        g.previeImage,
-                                                                        g.dateOfRelease,
-                                                                        g.developerId,
-                                                                        g.publisherId,
-                                                                        g.urlForContent)).ToList();
-
-            return _games;
+            return await _context.dbGamesInShops
+                                        .Select(g => new GameInShop
+                                        {
+                                            id = g.id,
+                                            name = g.name,
+                                            price = g.price,
+                                            discount = g.discount,
+                                            previeImage = g.previeImage,
+                                            dateOfRelease = g.dateOfRelease,
+                                            developerId = g.developerId,
+                                            publisherId = g.publisherId,
+                                            urlForContent = g.urlForContent,
+                                            createdAt = g.createdAt
+                                        })
+                                        .ToListAsync();
         }
         public void Add(GameInShop game)
         {

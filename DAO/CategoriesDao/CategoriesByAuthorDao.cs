@@ -20,7 +20,7 @@ namespace Slush.DAO.CategoriesDao
             var _categoriesByAuthor = _categoriesByAuthorEntities.Select(c => new CategoryByAuthor(c.id,
                                                                                                     c.name,
                                                                                                     c.description,
-                                                                                                    c.image)).ToList();
+                                                                                                    c.image,c.createdAt)).ToList();
             return _categoriesByAuthor;
 }
 

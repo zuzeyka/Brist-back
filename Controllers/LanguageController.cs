@@ -8,7 +8,7 @@ using Slush.Data.Entity;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[languageController]")]
+    [Route("api/[controller]")]
     public class LanguageController : Controller
     {
         private readonly DataContext _dataContext;

@@ -7,7 +7,7 @@ using Slush.Entity.Store.Product.Creators;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[developerController]")]
+    [Route("api/[controller]")]
     public class DeveloperController : Controller
     {
         private readonly DataContext _dataContext;

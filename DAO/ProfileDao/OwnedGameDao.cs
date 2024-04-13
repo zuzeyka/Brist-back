@@ -19,7 +19,7 @@ namespace Slush.DAO.ProfileDao
 
             var _ownedGames = _ownedGamesEntities.Select(o => new OwnedGame(o.id,
                                                                             o.ownedGameId,
-                                                                            o.userId)).ToList();
+                                                                            o.userId, o.createdAt)).ToList();
             return _ownedGames;
         }
         public void Add(OwnedGame game)

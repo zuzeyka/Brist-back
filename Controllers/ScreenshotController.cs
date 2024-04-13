@@ -8,7 +8,7 @@ using Slush.Data.Entity.Profile;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[screenshotController]")]
+    [Route("api/[controller]")]
     public class ScreenshotController : Controller
     {
         private readonly DataContext _dataContext;

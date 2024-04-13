@@ -20,7 +20,7 @@ namespace Slush.DAO.CategoriesDao
 
             var _categoryForGame = _categoryForGameEntities.Select(c => new CategoryForGame(c.id,
                                                                                             c.gameId,
-                                                                                            c.categoryId)).ToList();
+                                                                                            c.categoryId, c.createdAt)).ToList();
             return _categoryForGame;
         }
         public void Add(CategoryForGame category)

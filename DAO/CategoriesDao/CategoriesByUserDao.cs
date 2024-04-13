@@ -19,7 +19,8 @@ namespace Slush.DAO.CategoriesDao
 
             var _categoriesByUser = _categoriesByUserEntity.Select(c => new CategoryByUser(c.id,
                                                                         c.name,
-                                                                        c.description
+                                                                        c.description,
+                                                                        c.createdAt
                                                                         )).ToList();
             return _categoriesByUser;
         }

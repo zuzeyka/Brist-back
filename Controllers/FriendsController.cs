@@ -9,7 +9,7 @@ using Slush.Entity.Store.Product;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[friendsController]")]
+    [Route("api/[controller]")]
     public class FriendsController : Controller
     {
         private readonly DataContext _dataContext;

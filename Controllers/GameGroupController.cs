@@ -7,7 +7,7 @@ using Slush.Data.Entity.Community.GameGroup;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[gameGroupController]")]
+    [Route("api/[controller]")]
     public class GameGroupController : Controller
     {
         private readonly DataContext _dataContext;

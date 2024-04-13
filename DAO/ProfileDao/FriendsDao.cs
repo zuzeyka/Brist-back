@@ -20,7 +20,7 @@ namespace Slush.DAO.ProfileDao
 
             var _friends = _friendsEntity.Select(f => new Friends(f.id,
                                                                    f.userId,
-                                                                   f.friendId)).ToList();
+                                                                   f.friendId, f.createdAt)).ToList();
             return _friends;
         }
         public void Add(Friends friend)

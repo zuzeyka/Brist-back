@@ -8,7 +8,7 @@ namespace FullStackBrist.Server.Controllers
 {
 
     [ApiController]
-    [Route("[categoriesForGameController]")]
+    [Route("api/[controller]")]
     public class CategoriesForGameController : Controller
     {
         private readonly DataContext _dataContext;

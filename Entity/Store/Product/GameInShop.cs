@@ -6,7 +6,7 @@ namespace Slush.Entity.Store.Product
     public class GameInShop
     {
 
-        public GameInShop(Guid id, String name, float price, int discount, String previeImage, DateTime dateOfRelease, String developerId, String publisherId, String urlForContent, DateTime? createdAt)
+        public GameInShop(String id, String name, float price, int discount, String previeImage, DateTime dateOfRelease, String developerId, String publisherId, String urlForContent, DateTime? createdAt)
         {
             this.id = id;
             this.name = name;
@@ -20,9 +20,9 @@ namespace Slush.Entity.Store.Product
             this.createdAt = createdAt;
         }
 
+        public GameInShop() { }
 
-
-        public Guid id { get; set; }
+        public String id { get; set; }
         public String name { get; set; }
         public float price { get; set; }
         public int discount { get; set; }

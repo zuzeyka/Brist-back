@@ -7,7 +7,7 @@ using Slush.Data.Entity;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[languageInGameController]")]
+    [Route("api/[controller]")]
     public class LanguageInGameController : Controller
     {
         private readonly DataContext _dataContext;

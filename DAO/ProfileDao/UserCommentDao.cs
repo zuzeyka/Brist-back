@@ -20,7 +20,8 @@ namespace Slush.DAO.ProfileDao
             var _userComment = _userCommentEntities.Select(s => new UserComment(s.id,
                                                                                 s.userId,
                                                                                 s.authorId,
-                                                                                s.content)).ToList();
+                                                                                s.content,
+                                                                                s.createdAt)).ToList();
 
             return _userComment;
         }

@@ -23,7 +23,7 @@ namespace Slush.DAO.RequirementsDao
                                                                                                r.processor,
                                                                                                r.RAM,
                                                                                                r.video,
-                                                                                               r.freeDiskSpace)).ToList();
+                                                                                               r.freeDiskSpace, r.createdAt)).ToList();
 
             return _requirements;
         }

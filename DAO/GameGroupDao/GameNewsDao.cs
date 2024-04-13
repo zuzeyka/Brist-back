@@ -24,7 +24,7 @@ namespace Slush.DAO.GameGroupDao
                                                                         g.dislikesCount,
                                                                         g.gameId,
                                                                         g.authorId,
-                                                                        g.content)).ToList();
+                                                                        g.content, g.createdAt)).ToList();
             return _gameNews;
         }
         public void Add(GameNews news)

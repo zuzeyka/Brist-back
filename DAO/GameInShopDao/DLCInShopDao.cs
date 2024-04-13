@@ -26,7 +26,7 @@ namespace Slush.DAO.GameInShopDao
                                                                      d.gameImages,
                                                                      d.dateOfRelease,
                                                                      d.developerId,
-                                                                     d.publisherId)).ToList();
+                                                                     d.publisherId,d.createdAt)).ToList();
             return _dlcs;
         }
 

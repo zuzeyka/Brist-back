@@ -9,7 +9,7 @@ using System.Net;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[wishedGameController]")]
+    [Route("api/[controller]")]
     public class WishedGameController : Controller
     {
         private readonly DataContext _dataContext;

@@ -7,7 +7,7 @@ using Slush.Data.Entity;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[maximumSystemRequirementsController]")]
+    [Route("api/[controller]")]
     public class MaximumSystemRequirementsController : Controller
     {
         private readonly DataContext _dataContext;

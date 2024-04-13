@@ -9,7 +9,7 @@ using Slush.Entity.Profile;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[gameCommentController]")]
+    [Route("api/[controller]")]
     public class GameCommentController : Controller
     {
         private readonly DataContext _dataContext;

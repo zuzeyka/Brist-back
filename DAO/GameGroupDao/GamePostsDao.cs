@@ -25,7 +25,7 @@ namespace Slush.DAO.GameGroupDao
                                                                             g.discussionId,
                                                                             g.gameId,
                                                                             g.authorId,
-                                                                            g.content)).ToList();
+                                                                            g.content, g.createdAt)).ToList();
             return _gamePosts;
         }
         public void Add(GamePosts posts)

@@ -20,7 +20,7 @@ namespace Slush.DAO.GameGroupDao
             var _gameTopics = _gameTopicEntities.Select(g => new GameTopic(g.id,
                                                                             g.attachedId,
                                                                             g.name,
-                                                                            g.description)).ToList();
+                                                                            g.description, g.createdAt)).ToList();
             return _gameTopics;
         }
         public void Add(GameTopic topics)

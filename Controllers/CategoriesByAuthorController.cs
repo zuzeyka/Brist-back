@@ -9,7 +9,7 @@ using FullStackBrist.Server.Models.Categories;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("categoriesByAuthorController")]
+    [Route("api/[controller]")]
     public class CategoriesByAuthorController : Controller
     {
         private readonly DataContext _dataContext;

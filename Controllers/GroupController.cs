@@ -8,7 +8,7 @@ using Slush.Data.Entity.Community;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[groupController]")]
+    [Route("api/[controller]")]
     public class GroupController : Controller
     {
         private readonly DataContext _dataContext;

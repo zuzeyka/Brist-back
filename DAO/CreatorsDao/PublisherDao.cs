@@ -24,7 +24,7 @@ namespace Slush.DAO.CreatorsDao
                                                                            p.description,
                                                                            p.avatar,
                                                                            p.backgroundImage,
-                                                                           p.urlForNewsPage)).ToList();
+                                                                           p.urlForNewsPage, p.createdAt)).ToList();
             return _publishers;
         }
 

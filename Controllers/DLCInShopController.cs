@@ -10,7 +10,7 @@ using Slush.Entity.Store.Product;
 namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
-    [Route("[dlcController]")]
+    [Route("api/[controller]")]
     public class DLCInShopController : Controller
     {
         private readonly DataContext _dataContext;

@@ -21,7 +21,7 @@ namespace Slush.DAO.GroupDao
             var _groupComments = _groupCommentsEntities.Select(g => new GroupComment(g.id,
                                                                                      g.groupId,
                                                                                      g.content,
-                                                                                     g.userId)).ToList();
+                                                                                     g.userId, g.createdAt)).ToList();
 
             return _groupComments;
         }

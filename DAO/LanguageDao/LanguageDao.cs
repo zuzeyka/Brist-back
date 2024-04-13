@@ -20,7 +20,7 @@ namespace Slush.DAO.LanguageDao
             var _languageEntities = await _context.dbLanguages.AsNoTracking().ToListAsync();
 
             var _languages = _languageEntities.Select(l => new Language(l.id,
-                                                                        l.name)).ToList();
+                                                                        l.name, l.createdAt)).ToList();
             return _languages;
         }
         public void Add(Language language)

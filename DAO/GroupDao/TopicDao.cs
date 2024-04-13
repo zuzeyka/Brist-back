@@ -21,7 +21,7 @@ namespace Slush.DAO.GroupDao
                                                                 t.attachedId,
                                                                 t.name,
                                                                 t.description,
-                                                                t.authorId)).ToList();
+                                                                t.authorId, t.createdAt)).ToList();
 
             return _topics;
         }

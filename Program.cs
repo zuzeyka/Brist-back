@@ -1,8 +1,8 @@
-using Slush.Data;
 using Microsoft.AspNetCore.Identity;
-using MySqlConnector;
-using MySql.Data.MySqlClient;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using Slush.DAO.GameInShopDao;
+using Slush.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<GameInShopDao>();
 
 var app = builder.Build();
 

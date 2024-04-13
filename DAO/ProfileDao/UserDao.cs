@@ -22,7 +22,7 @@ namespace Slush.DAO.ProfileDao
                                                             u.passwordSalt,
                                                             u.salt,
                                                             u.email,
-                                                            u.phone)).ToList();
+                                                            u.phone, u.createdAt)).ToList();
             return _users;
         }
         public void Add(User user)

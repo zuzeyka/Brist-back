@@ -19,7 +19,8 @@ namespace Slush.DAO.CategoriesDao
 
             var _categories = _categoriesEntities.Select(c => new Categories(c.id,
                                                                              c.name,
-                                                                             c.description
+                                                                             c.description,
+                                                                             c.createdAt
                                                                              )).ToList();
             return _categories;
         }
