@@ -42,13 +42,6 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<string>>> GetAllNames()
-        //{
-        //    var names = await _gameInShopDao.GetAllNames();
-        //    return Ok(names);
-        //}
-
         [HttpPost]
         public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model)
         {

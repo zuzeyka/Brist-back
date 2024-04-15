@@ -8,16 +8,10 @@ namespace Slush.DAO.GameInShopDao
     public class GameInShopDao
     {
         private readonly DataContext _context;
-        private readonly ILogger<GameInShopDao> _logger;
 
-        public GameInShopDao(DataContext context, ILogger<GameInShopDao> logger)
+        public GameInShopDao(DataContext context)
         {
             _context = context;
-            _logger = logger;
-        }
-        public async Task<List<DateTime>> GetAllNames()
-        {
-            return await _context.dbGamesInShops.Select(g => g.dateOfRelease).ToListAsync();
         }
         public async Task<List<GameInShop>> GetAll()
         {
