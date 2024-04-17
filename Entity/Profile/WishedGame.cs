@@ -8,7 +8,7 @@ namespace Slush.Entity.Profile
         {
         }
 
-        public WishedGame(Guid id, String ownedGameId, String userId, DateTime? createdAt)
+        public WishedGame(Guid id, Guid ownedGameId, Guid userId, DateTime? createdAt)
         {
             this.id = id;
             this.ownedGameId = ownedGameId;
@@ -19,8 +19,8 @@ namespace Slush.Entity.Profile
 
 
         public Guid id { get; set; }
-        public String ownedGameId { get; set; }
-        public String userId { get; set; }
+        public Guid ownedGameId { get; set; }
+        public Guid userId { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }

@@ -3,6 +3,6 @@
     public class GameGroupModel
     {
         public Guid id { get; set; }
-        public String gameId { get; set; }
+        public Guid gameId { get; set; }
     }
 }

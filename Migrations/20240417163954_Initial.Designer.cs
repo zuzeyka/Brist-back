@@ -9,10 +9,10 @@ using Slush.Data;
 
 #nullable disable
 
-namespace FullStackBrist.Server.Migrations
+namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240315172204_Initial")]
+    [Migration("20240417163954_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,18 +20,18 @@ namespace FullStackBrist.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            //MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("GroupUser", b =>
                 {
-                    b.Property<String>("groupsid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("groupsid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("usersid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("usersid")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("groupsid", "usersid");
 
@@ -42,20 +42,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Categories", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -66,24 +67,25 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryByAuthor", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("image")
+                    b.Property<string>("image")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -94,20 +96,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryByUser", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -118,22 +121,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryForGame", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("categoryId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("categoryId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -142,28 +144,28 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameComment", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("Authorid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("Authorid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GamePostsid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GamePostsid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("content")
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("gamePostId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gamePostId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -176,18 +178,18 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGroup", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -196,45 +198,42 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGuide", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameGroupId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("gameGroupId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -247,45 +246,42 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameNews", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameGroupid")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("gameGroupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -298,48 +294,45 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GamePosts", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GameTopicid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GameTopicid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameGroupid")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("gameGroupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -354,27 +347,27 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameTopic", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GameGroupid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GameGroupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("attachedId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("attachedId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -387,24 +380,24 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Group", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("attachedId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("attachedId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -415,22 +408,22 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GroupComment", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("content")
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("groupId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("groupId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("userId")
                         .HasColumnType("char(36)");
@@ -444,44 +437,42 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Post", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("Topicid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("Topicid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -494,30 +485,30 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Topic", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("Groupid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("Groupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("attachedId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("attachedId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("authorId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -530,16 +521,17 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Language", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -550,28 +542,27 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.LanguageInGame", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("DLCInShopid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("DLCInShopid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GameInShopid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GameInShopid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("languageId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("languageId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -584,36 +575,36 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.MaximumSystemRequirement", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("OS")
+                    b.Property<string>("OS")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("RAM")
+                    b.Property<string>("RAM")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("freeDiskSpace")
+                    b.Property<string>("freeDiskSpace")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("gameId")
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("processor")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("processor")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("video")
+                    b.Property<string>("video")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -624,36 +615,36 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.MinimalSystemRequirement", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("OS")
+                    b.Property<string>("OS")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("RAM")
+                    b.Property<string>("RAM")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("freeDiskSpace")
+                    b.Property<string>("freeDiskSpace")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("gameId")
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("processor")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("processor")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("video")
+                    b.Property<string>("video")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -664,47 +655,45 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Screenshot", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GameGroupid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GameGroupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("Userid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("Userid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("screenshotUrl")
+                    b.Property<string>("screenshotUrl")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -719,32 +708,33 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.User", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("email")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("passwordSalt")
+                    b.Property<string>("passwordSalt")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("phone")
+                    b.Property<string>("phone")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("salt")
+                    b.Property<string>("salt")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -755,25 +745,25 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.UserComment", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("authorId")
                         .HasColumnType("char(36)");
 
-                    b.Property<String>("content")
+                    b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("userId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -784,47 +774,45 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Video", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("GameGroupid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("GameGroupid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("Userid")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid?>("Userid")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("authorId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<String>("discussionId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("discussionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("dislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("videoUrl")
+                    b.Property<string>("videoUrl")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -839,36 +827,36 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.SystemRequirement", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("OS")
+                    b.Property<string>("OS")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("RAM")
+                    b.Property<string>("RAM")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("freeDiskSpace")
+                    b.Property<string>("freeDiskSpace")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("gameId")
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("processor")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("processor")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("video")
+                    b.Property<string>("video")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -879,10 +867,11 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Abstract.Author", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
@@ -898,22 +887,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Profile.Friends", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("friendId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("friendId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("userId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -924,22 +912,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Profile.OwnedGame", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("ownedGameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("ownedGameId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("userId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -950,22 +937,21 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Profile.WishedGame", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("ownedGameId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("ownedGameId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("userId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
@@ -976,35 +962,36 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Store.Product.Creators.Developer", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("avatar")
+                    b.Property<string>("avatar")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("backgroundImage")
+                    b.Property<string>("backgroundImage")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("subscribersCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("urlForNewsPage")
+                    b.Property<string>("urlForNewsPage")
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -1014,35 +1001,36 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Store.Product.Creators.Publisher", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("avatar")
+                    b.Property<string>("avatar")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("backgroundImage")
+                    b.Property<string>("backgroundImage")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("subscribersCount")
                         .HasColumnType("int");
 
-                    b.Property<String>("urlForNewsPage")
+                    b.Property<string>("urlForNewsPage")
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -1052,18 +1040,19 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Store.Product.DLCInShop", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("categories")
+                    b.Property<string>("categories")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("categoriesId")
+                    b.Property<string>("categoriesId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("dateOfRelease")
@@ -1072,45 +1061,42 @@ namespace FullStackBrist.Server.Migrations
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("developerId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("developerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("discount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameId")
+                    b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("gameImages")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("gameImages")
+                    b.Property<string>("languagesId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("languagesId")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("previeImage")
+                    b.Property<string>("previeImage")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<float>("price")
                         .HasColumnType("float");
 
-                    b.Property<String>("publisherId")
+                    b.Property<Guid>("publisherId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("systemRequirementsId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("systemRequirementsId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("urlForContent")
+                    b.Property<string>("urlForContent")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -1121,14 +1107,15 @@ namespace FullStackBrist.Server.Migrations
 
             modelBuilder.Entity("Slush.Entity.Store.Product.GameInShop", b =>
                 {
-                    b.Property<String>("id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Property<String>("categoriesId")
+                    b.Property<string>("categoriesId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("dateOfRelease")
@@ -1137,41 +1124,39 @@ namespace FullStackBrist.Server.Migrations
                     b.Property<DateTime?>("deleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<String>("developerId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("developerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("discount")
                         .HasColumnType("int");
 
-                    b.Property<String>("gameImages")
+                    b.Property<string>("gameImages")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("languagesId")
+                    b.Property<string>("languagesId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("previeImage")
+                    b.Property<string>("previeImage")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<float>("price")
                         .HasColumnType("float");
 
-                    b.Property<String>("publisherId")
+                    b.Property<Guid>("publisherId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("systemRequirementsId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<String>("systemRequirementsId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<String>("urlForContent")
+                    b.Property<string>("urlForContent")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -1207,7 +1192,9 @@ namespace FullStackBrist.Server.Migrations
                 {
                     b.HasOne("Slush.Entity.Abstract.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("Authorid");
+                        .HasForeignKey("Authorid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GamePosts", null)
                         .WithMany("comments")

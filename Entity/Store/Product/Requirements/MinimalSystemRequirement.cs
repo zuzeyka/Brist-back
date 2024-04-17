@@ -6,7 +6,7 @@
         {
         }
 
-        public MinimalSystemRequirement(Guid id, String gameId, String oS, String processor, String rAM, String video, String freeDiskSpace, DateTime? createdAt)
+        public MinimalSystemRequirement(Guid id, Guid gameId, String oS, String processor, String rAM, String video, String freeDiskSpace, DateTime? createdAt)
         {
             this.id = id;
             this.gameId = gameId;
@@ -21,7 +21,7 @@
 
 
         public Guid id { get; set; }
-        public String gameId { get; set; }
+        public Guid gameId { get; set; }
         public String OS { get; set; }
         public String processor { get; set; }
         public String RAM { get; set; }

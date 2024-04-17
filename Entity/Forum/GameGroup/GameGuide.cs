@@ -6,7 +6,7 @@
         {
         }
 
-        public GameGuide(Guid id, String title, String? description, int likesCount, String discussionId, String gameId, String authorId, String gameGroupId, String content, DateTime? createdAt)
+        public GameGuide(Guid id, String title, String? description, int likesCount, Guid discussionId, Guid gameId, Guid authorId, Guid gameGroupId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -24,10 +24,10 @@
         public String? description { get; set; }
         public int likesCount { get; set; }
         public int dislikesCount { get; set; }
-        public String discussionId { get; set; }
-        public String gameId { get; set; }
-        public String authorId { get; set; }
-        public String gameGroupId { get; set; }
+        public Guid discussionId { get; set; }
+        public Guid gameId { get; set; }
+        public Guid authorId { get; set; }
+        public Guid gameGroupId { get; set; }
         public String content {  get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }

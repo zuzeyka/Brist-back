@@ -3,7 +3,7 @@
     public class CategoryForGameModel
     {
         public Guid id { get; set; }
-        public String gameId { get; set; }
-        public String categoryId { get; set; }
+        public Guid gameId { get; set; }
+        public Guid categoryId { get; set; }
     }
 }

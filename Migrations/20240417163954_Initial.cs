@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FullStackBrist.Server.Migrations
+namespace Slush.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -18,15 +18,354 @@ namespace FullStackBrist.Server.Migrations
                 name: "Author",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     subscribersCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Author", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbCategories",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbCategories", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbCategoriesByAuthors",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    image = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbCategoriesByAuthors", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbCategoriesByUsers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbCategoriesByUsers", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbCategoriesForGame",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    categoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbCategoriesForGame", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbDevelopers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    subscribersCount = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    avatar = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    backgroundImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    urlForNewsPage = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbDevelopers", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbDLCsInShop",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    price = table.Column<float>(type: "float", nullable: false),
+                    discount = table.Column<int>(type: "int", nullable: false),
+                    previeImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    gameImages = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    developerId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    publisherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    urlForContent = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    categories = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    categoriesId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    languagesId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    systemRequirementsId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbDLCsInShop", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbGameGroups",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbGameGroups", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbGamesInShops",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    price = table.Column<float>(type: "float", nullable: false),
+                    discount = table.Column<int>(type: "int", nullable: false),
+                    previeImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    developerId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    publisherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    urlForContent = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    categoriesId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    gameImages = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    languagesId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    systemRequirementsId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbGamesInShops", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbGroups",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    attachedId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbGroups", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbLanguages",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbLanguages", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbMaximumSystemRequirements",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OS = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    processor = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    video = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbMaximumSystemRequirements", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbMinimalSystemRequirements",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OS = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    processor = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    video = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbMinimalSystemRequirements", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbPublishers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    subscribersCount = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    avatar = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    backgroundImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    urlForNewsPage = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbPublishers", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbSystemRequirements",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OS = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    processor = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RAM = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    video = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    freeDiskSpace = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbSystemRequirements", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbUsers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    passwordSalt = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    salt = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    email = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    phone = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbUsers", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -42,395 +381,23 @@ namespace FullStackBrist.Server.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "dbCategories",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbCategories", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbCategoriesByAuthors",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    image = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbCategoriesByAuthors", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbCategoriesByUsers",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbCategoriesByUsers", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbCategoriesForGame",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    categoryId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbCategoriesForGame", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbDLCsInShop",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    price = table.Column<float>(type: "float", nullable: false),
-                    discount = table.Column<int>(type: "int", nullable: false),
-                    previeImage = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameImages = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    developerId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    publisherId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    categoriesId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    languagesId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    systemRequirementsId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForContent = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    categories = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbDLCsInShop", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbDevelopers",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    subscribersCount = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    avatar = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    backgroundImage = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForNewsPage = table.Column<String>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbDevelopers", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbGameGroups",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbGameGroups", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbGamesInShops",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    price = table.Column<float>(type: "float", nullable: false),
-                    discount = table.Column<int>(type: "int", nullable: false),
-                    previeImage = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    dateOfRelease = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    developerId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    publisherId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForContent = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    categoriesId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameImages = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    languagesId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    systemRequirementsId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbGamesInShops", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbGroups",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbGroups", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbLanguages",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbLanguages", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbMaximumSystemRequirements",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbMaximumSystemRequirements", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbMinimalSystemRequirements",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbMinimalSystemRequirements", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbPublishers",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    subscribersCount = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    avatar = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    backgroundImage = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    urlForNewsPage = table.Column<String>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbPublishers", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbSystemRequirements",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OS = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    processor = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RAM = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    video = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    freeDiskSpace = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbSystemRequirements", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "dbUsers",
-                columns: table => new
-                {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    passwordSalt = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    salt = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    phone = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbUsers", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "dbGameGuides",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameGroupId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameGroupId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -449,26 +416,21 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameNews",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    gameGroupid = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    gameGroupid = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -486,18 +448,15 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameTopics",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    attachedId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<String>(type: "longtext", nullable: false)
+                    description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    GameGroupid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -514,18 +473,13 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbLanguagesInGame",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    languageId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    languageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DLCInShopid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    GameInShopid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    DLCInShopid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    GameInShopid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -547,14 +501,12 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGroupComments",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    groupId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    groupId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -573,19 +525,16 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbTopics",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    attachedId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    attachedId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    name = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: false)
+                    description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Groupid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Groupid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -599,43 +548,13 @@ namespace FullStackBrist.Server.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "GroupUser",
-                columns: table => new
-                {
-                    groupsid = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    usersid = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupUser", x => new { x.groupsid, x.usersid });
-                    table.ForeignKey(
-                        name: "FK_GroupUser_dbGroups_groupsid",
-                        column: x => x.groupsid,
-                        principalTable: "dbGroups",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupUser_dbUsers_usersid",
-                        column: x => x.usersid,
-                        principalTable: "dbUsers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "dbFriends",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    friendId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    friendId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -654,13 +573,10 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbOwnedGames",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ownedGameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ownedGameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -679,28 +595,22 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbScreenshots",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    screenshotUrl = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    screenshotUrl = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Userid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    GameGroupid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    Userid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -722,14 +632,12 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbUserComments",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -748,28 +656,22 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbVideos",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    videoUrl = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    videoUrl = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    GameGroupid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Userid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    GameGroupid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    Userid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -791,13 +693,10 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbWishedGames",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ownedGameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    userId = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ownedGameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
@@ -813,31 +712,50 @@ namespace FullStackBrist.Server.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "GroupUser",
+                columns: table => new
+                {
+                    groupsid = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    usersid = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupUser", x => new { x.groupsid, x.usersid });
+                    table.ForeignKey(
+                        name: "FK_GroupUser_dbGroups_groupsid",
+                        column: x => x.groupsid,
+                        principalTable: "dbGroups",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupUser_dbUsers_usersid",
+                        column: x => x.usersid,
+                        principalTable: "dbUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "dbGamePosts",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    gameGroupid = table.Column<String>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    GameTopicid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    gameGroupid = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    GameTopicid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -860,26 +778,21 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbPosts",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    title = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<String>(type: "longtext", nullable: true)
+                    description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     likesCount = table.Column<int>(type: "int", nullable: false),
                     dislikesCount = table.Column<int>(type: "int", nullable: false),
-                    discussionId = table.Column<String>(type: "longtext", nullable: false)
+                    discussionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gameId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    authorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gameId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    authorId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Topicid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Topicid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -896,18 +809,14 @@ namespace FullStackBrist.Server.Migrations
                 name: "dbGameComments",
                 columns: table => new
                 {
-                    id = table.Column<String>(type: "varchar(255)", nullable: false)
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    gamePostId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gamePostId = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    content = table.Column<String>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     deleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Authorid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    GamePostsid = table.Column<String>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Authorid = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    GamePostsid = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -916,7 +825,8 @@ namespace FullStackBrist.Server.Migrations
                         name: "FK_dbGameComments_Author_Authorid",
                         column: x => x.Authorid,
                         principalTable: "Author",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_dbGameComments_dbGamePosts_GamePostsid",
                         column: x => x.GamePostsid,
@@ -924,11 +834,6 @@ namespace FullStackBrist.Server.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupUser_usersid",
-                table: "GroupUser",
-                column: "usersid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dbFriends_userId",
@@ -956,14 +861,14 @@ namespace FullStackBrist.Server.Migrations
                 column: "gameGroupid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dbGamePosts_GameTopicid",
-                table: "dbGamePosts",
-                column: "GameTopicid");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_dbGamePosts_gameGroupid",
                 table: "dbGamePosts",
                 column: "gameGroupid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dbGamePosts_GameTopicid",
+                table: "dbGamePosts",
+                column: "GameTopicid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dbGameTopics_GameGroupid",
@@ -1029,17 +934,16 @@ namespace FullStackBrist.Server.Migrations
                 name: "IX_dbWishedGames_userId",
                 table: "dbWishedGames",
                 column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupUser_usersid",
+                table: "GroupUser",
+                column: "usersid");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "GroupUser");
-
-            migrationBuilder.DropTable(
-                name: "List<object>");
-
             migrationBuilder.DropTable(
                 name: "dbCategories");
 
@@ -1105,6 +1009,12 @@ namespace FullStackBrist.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "dbWishedGames");
+
+            migrationBuilder.DropTable(
+                name: "GroupUser");
+
+            migrationBuilder.DropTable(
+                name: "List<object>");
 
             migrationBuilder.DropTable(
                 name: "Author");

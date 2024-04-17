@@ -2,7 +2,7 @@
 {
     public abstract class ProfileGame : DBRecord
     {
-        public String ownedGameId { get; set; }
-        public String userId { get; set; }
+        public Guid ownedGameId { get; set; }
+        public Guid userId { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Slush.Data.Entity.Community
         {
         }
 
-        public GroupComment(Guid id, String groupId, String content, Guid userId, DateTime? createdAt)
+        public GroupComment(Guid id, Guid groupId, String content, Guid userId, DateTime? createdAt)
         {
             this.id = id;
             this.groupId = groupId;
@@ -18,7 +18,7 @@ namespace Slush.Data.Entity.Community
             this.createdAt = createdAt;
         }
         public Guid id { get; set; }
-        public String groupId { get; set; }
+        public Guid groupId { get; set; }
         public String content { get; set; }
         public Guid userId { get; set; }
         public DateTime? createdAt { get; set; }

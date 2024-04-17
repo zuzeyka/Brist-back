@@ -6,7 +6,7 @@
         {
         }
 
-        public Friends(Guid id, String userId, String friendId, DateTime? createdAt)
+        public Friends(Guid id, Guid userId, Guid friendId, DateTime? createdAt)
         {
             this.id = id;
             this.userId = userId;
@@ -15,8 +15,8 @@
         }
 
         public Guid id { get; set; }
-        public String userId { get; set; }
-        public String friendId { get; set; }
+        public Guid userId { get; set; }
+        public Guid friendId { get; set; }
 
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }

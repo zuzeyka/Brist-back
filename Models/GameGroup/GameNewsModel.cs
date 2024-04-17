@@ -8,9 +8,9 @@
         public String? description { get; set; }
         public int likesCount { get; set; }
         public int dislikesCount { get; set; }
-        public String discussionId { get; set; }
-        public String gameId { get; set; }
-        public String authorId { get; set; }
+        public Guid discussionId { get; set; }
+        public Guid gameId { get; set; }
+        public Guid authorId { get; set; }
         public String content { get; set; }
     }
 }

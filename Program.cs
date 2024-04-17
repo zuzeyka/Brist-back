@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Slush.DAO.GameInShopDao;
+using Slush.DAO.CategoriesDao;
 using Slush.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<GameInShopDao>();
+builder.Services.AddTransient<CategoriesDAO>();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {

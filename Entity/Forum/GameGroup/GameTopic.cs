@@ -9,7 +9,7 @@ namespace Slush.Data.Entity.Community.GameGroup
         {
         }
 
-        public GameTopic(Guid id, String attachedId, String name, String description, DateTime? createdAt)
+        public GameTopic(Guid id, Guid attachedId, String name, String description, DateTime? createdAt)
         {
             this.id = id;
             this.attachedId = attachedId;
@@ -19,7 +19,7 @@ namespace Slush.Data.Entity.Community.GameGroup
         }
 
         public Guid id { get; set; }
-        public String attachedId { get; set; }
+        public Guid attachedId { get; set; }
         public String name { get; set; }
         public String description { get; set; }
         public DateTime? createdAt { get; set; }

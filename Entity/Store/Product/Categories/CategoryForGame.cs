@@ -8,7 +8,7 @@ namespace Slush.Data.Entity
         {
         }
 
-        public CategoryForGame(Guid id, String gameId, String categoryId, DateTime? createdAt)
+        public CategoryForGame(Guid id, Guid gameId, Guid categoryId, DateTime? createdAt)
         {
             this.id = id;
             this.gameId = gameId;
@@ -19,8 +19,8 @@ namespace Slush.Data.Entity
 
 
         public Guid id { get; set; }
-        public String gameId { get; set; }
-        public String categoryId { get; set; }
+        public Guid gameId { get; set; }
+        public Guid categoryId { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
 

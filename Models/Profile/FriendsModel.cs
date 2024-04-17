@@ -3,7 +3,7 @@
     public class FriendsModel
     {
         public Guid id { get; set; }
-        public String userId { get; set; }
-        public String friendId { get; set; }
+        public Guid userId { get; set; }
+        public Guid friendId { get; set; }
     }
 }

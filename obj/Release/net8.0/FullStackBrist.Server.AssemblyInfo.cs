@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FullStackBrist.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6e158b5de8ba8dc3a112e18ab67de3d7b49b8d4c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+217a93fd4a3f47d6c7b7d310d3168374835c0fc6")]
 [assembly: System.Reflection.AssemblyProductAttribute("FullStackBrist.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FullStackBrist.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

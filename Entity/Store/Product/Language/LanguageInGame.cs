@@ -8,7 +8,7 @@ namespace Slush.Data.Entity
         {
         }
 
-        public LanguageInGame(Guid id, String gameId, String languageId, DateTime? createdAt)
+        public LanguageInGame(Guid id, Guid gameId, Guid languageId, DateTime? createdAt)
         {
             this.id = id;
             this.gameId = gameId;
@@ -19,8 +19,8 @@ namespace Slush.Data.Entity
 
 
         public Guid id { get; set; }
-        public String gameId { get; set; }
-        public String languageId { get; set; }
+        public Guid gameId { get; set; }
+        public Guid languageId { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }

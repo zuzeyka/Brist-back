@@ -8,8 +8,8 @@
         public String previeImage { get; set; }
         public virtual List<String> gameImages { get; set; }
         public DateTime dateOfRelease { get; set; }
-        public String developerId { get; set; }
-        public String publisherId { get; set; }
+        public Guid developerId { get; set; }
+        public Guid publisherId { get; set; }
         public virtual List<String> categoriesId { get; set; }
         public virtual List<String> languagesId { get; set; }
         public virtual List<String> systemRequirementsId { get; set; }

@@ -8,7 +8,7 @@ namespace Slush.Data.Entity.Community.GameGroup
         {
         }
 
-        public GameComment(Guid id, String gamePostId, String content, DateTime? createdAt)
+        public GameComment(Guid id, Guid gamePostId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.gamePostId = gamePostId;
@@ -16,7 +16,7 @@ namespace Slush.Data.Entity.Community.GameGroup
             this.createdAt = createdAt;
         }
         public Guid id { get; set; }
-        public String gamePostId { get; set; }
+        public Guid gamePostId { get; set; }
         public String content { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }

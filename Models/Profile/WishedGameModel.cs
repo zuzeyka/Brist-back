@@ -3,7 +3,7 @@
     public class WishedGameModel
     {
         public Guid id { get; set; }
-        public String ownedGameId { get; set; }
-        public String userId { get; set; }
+        public Guid ownedGameId { get; set; }
+        public Guid userId { get; set; }
     }
 }
