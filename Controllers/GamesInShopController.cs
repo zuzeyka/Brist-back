@@ -45,7 +45,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model)
         {
-            var result = new GameInShop("312", // NEEDS TO BE FIX
+            var result = new GameInShop(Guid.NewGuid(),
                                             model.name,
                                             model.price,
                                             model.discount,
@@ -56,9 +56,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.urlForContent,
                                             DateTime.Now
                                             );
-            _dataContext.dbGamesInShops.AddAsync(result);
+            var response = _dataContext.dbGamesInShops.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
 
     }

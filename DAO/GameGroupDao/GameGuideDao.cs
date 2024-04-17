@@ -15,19 +15,17 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameGuide>> GetAllGameGuides()
         {
-            var _gameGuidesEntity = await _context.dbGameGuides.AsNoTracking().ToListAsync();
+            return await _context.dbGameGuides.Select(g => new GameGuide{ id = g.id,
+                title = g.title,
+                description = g.description,
+                likesCount = g.likesCount,
+                discussionId = g.discussionId,
+                gameId = g.gameId,
+                authorId = g.authorId,
+                gameGroupId = g.gameGroupId,
+                content = g.content, 
+                createdAt = g.createdAt }).ToListAsync();
 
-            var _gameGuides = _gameGuidesEntity.Select(g => new GameGuide(g.id,
-                                                                          g.title,
-                                                                          g.description,
-                                                                          g.likesCount,
-                                                                          g.discussionId,
-                                                                          g.gameId,
-                                                                          g.authorId,
-                                                                          g.gameGroupId,
-                                                                          g.content, g.createdAt)).ToList();
-
-            return _gameGuides;
         }
         public void Add(GameGuide guide)
         {

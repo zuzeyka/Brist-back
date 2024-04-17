@@ -5,6 +5,7 @@ using Slush.DAO.GroupDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Community.GameGroup;
+using System.Linq;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -26,11 +27,11 @@ namespace FullStackBrist.Server.Controllers
         {
             var _groupComments = await _groupCommentDao.GetAllGroupComments();
 
-            var response = _groupComments.Select(g => new GroupComment(g.id,
-                                                                                     g.groupId,
-                                                                                     g.content,
-                                                                                     g.userId,
-                                                                                     g.createdAt)).ToList();
+            var response = _groupComments.Select(g => new GroupComment(id: g.id,
+                                                                       groupId: g.groupId,
+                                                                       content: g.content,
+                                                                       userId: g.userId,
+                                                                       createdAt: g.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -43,9 +44,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.userId,
                                             DateTime.Now
                                             );
-            _dataContext.dbGroupComments.AddAsync(result);
+            var response = _dataContext.dbGroupComments.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

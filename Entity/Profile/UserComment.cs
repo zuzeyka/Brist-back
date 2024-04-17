@@ -4,6 +4,9 @@ namespace Slush.Data.Entity.Profile
 {
     public class UserComment
     {
+        public UserComment()
+        {
+        }
 
         public UserComment(Guid id, String userId, Guid authorId, String content, DateTime? createdAt)
         {

@@ -2,6 +2,10 @@
 {
     public class Friends
     {
+        public Friends()
+        {
+        }
+
         public Friends(Guid id, String userId, String friendId, DateTime? createdAt)
         {
             this.id = id;

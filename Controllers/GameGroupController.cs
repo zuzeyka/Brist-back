@@ -24,9 +24,9 @@ namespace FullStackBrist.Server.Controllers
         {
             var gameGroups = await _gameGroupDao.GetAllGameGroups();
 
-            var response = gameGroups.Select(g => new GameGroup(g.id,
-                                                                           g.gameId,
-                                                                           g.createdAt)).ToList();
+            var response = gameGroups.Select(g => new GameGroup(id: g.id,
+                                                                gameId: g.gameId,
+                                                                createdAt: g.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -38,9 +38,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.gameId,
                                             DateTime.Now
                                             );
-            _dataContext.dbGameGroups.AddAsync(result);
+            var response = _dataContext.dbGameGroups.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
@@ -26,11 +27,11 @@ namespace FullStackBrist.Server.Controllers
         {
             var _userComments = await _userCommentDao.GetAllUserComments();
 
-            var response = _userComments.Select(s => new UserComment(s.id,
-                                                                                s.userId,
-                                                                                s.authorId,
-                                                                                s.content,
-                                                                                s.createdAt)).ToList();
+            var response = _userComments.Select(s => new UserComment(id: s.id,
+                                                                     userId: s.userId,
+                                                                     authorId: s.authorId,
+                                                                     content: s.content,
+                                                                     createdAt: s.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -43,9 +44,9 @@ namespace FullStackBrist.Server.Controllers
                 model.content,
                 DateTime.Now);
 
-            _dataContext.dbUserComments.AddAsync(result);
+            var response = _dataContext.dbUserComments.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

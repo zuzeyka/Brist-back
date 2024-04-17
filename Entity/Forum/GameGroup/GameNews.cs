@@ -2,6 +2,10 @@
 {
     public class GameNews
     {
+        public GameNews()
+        {
+        }
+
         public GameNews(Guid id, String title, String? description, int likesCount, int dislikesCount, String gameId, String authorId, String content, DateTime? createdAt)
         {
             this.id = id;

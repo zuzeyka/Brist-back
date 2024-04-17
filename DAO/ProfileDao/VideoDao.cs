@@ -15,17 +15,16 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<Video>> GetAllVideos()
         {
-            var _videoEntities = await _context.dbVideos.AsNoTracking().ToListAsync();
-
-            var _videos = _videoEntities.Select(v => new Video(v.id,
-                                                                v.title,
-                                                                v.description,
-                                                                v.likesCount,
-                                                                v.dislikesCount,
-                                                                v.gameId,
-                                                                v.authorId,
-                                                                v.videoUrl,v.createdAt)).ToList();
-            return _videos;
+            return await _context.dbVideos.Select(v => new Video {
+                id = v.id,
+                title = v.title,
+                description = v.description,
+                likesCount = v.likesCount,
+                dislikesCount = v.dislikesCount,
+                gameId = v.gameId,
+                authorId = v.authorId,
+                videoUrl = v.videoUrl,
+                createdAt = v.createdAt}).ToListAsync();
 
         }
         public void Add(Video video)

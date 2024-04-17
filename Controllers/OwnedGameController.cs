@@ -26,10 +26,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var _ownedGames = await _ownedGameDao.GetAllOwnedGames();
 
-            var response = _ownedGames.Select(o => new OwnedGame(o.id,
-                                                                            o.ownedGameId,
-                                                                            o.userId,
-                                                                            o.createdAt)).ToList();
+            var response = _ownedGames.Select(o => new OwnedGame(id: o.id,
+                                                                 ownedGameId: o.ownedGameId,
+                                                                 userId: o.userId,
+                                                                 createdAt: o.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -42,8 +42,9 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                                             DateTime.Now
                                             );
-            _dataContext.dbOwnedGames.AddAsync(result);
-            return Ok(result);
+            var response = _dataContext.dbOwnedGames.AddAsync(result);
+            return Ok(response);
+
         }
     }
 }

@@ -24,15 +24,15 @@ namespace FullStackBrist.Server.Controllers
         {
             var videos = await _videoDao.GetAllVideos();
 
-            var response = videos.Select(v => new Video(v.id,
-                                                                v.title,
-                                                                v.description,
-                                                                v.likesCount,
-                                                                v.dislikesCount,
-                                                                v.gameId,
-                                                                v.authorId,
-                                                                v.videoUrl,
-                                                                v.createdAt)).ToList();
+            var response = videos.Select(v => new Video(id: v.id,
+                                                        title: v.title,
+                                                        description: v.description,
+                                                        likesCount: v.likesCount,
+                                                        dislikesCount: v.dislikesCount,
+                                                        gameId: v.gameId,
+                                                        authorId: v.authorId,
+                                                        videoUrl: v.videoUrl,
+                                                        createdAt: v.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -50,9 +50,9 @@ namespace FullStackBrist.Server.Controllers
                 model.videoUrl,
                 DateTime.Now);
 
-            _dataContext.dbVideos.AddAsync(result);
+            var response = _dataContext.dbVideos.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
 
     }

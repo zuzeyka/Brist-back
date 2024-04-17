@@ -25,16 +25,16 @@ namespace FullStackBrist.Server.Controllers
         {
             var _screenshots = await _screenshotDao.GetAllScreenshots();
 
-            var response = _screenshots.Select(s => new Screenshot(s.id,
-                                                                                s.title,
-                                                                                s.description,
-                                                                                s.likesCount,
-                                                                                s.dislikesCount,
-                                                                                s.discussionId,
-                                                                                s.gameId,
-                                                                                s.authorId,
-                                                                                s.screenshotUrl,
-                                                                                s.createdAt)).ToList();
+            var response = _screenshots.Select(s => new Screenshot(id: s.id,
+                                                                   title: s.title,
+                                                                   description: s.description,
+                                                                   likesCount: s.likesCount,
+                                                                   dislikesCount: s.dislikesCount,
+                                                                   discussionId: s.discussionId,
+                                                                   gameId: s.gameId,
+                                                                   authorId: s.authorId,
+                                                                   screenshotUrl: s.screenshotUrl,
+                                                                   createdAt: s.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -53,9 +53,9 @@ namespace FullStackBrist.Server.Controllers
                 model.screenshotUrl,
                 DateTime.Now);
 
-            _dataContext.dbScreenshots.AddAsync(result);
+            var response = _dataContext.dbScreenshots.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

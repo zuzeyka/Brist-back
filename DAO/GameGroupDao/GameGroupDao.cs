@@ -15,12 +15,9 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameGroup>> GetAllGameGroups()
         {
-            var _gameGroupsEntites = await _context.dbGameGroups.AsNoTracking().ToListAsync();
-
-            var _gameGroups = _gameGroupsEntites.Select(g => new GameGroup(g.id,
-                                                                           g.gameId, g.createdAt)).ToList();
-
-            return _gameGroups;
+            return await _context.dbGameGroups.Select(g => new GameGroup{  id = g.id,
+                gameId = g.gameId,
+                createdAt = g.createdAt}).ToListAsync();
         }
         public void Add(GameGroup group)
         {

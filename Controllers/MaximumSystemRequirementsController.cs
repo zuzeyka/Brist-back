@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.RequirementsDao;
 using Slush.Data;
 using Slush.Data.Entity;
+using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -24,14 +25,14 @@ namespace FullStackBrist.Server.Controllers
         {
             var requirements = await _requirementDao.GetAllMaximumSystemRequirements();
 
-            var response = requirements.Select(r => new MaximumSystemRequirement(r.id,
-                                                                                               r.gameId,
-                                                                                               r.OS,
-                                                                                               r.processor,
-                                                                                               r.RAM,
-                                                                                               r.video,
-                                                                                               r.freeDiskSpace,
-                                                                                               r.createdAt)).ToList();
+            var response = requirements.Select(r => new MaximumSystemRequirement(id: r.id,
+                                                                                 gameId: r.gameId,
+                                                                                 oS: r.OS,
+                                                                                 processor: r.processor,
+                                                                                 rAM: r.RAM,
+                                                                                 video: r.video,
+                                                                                 freeDiskSpace: r.freeDiskSpace,
+                                                                                 createdAt: r.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -48,9 +49,9 @@ namespace FullStackBrist.Server.Controllers
                 model.freeDiskSpace,
                                             DateTime.Now
                                             );
-            _dataContext.dbMaximumSystemRequirements.AddAsync(result);
+            var response = _dataContext.dbMaximumSystemRequirements.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

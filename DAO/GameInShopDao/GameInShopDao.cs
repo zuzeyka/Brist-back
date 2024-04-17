@@ -18,7 +18,7 @@ namespace Slush.DAO.GameInShopDao
             return await _context.dbGamesInShops
                                         .Select(g => new GameInShop
                                         {
-                                            id = g.id,
+                                            id = Guid.Parse(g.id.ToString()),
                                             name = g.name,
                                             price = g.price,
                                             discount = g.discount,

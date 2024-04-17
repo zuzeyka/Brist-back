@@ -5,6 +5,10 @@ namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameTopic
     {
+        public GameTopic()
+        {
+        }
+
         public GameTopic(Guid id, String attachedId, String name, String description, DateTime? createdAt)
         {
             this.id = id;

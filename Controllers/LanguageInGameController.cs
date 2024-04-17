@@ -24,10 +24,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var _languages = await _languageInGameDao.GetAllLanguageInGames();
 
-            var response = _languages.Select(l => new LanguageInGame(l.id,
-                                                                                         l.gameId,
-                                                                                         l.languageId,
-                                                                                         l.createdAt)).ToList();
+            var response = _languages.Select(l => new LanguageInGame(id: l.id,
+                                                                     gameId: l.gameId,
+                                                                     languageId: l.languageId,
+                                                                     createdAt: l.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -40,9 +40,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.languageId,
                                             DateTime.Now
                                             );
-            _dataContext.dbLanguagesInGame.AddAsync(result);
+            var response = _dataContext.dbLanguagesInGame.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

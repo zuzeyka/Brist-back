@@ -16,16 +16,15 @@ namespace Slush.DAO.CreatorsDao
 
         public async Task<List<Publisher>> GetAllPublishers()
         {
-            var _publisherEntities = await _context.dbPublishers.AsNoTracking().ToListAsync();
-
-            var _publishers = _publisherEntities.Select(p => new Publisher(p.id,
-                                                                           p.subscribersCount,
-                                                                           p.name,
-                                                                           p.description,
-                                                                           p.avatar,
-                                                                           p.backgroundImage,
-                                                                           p.urlForNewsPage, p.createdAt)).ToList();
-            return _publishers;
+            return await _context.dbPublishers.Select(p => new Publisher{  
+                id = p.id,
+                subscribersCount = p.subscribersCount,
+                name = p.name,
+                description = p.description,
+                avatar = p.avatar,
+                backgroundImage = p.backgroundImage,
+                urlForNewsPage = p.urlForNewsPage, 
+                createdAt = p.createdAt }).ToListAsync();
         }
 
         public void Add(Publisher publisher)

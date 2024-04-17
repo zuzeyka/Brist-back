@@ -4,6 +4,10 @@ namespace Slush.Data.Entity.Community
 {
     public class Post
     {
+        public Post()
+        {
+        }
+
         public Post(Guid id, String title, String? description, int likesCount, int dislikesCount, String discussionId, String gameId, String authorId, String content, DateTime? createdAt)
         {
             this.id = id;

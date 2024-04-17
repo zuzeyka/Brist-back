@@ -24,15 +24,15 @@ namespace FullStackBrist.Server.Controllers
         {
             var _gameNews = await _gameNewsDao.GetAllGameNews();
 
-            var response = _gameNews.Select(g => new GameNews(g.id,
-                                                                        g.title,
-                                                                        g.description,
-                                                                        g.likesCount,
-                                                                        g.dislikesCount,
-                                                                        g.gameId,
-                                                                        g.authorId,
-                                                                        g.content,
-                                                                        g.createdAt)).ToList();
+            var response = _gameNews.Select(g => new GameNews(id: g.id,
+                                                              title: g.title,
+                                                              description: g.description,
+                                                              likesCount: g.likesCount,
+                                                              dislikesCount: g.dislikesCount,
+                                                              gameId: g.gameId,
+                                                              authorId: g.authorId,
+                                                              content: g.content,
+                                                              createdAt: g.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -50,9 +50,9 @@ namespace FullStackBrist.Server.Controllers
                 model.content,
                                             DateTime.Now
                                             );
-            _dataContext.dbGameNews.AddAsync(result);
+            var response = _dataContext.dbGameNews.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

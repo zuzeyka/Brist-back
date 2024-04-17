@@ -26,10 +26,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var _friends = await _friendsDao.GetAllFriends();
 
-            var response = _friends.Select(f => new Friends(f.id,
-                                                                   f.userId,
-                                                                   f.friendId,
-                                                                   f.createdAt)).ToList();
+            var response = _friends.Select(f => new Friends(id: f.id,
+                                                            userId:       f.userId,
+                                                            friendId:       f.friendId,
+                                                            createdAt:       f.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -42,9 +42,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.friendId,
                                             DateTime.Now
                                             );
-            _dataContext.dbFriends.AddAsync(result);
+            var response = _dataContext.dbFriends.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

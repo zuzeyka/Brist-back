@@ -25,11 +25,11 @@ namespace FullStackBrist.Server.Controllers
         {
             var _groups = await _groupDao.GetAllGroups();
 
-            var response = _groups.Select(g => new Group(g.id,
-                                                                g.attachedId,
-                                                                g.name,
-                                                                g.description,
-                                                                g.createdAt)).ToList();
+            var response = _groups.Select(g => new Group(id: g.id,
+                                                         attachedId: g.attachedId,
+                                                         name: g.name,
+                                                         description: g.description,
+                                                         createdAt: g.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -44,9 +44,9 @@ namespace FullStackBrist.Server.Controllers
                 model.description,
                                             DateTime.Now
                                             );
-            _dataContext.dbGroups.AddAsync(result);
+            var response = _dataContext.dbGroups.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

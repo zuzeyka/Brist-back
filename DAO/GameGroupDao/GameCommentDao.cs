@@ -16,12 +16,10 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameComment>> GetAllGameComments()
         {
-            var _gameCommentEntities = await _context.dbGameComments.AsNoTracking().ToListAsync();
-
-            var _gameComment = _gameCommentEntities.Select(g => new GameComment(g.id,
-                                                                                g.gamePostId,
-                                                                                g.content, g.createdAt)).ToList();
-            return _gameComment;
+            return await _context.dbGameComments.Select(g => new GameComment{   id = g.id,
+                gamePostId = g.gamePostId,
+                content = g.content,
+                createdAt = g.createdAt}).ToListAsync();
         }
         public void Add(GameComment comment)
         {

@@ -2,6 +2,10 @@
 {
     public class Developer
     {
+        public Developer()
+        {
+        }
+
         public Developer(Guid id, int subscribersCount, String name, String description, String avatar, String backgroundImage, String? urlForNewsPage, DateTime? createdAt)
         {
             this.id = id;

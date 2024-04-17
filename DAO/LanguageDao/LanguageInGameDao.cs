@@ -15,13 +15,14 @@ namespace Slush.DAO.LanguageDao
 
         public async Task<List<LanguageInGame>> GetAllLanguageInGames()
         {
-            var _languageInGameEntities = await _context.dbLanguagesInGame.AsNoTracking().ToListAsync();
+            return await _context.dbLanguagesInGame.Select(l => new LanguageInGame
+            {
+                id = l.id,
+                gameId = l.gameId,
+                languageId = l.languageId,
+                createdAt = l.createdAt
+            }).ToListAsync();
 
-            var _languageInGame = _languageInGameEntities.Select(l => new LanguageInGame(l.id,
-                                                                                         l.gameId,
-                                                                                         l.languageId, l.createdAt)).ToList();
-
-            return _languageInGame;
         }
 
         public void Add(LanguageInGame language)

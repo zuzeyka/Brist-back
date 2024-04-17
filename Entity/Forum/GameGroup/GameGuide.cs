@@ -2,6 +2,10 @@
 {
     public class GameGuide
     {
+        public GameGuide()
+        {
+        }
+
         public GameGuide(Guid id, String title, String? description, int likesCount, String discussionId, String gameId, String authorId, String gameGroupId, String content, DateTime? createdAt)
         {
             this.id = id;

@@ -16,12 +16,12 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<Friends>> GetAllFriends()
         {
-            var _friendsEntity = await _context.dbFriends.AsNoTracking().ToListAsync();
+            return await _context.dbFriends.Select(f => new Friends {
+                id = f.id,
+                userId = f.userId,
+                friendId = f.friendId,
+                createdAt = f.createdAt}).ToListAsync();
 
-            var _friends = _friendsEntity.Select(f => new Friends(f.id,
-                                                                   f.userId,
-                                                                   f.friendId, f.createdAt)).ToList();
-            return _friends;
         }
         public void Add(Friends friend)
         {

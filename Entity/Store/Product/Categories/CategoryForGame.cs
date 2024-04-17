@@ -4,6 +4,9 @@ namespace Slush.Data.Entity
 {
     public class CategoryForGame
     {
+        public CategoryForGame()
+        {
+        }
 
         public CategoryForGame(Guid id, String gameId, String categoryId, DateTime? createdAt)
         {

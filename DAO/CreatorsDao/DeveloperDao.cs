@@ -16,17 +16,18 @@ namespace Slush.DAO.CreatorsDao
 
         public async Task<List<Developer>> GetAllDevelopersDao()
         {
-            var _developersEntities = await _context.dbDevelopers.AsNoTracking().ToListAsync();
+            return await _context.dbDevelopers.Select(d => new Developer
+            {
+                id = d.id,
+                subscribersCount = d.subscribersCount,
+                name = d.name,
+                description = d.description,
+                avatar = d.avatar,
+                backgroundImage = d.backgroundImage,
+                urlForNewsPage = d.urlForNewsPage,
+                createdAt = d.createdAt
+            }).ToListAsync();
 
-            var _developers = _developersEntities.Select(d => new Developer(d.id,
-                                                                            d.subscribersCount,
-                                                                            d.name,
-                                                                            d.description,
-                                                                            d.avatar,
-                                                                            d.backgroundImage,
-                                                                            d.urlForNewsPage, d.createdAt)).ToList();
-
-            return _developers;
         }
         public void Add(Developer developer)
         {

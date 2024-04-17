@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Profile;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -15,15 +16,12 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<UserComment>> GetAllUserComments()
         {
-            var _userCommentEntities = await _context.dbUserComments.AsNoTracking().ToListAsync();
-
-            var _userComment = _userCommentEntities.Select(s => new UserComment(s.id,
-                                                                                s.userId,
-                                                                                s.authorId,
-                                                                                s.content,
-                                                                                s.createdAt)).ToList();
-
-            return _userComment;
+            return await _context.dbUserComments.Select(s => new UserComment {
+                id = s.id,
+                userId = s.userId,
+                authorId = s.authorId,
+                content = s.content,
+                createdAt = s.createdAt}).ToListAsync();
         }
         public void Add(UserComment comment)
         {

@@ -26,16 +26,16 @@ namespace FullStackBrist.Server.Controllers
         {
             var _posts = await _postDao.GetAllPosts();
 
-            var response = _posts.Select(p => new Post(p.id,
-                                                           p.title,
-                                                           p.description,
-                                                           p.likesCount,
-                                                           p.dislikesCount,
-                                                           p.discussionId,
-                                                           p.gameId,
-                                                           p.authorId,
-                                                           p.content,
-                                                           p.createdAt)).ToList();
+            var response = _posts.Select(p => new Post(id: p.id,
+                                                       title: p.title,
+                                                       description: p.description,
+                                                       likesCount: p.likesCount,
+                                                       dislikesCount: p.dislikesCount,
+                                                       discussionId: p.discussionId,
+                                                       gameId: p.gameId,
+                                                       authorId: p.authorId,
+                                                       content: p.content,
+                                                       createdAt: p.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -55,8 +55,8 @@ namespace FullStackBrist.Server.Controllers
                model.content,
                                             DateTime.Now
                                             );
-            _dataContext.dbPosts.AddAsync(result);
-            return Ok(result);
+            var response = _dataContext.dbPosts.AddAsync(result);
+            return Ok(response);
         }
     }
 }

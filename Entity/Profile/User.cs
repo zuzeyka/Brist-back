@@ -7,6 +7,9 @@ namespace Slush.Data.Entity.Profile
 {
     public class User 
     {
+        public User()
+        {
+        }
 
         public User(Guid id, String name, String passwordSalt, String salt, String email, String phone, DateTime? createdAt)
         {

@@ -2,6 +2,9 @@
 {
     public class CategoryByUser
     {
+        public CategoryByUser()
+        {
+        }
 
         public CategoryByUser(Guid id, String name, String description, DateTime? createdAt)
         {

@@ -23,13 +23,13 @@ namespace FullStackBrist.Server.Controllers
         {
             var _users = await _userDao.GetAllUsers();
 
-            var response = _users.Select(u => new User(u.id,
-                                                            u.name,
-                                                            u.passwordSalt,
-                                                            u.salt,
-                                                            u.email,
-                                                            u.phone,
-                                                            u.createdAt)).ToList();
+            var response = _users.Select(u => new User(id: u.id,
+                                                       name: u.name,
+                                                       passwordSalt: u.passwordSalt,
+                                                       salt: u.salt,
+                                                       email: u.email,
+                                                       phone: u.phone,
+                                                       createdAt: u.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -46,9 +46,9 @@ namespace FullStackBrist.Server.Controllers
                 model.phone,
                 DateTime.Now);
 
-            _dataContext.dbUsers.AddAsync(result);
+            var response = _dataContext.dbUsers.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

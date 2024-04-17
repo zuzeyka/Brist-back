@@ -15,14 +15,14 @@ namespace Slush.DAO.CategoriesDao
 
         public async Task<List<CategoryByUser>> GetAllCategoriesByUser()
         {
-            var _categoriesByUserEntity = await _context.dbCategoriesByUsers.AsNoTracking().ToListAsync();
+            return await _context.dbCategoriesByUsers.Select(c => new CategoryByUser
+            {
+                id = c.id,
+                name = c.name,
+                description = c.description,
+                createdAt = c.createdAt
+            }).ToListAsync();
 
-            var _categoriesByUser = _categoriesByUserEntity.Select(c => new CategoryByUser(c.id,
-                                                                        c.name,
-                                                                        c.description,
-                                                                        c.createdAt
-                                                                        )).ToList();
-            return _categoriesByUser;
         }
         public void Add(CategoryByUser category)
         {

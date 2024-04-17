@@ -4,6 +4,9 @@ namespace Slush.Entity.Store.Product
 {
     public class DLCInShop
     {
+        public DLCInShop()
+        {
+        }
 
         public DLCInShop(Guid id, String gameId, String name, float price, int discount, String previeImage, List<String> gameImages, DateTime dateOfRelease, String developerId, String publisherId, DateTime? createdAt)
         {

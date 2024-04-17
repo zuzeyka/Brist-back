@@ -4,6 +4,9 @@ namespace Slush.Entity.Profile
 {
     public class WishedGame :ProfileGame
     {
+        public WishedGame()
+        {
+        }
 
         public WishedGame(Guid id, String ownedGameId, String userId, DateTime? createdAt)
         {

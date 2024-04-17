@@ -15,13 +15,11 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<WishedGame>> GetAllWishedGames()
         {
-            var _wishedGamesEntities = await _context.dbWishedGames.AsNoTracking().ToListAsync();
-
-            var _wishedGames = _wishedGamesEntities.Select(s => new WishedGame(s.id,
-                                                                                s.ownedGameId,
-                                                                                s.userId, s.createdAt)).ToList();
-
-            return _wishedGames;
+            return await _context.dbWishedGames.Select(s => new WishedGame {
+                id = s.id,
+                ownedGameId = s.ownedGameId,
+                userId = s.userId,
+                createdAt = s.createdAt}).ToListAsync();
         }
         public void Add(WishedGame game)
         {

@@ -24,14 +24,14 @@ namespace FullStackBrist.Server.Controllers
         {
             var publishers = await _publisherDao.GetAllPublishers();
 
-            var response = publishers.Select(p => new Publisher(p.id,
-                                                                           p.subscribersCount,
-                                                                           p.name,
-                                                                           p.description,
-                                                                           p.avatar,
-                                                                           p.backgroundImage,
-                                                                           p.urlForNewsPage,
-                                                                           p.createdAt)).ToList();
+            var response = publishers.Select(p => new Publisher(id: p.id,
+                                                                subscribersCount: p.subscribersCount,
+                                                                name: p.name,
+                                                                description: p.description,
+                                                                avatar: p.avatar,
+                                                                backgroundImage: p.backgroundImage,
+                                                                urlForNewsPage: p.urlForNewsPage,
+                                                                createdAt: p.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -47,9 +47,9 @@ namespace FullStackBrist.Server.Controllers
                 null,
                 DateTime.Now);
 
-            _dataContext.dbPublishers.AddAsync(result);
+            var response = _dataContext.dbPublishers.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

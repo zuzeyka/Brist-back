@@ -27,17 +27,17 @@ namespace FullStackBrist.Server.Controllers
         {
             var dlcs = await _dLCInShopDao.GetAll();
 
-            var response = dlcs.Select(d => new DLCInShop(d.id,
-                                                                     d.gameId,
-                                                                     d.name,
-                                                                     d.price,
-                                                                     d.discount,
-                                                                     d.previeImage,
-                                                                     d.gameImages,
-                                                                     d.dateOfRelease,
-                                                                     d.developerId,
-                                                                     d.publisherId,
-                                                                     d.createdAt)).ToList();
+            var response = dlcs.Select(d => new DLCInShop(id: d.id,
+                                                          gameId: d.gameId,
+                                                          name: d.name,
+                                                          price: d.price,
+                                                          discount: d.discount,
+                                                          previeImage: d.previeImage,
+                                                          gameImages: d.gameImages,
+                                                          dateOfRelease: d.dateOfRelease,
+                                                          developerId: d.developerId,
+                                                          publisherId: d.publisherId,
+                                                          createdAt :d.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -56,9 +56,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.publisherId,
                                         DateTime.Now
                                             );
-            _dataContext.dbDLCsInShop.AddAsync(result);
+            var response = _dataContext.dbDLCsInShop.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

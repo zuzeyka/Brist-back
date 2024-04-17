@@ -15,15 +15,14 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<User>> GetAllUsers()
         {
-            var _userEntities = await _context.dbUsers.AsNoTracking().ToListAsync();
-
-            var _users = _userEntities.Select(u => new User(u.id,
-                                                            u.name,
-                                                            u.passwordSalt,
-                                                            u.salt,
-                                                            u.email,
-                                                            u.phone, u.createdAt)).ToList();
-            return _users;
+            return await _context.dbUsers.Select(u => new User {
+                id = u.id,
+                name = u.name,
+                passwordSalt = u.passwordSalt,
+                salt = u.salt,
+                email = u.email,
+                phone = u.phone,
+                createdAt = u.createdAt}).ToListAsync();
         }
         public void Add(User user)
         {

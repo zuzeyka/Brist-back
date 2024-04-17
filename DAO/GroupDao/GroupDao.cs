@@ -16,13 +16,15 @@ namespace Slush.DAO.GroupDao
 
         public async Task<List<Group>> GetAllGroups()
         {
-            var _groupEntities = await _context.dbGroups.AsNoTracking().ToListAsync();
+            return await _context.dbGroups.Select(g => new Group
+            {
+                id = g.id,
+                attachedId = g.attachedId,
+                name = g.name,
+                description = g.description,
+                createdAt = g.createdAt
+            }).ToListAsync();
 
-            var _groups = _groupEntities.Select(g => new Group(g.id,
-                                                                g.attachedId,
-                                                                g.name,
-                                                                g.description, g.createdAt)).ToList();
-            return _groups;
         }
         public void Add(Group group)
         {

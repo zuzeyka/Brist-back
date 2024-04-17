@@ -17,11 +17,10 @@ namespace Slush.DAO.LanguageDao
 
         public async Task<List<Language>> GetAllLanguages()
         {
-            var _languageEntities = await _context.dbLanguages.AsNoTracking().ToListAsync();
-
-            var _languages = _languageEntities.Select(l => new Language(l.id,
-                                                                        l.name, l.createdAt)).ToList();
-            return _languages;
+            return await _context.dbLanguages.Select(l => new Language {
+                id = l.id,
+                name = l.name,
+                createdAt = l.createdAt}).ToListAsync();
         }
         public void Add(Language language)
         {

@@ -26,11 +26,11 @@ namespace FullStackBrist.Server.Controllers
         {
             var gameTopics = await _gameTopicDao.GetAllGameTopics();
 
-            var response = gameTopics.Select(g => new GameTopic(g.id,
-                                                                            g.attachedId,
-                                                                            g.name,
-                                                                            g.description,
-                                                                            g.createdAt)).ToList();
+            var response = gameTopics.Select(g => new GameTopic(id: g.id,
+                                                                attachedId: g.attachedId,
+                                                                name: g.name,
+                                                                description: g.description,
+                                                                createdAt: g.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -44,9 +44,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.description,
                                             DateTime.Now
                                             );
-            _dataContext.dbGameTopics.AddAsync(result);
+            var response = _dataContext.dbGameTopics.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

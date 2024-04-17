@@ -26,11 +26,11 @@ namespace FullStackBrist.Server.Controllers
         {
             var _categoriesByAuthor = await _categoriesByAuthorDao.GetAllCategoriesByAuthor();
 
-            var response = _categoriesByAuthor.Select(c => new CategoryByAuthor(c.id,
-                                                                                                    c.name,
-                                                                                                    c.description,
-                                                                                                    c.image,
-                                                                                                    c.createdAt)).ToList();
+            var response = _categoriesByAuthor.Select(c => new CategoryByAuthor(id: c.id,
+                                                                                name: c.name,
+                                                                                description: c.description,
+                                                                                image: c.image,
+                                                                                createdAt: c.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -42,9 +42,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.description,
                                         model.image,
                                         DateTime.Now);
-            _dataContext.dbCategoriesByAuthors.AddAsync(result);
+            var response = _dataContext.dbCategoriesByAuthors.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

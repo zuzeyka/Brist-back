@@ -26,10 +26,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var wishedGames = await _wishedGameDao.GetAllWishedGames();
 
-            var response = wishedGames.Select(s => new WishedGame(s.id,
-                                                                                s.ownedGameId,
-                                                                                s.userId,
-                                                                                s.createdAt)).ToList();
+            var response = wishedGames.Select(s => new WishedGame(id: s.id,
+                                                                  ownedGameId: s.ownedGameId,
+                                                                  userId: s.userId,
+                                                                  createdAt: s.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -42,9 +42,9 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                 DateTime.Now);
 
-            _dataContext.dbWishedGames.AddAsync(result);
+            var response = _dataContext.dbWishedGames.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

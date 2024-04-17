@@ -15,19 +15,19 @@ namespace Slush.DAO.GroupDao
 
         public async Task<List<Post>> GetAllPosts()
         {
-            var _postsEntity = await  _context.dbPosts.AsNoTracking().ToListAsync();
+            return await  _context.dbPosts.Select(p => new Post {
+                id = p.id,
+                title = p.title,
+                description = p.description,
+                likesCount = p.likesCount,
+                dislikesCount = p.dislikesCount,
+                discussionId = p.discussionId,
+                gameId = p.gameId,
+                authorId = p.authorId,
+                content = p.content,
+                createdAt = p.createdAt}).ToListAsync();
 
-            var _posts = _postsEntity.Select(p => new Post(p.id,
-                                                           p.title,
-                                                           p.description,
-                                                           p.likesCount,
-                                                           p.dislikesCount,
-                                                           p.discussionId,
-                                                           p.gameId,
-                                                           p.authorId,
-                                                           p.content, p.createdAt)).ToList();
 
-            return _posts;
         }
 
         public void Add(Post post)

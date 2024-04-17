@@ -15,17 +15,15 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameNews>> GetAllGameNews()
         {
-            var _gameNewsEntities = await _context.dbGameNews.AsNoTracking().ToListAsync();
-
-            var _gameNews = _gameNewsEntities.Select(g => new GameNews(g.id,
-                                                                        g.title,
-                                                                        g.description,
-                                                                        g.likesCount,
-                                                                        g.dislikesCount,
-                                                                        g.gameId,
-                                                                        g.authorId,
-                                                                        g.content, g.createdAt)).ToList();
-            return _gameNews;
+            return await _context.dbGameNews.Select(g => new GameNews{  id = g.id,
+                title = g.title,
+                description = g.description,
+                likesCount = g.likesCount,
+                dislikesCount = g.dislikesCount,
+                gameId = g.gameId,
+                authorId = g.authorId,
+                content = g.content,
+                createdAt = g.createdAt}).ToListAsync();
         }
         public void Add(GameNews news)
         {

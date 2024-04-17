@@ -4,6 +4,10 @@ namespace Slush.Entity.Profile
 {
     public class OwnedGame
     {
+        public OwnedGame()
+        {
+        }
+
         public OwnedGame(Guid id, String ownedGameId, String userId, DateTime? createdAt)
         {
             this.id = id;

@@ -24,16 +24,16 @@ namespace FullStackBrist.Server.Controllers
         {
             var _gameGuides = await _gameGuideDao.GetAllGameGuides();
 
-            var response = _gameGuides.Select(g => new GameGuide(g.id,
-                                                                          g.title,
-                                                                          g.description,
-                                                                          g.likesCount,
-                                                                          g.discussionId,
-                                                                          g.gameId,
-                                                                          g.authorId,
-                                                                          g.gameGroupId,
-                                                                          g.content,
-                                                                          g.createdAt)).ToList();
+            var response = _gameGuides.Select(g => new GameGuide(id: g.id,
+                                                                 title: g.title,
+                                                                 description: g.description,
+                                                                 likesCount: g.likesCount,
+                                                                 discussionId: g.discussionId,
+                                                                 gameId: g.gameId,
+                                                                 authorId: g.authorId,
+                                                                 gameGroupId: g.gameGroupId,
+                                                                 content: g.content,
+                                                                 createdAt: g.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -53,9 +53,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.content,
                                             DateTime.Now
                                             );
-            _dataContext.dbGameGuides.AddAsync(result);
+            var response = _dataContext.dbGameGuides.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

@@ -2,6 +2,8 @@
 using Slush.Data;
 using Slush.Entity.Store.Product;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Math;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Slush.DAO.GameInShopDao
 {
@@ -16,20 +18,19 @@ namespace Slush.DAO.GameInShopDao
 
         public async Task<List<DLCInShop>> GetAll()
         {
-            var _dlcInShopEntities = await _context.dbDLCsInShop.AsNoTracking().ToListAsync();
-            var _dlcs = _dlcInShopEntities.Select(d => new DLCInShop(d.id,
-                                                                     d.gameId,
-                                                                     d.name,
-                                                                     d.price,
-                                                                     d.discount,
-                                                                     d.previeImage,
-                                                                     d.gameImages,
-                                                                     d.dateOfRelease,
-                                                                     d.developerId,
-                                                                     d.publisherId,d.createdAt)).ToList();
-            return _dlcs;
+            return await _context.dbDLCsInShop.Select(d => new DLCInShop{
+                id = d.id,
+                gameId = d.gameId,
+                name = d.name,
+                price = d.price,
+                discount = d.discount,
+                previeImage = d.previeImage,
+                gameImages = d.gameImages,
+                dateOfRelease = d.dateOfRelease,
+                developerId = d.developerId,
+                publisherId = d.publisherId,
+                createdAt = d.createdAt}).ToListAsync();
         }
-
         public void Add(DLCInShop dlc)
         {
             _context.dbDLCsInShop.Add(dlc);

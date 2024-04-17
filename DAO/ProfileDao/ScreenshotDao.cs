@@ -16,20 +16,17 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<Screenshot>> GetAllScreenshots()
         {
-            var _screenshotsEntities = await _context.dbScreenshots.AsNoTracking().ToListAsync();
-
-            var _screenshots = _screenshotsEntities.Select(s => new Screenshot(s.id,
-                                                                                s.title,
-                                                                                s.description,
-                                                                                s.likesCount,
-                                                                                s.dislikesCount,
-                                                                                s.discussionId,
-                                                                                s.gameId,
-                                                                                s.authorId,
-                                                                                s.screenshotUrl,
-                                                                                s.createdAt)).ToList();
-
-            return _screenshots;
+            return await _context.dbScreenshots.Select(s => new Screenshot {
+                id = s.id,
+                title = s.title,
+                description = s.description,
+                likesCount = s.likesCount,
+                dislikesCount = s.dislikesCount,
+                discussionId = s.discussionId,
+                gameId = s.gameId,
+                authorId = s.authorId,
+                screenshotUrl = s.screenshotUrl,
+                createdAt = s.createdAt}).ToListAsync();
         }
         public void Add(Screenshot screenshot)
         {

@@ -26,10 +26,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var _gameComment = await _gameCommentDao.GetAllGameComments();
 
-            var response = _gameComment.Select(g => new GameComment(g.id,
-                                                                                g.gamePostId,
-                                                                                g.content,
-                                                                                g.createdAt)).ToList();
+            var response = _gameComment.Select(g => new GameComment(id: g.id,
+                                                                    gamePostId: g.gamePostId,
+                                                                    content: g.content,
+                                                                    createdAt: g.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -42,9 +42,8 @@ namespace FullStackBrist.Server.Controllers
                                             model.content,
                                             DateTime.Now
                                             );
-            _dataContext.dbGameComments.AddAsync(result);
-
-            return result;
+            var response = _dataContext.dbGameComments.AddAsync(result);
+            return Ok(response);
         }
     }
 }

@@ -24,14 +24,14 @@ namespace FullStackBrist.Server.Controllers
         {
             var _developers = await _developerDao.GetAllDevelopersDao();
 
-            var response = _developers.Select(d => new Developer(d.id,
-                                                                            d.subscribersCount,
-                                                                            d.name,
-                                                                            d.description,
-                                                                            d.avatar,
-                                                                            d.backgroundImage,
-                                                                            d.urlForNewsPage,
-                                                                            d.createdAt)).ToList();
+            var response = _developers.Select(d => new Developer(id: d.id,
+                                                                 subscribersCount: d.subscribersCount,
+                                                                 name: d.name,
+                                                                 description: d.description,
+                                                                 avatar: d.avatar,
+                                                                 backgroundImage: d.backgroundImage,
+                                                                 urlForNewsPage: d.urlForNewsPage,
+                                                                 createdAt: d.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -47,9 +47,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.backgroundImage,
                                         null,
                                         DateTime.Now);
-            _dataContext.dbDevelopers.AddAsync(result);
+            var response = _dataContext.dbDevelopers.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

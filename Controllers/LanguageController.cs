@@ -25,9 +25,9 @@ namespace FullStackBrist.Server.Controllers
         {
             var _languages = await _languageDao.GetAllLanguages();
 
-            var response = _languages.Select(l => new Language(l.id,
-                                                                        l.name,
-                                                                        l.createdAt)).ToList();
+            var response = _languages.Select(l => new Language(id: l.id,
+                                                               name: l.name,
+                                                               createdAt: l.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -39,9 +39,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.name,
                                             DateTime.Now
                                             );
-            _dataContext.dbLanguages.AddAsync(result);
+            var response = _dataContext.dbLanguages.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

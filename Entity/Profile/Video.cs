@@ -4,6 +4,9 @@ namespace Slush.Data.Entity.Profile
 {
     public class Video
     {
+        public Video()
+        {
+        }
 
         public Video(Guid id, String title, String? description, int likesCount, int dislikesCount, String gameId, String authorId, String videoUrl, DateTime? createdAt)
         {

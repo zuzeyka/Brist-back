@@ -26,12 +26,12 @@ namespace FullStackBrist.Server.Controllers
         {
             var topics = await _topicDao.GetAllTopics();
 
-            var response = topics.Select(t => new Topic(t.id,
-                                                                t.attachedId,
-                                                                t.name,
-                                                                t.description,
-                                                                t.authorId,
-                                                                t.createdAt)).ToList();
+            var response = topics.Select(t => new Topic(id: t.id,
+                                                        attachedId: t.attachedId,
+                                                        name: t.name,
+                                                        description: t.description,
+                                                        authorId: t.authorId,
+                                                        createdAt: t.createdAt)).ToList();
 
             return Ok(response);
         }
@@ -47,9 +47,9 @@ namespace FullStackBrist.Server.Controllers
                 model.authorId,
                 DateTime.Now);
 
-            _dataContext.dbTopics.AddAsync(result);
+            var response = _dataContext.dbTopics.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

@@ -2,6 +2,9 @@
 {
     public class MinimalSystemRequirement
     {
+        public MinimalSystemRequirement()
+        {
+        }
 
         public MinimalSystemRequirement(Guid id, String gameId, String oS, String processor, String rAM, String video, String freeDiskSpace, DateTime? createdAt)
         {

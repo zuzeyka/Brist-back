@@ -25,10 +25,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var categories = await _categoriesDao.GetAll();
 
-            var response = categories.Select(c => new Categories(c.id,
-                                                                             c.name,
-                                                                             c.description,
-                                                                             c.createdAt
+            var response = categories.Select(c => new Categories(id: c.id,
+                                                                 name: c.name,
+                                                                 description: c.description,
+                                                                 createdAt: c.createdAt
                                                                              )).ToList();
             return Ok(response);
         }
@@ -40,9 +40,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            _dataContext.dbCategories.AddAsync(result);
+            var response = _dataContext.dbCategories.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

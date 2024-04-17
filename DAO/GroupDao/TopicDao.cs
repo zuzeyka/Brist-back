@@ -15,15 +15,13 @@ namespace Slush.DAO.GroupDao
 
         public async Task<List<Topic>> GetAllTopics()
         {
-            var _topicEntities = await _context.dbTopics.AsNoTracking().ToListAsync();
-
-            var _topics = _topicEntities.Select(t => new Topic(t.id,
-                                                                t.attachedId,
-                                                                t.name,
-                                                                t.description,
-                                                                t.authorId, t.createdAt)).ToList();
-
-            return _topics;
+            return await _context.dbTopics.Select(t => new Topic {
+                id = t.id,
+                attachedId = t.attachedId,
+                name = t.name,
+                description = t.description,
+                authorId = t.authorId,
+                createdAt = t.createdAt}).ToListAsync();
         }
         public void Add(Topic topic)
         {

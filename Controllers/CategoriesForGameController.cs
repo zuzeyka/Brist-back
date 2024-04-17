@@ -25,10 +25,10 @@ namespace FullStackBrist.Server.Controllers
         {
             var categoriesForGame = await _categoryForGameDao.GetAll();
 
-            var response = categoriesForGame.Select(c => new CategoryForGame(c.id,
-                                                                                            c.gameId,
-                                                                                            c.categoryId,
-                                                                                            c.createdAt)).ToList();
+            var response = categoriesForGame.Select(c => new CategoryForGame(id: c.id,
+                                                                             gameId: c.gameId,
+                                                                             categoryId: c.categoryId,
+                                                                             createdAt: c.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -40,9 +40,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.gameId,
                                         model.categoryId,
                                         DateTime.Now);
-            _dataContext.dbCategoriesForGame.AddAsync(result);
+            var response = _dataContext.dbCategoriesForGame.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

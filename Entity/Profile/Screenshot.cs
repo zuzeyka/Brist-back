@@ -4,6 +4,10 @@ namespace Slush.Data.Entity.Profile
 {
     public class Screenshot
     {
+        public Screenshot()
+        {
+        }
+
         public Screenshot(Guid id, String title, String? description, int likesCount, int dislikesCount, String discussionId, String gameId, String authorId, String screenshotUrl, DateTime? createdAt)
         {
             this.id = id;

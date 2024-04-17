@@ -2,6 +2,7 @@
 {
     public class Publisher
     {
+        public Publisher() { }
         public Publisher(Guid id, int subscribersCount, String name, String description, String avatar, String backgroundImage, String? urlForNewsPage, DateTime? createdAt)
         {
             this.id = id;

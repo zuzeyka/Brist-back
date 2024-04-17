@@ -24,16 +24,16 @@ namespace FullStackBrist.Server.Controllers
         {
             var gamePosts = await _gamePostsDao.GetAllGamePosts();
 
-            var response = gamePosts.Select(g => new GamePosts(g.id,
-                                                                            g.title,
-                                                                            g.description,
-                                                                            g.likesCount,
-                                                                            g.dislikesCount,
-                                                                            g.discussionId,
-                                                                            g.gameId,
-                                                                            g.authorId,
-                                                                            g.content,
-                                                                            g.createdAt)).ToList();
+            var response = gamePosts.Select(g => new GamePosts(id: g.id,
+                                                               title: g.title,
+                                                               description: g.description,
+                                                               likesCount: g.likesCount,
+                                                               dislikesCount: g.dislikesCount,
+                                                               discussionId: g.discussionId,
+                                                               gameId: g.gameId,
+                                                               authorId: g.authorId,
+                                                               content: g.content,
+                                                               createdAt: g.createdAt)).ToList();
             return Ok(response);
         }
 
@@ -53,9 +53,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.content,
                                             DateTime.Now
                                             );
-            _dataContext.dbGamePosts.AddAsync(result);
+            var response = _dataContext.dbGamePosts.AddAsync(result);
 
-            return result;
+            return Ok(response);
         }
     }
 }

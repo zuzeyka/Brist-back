@@ -3,6 +3,9 @@ namespace Slush.Data.Entity
 {
     public class CategoryByAuthor
     {
+        public CategoryByAuthor()
+        {
+        }
 
         public CategoryByAuthor(Guid id, String name, String description, String image, DateTime? createdAt)
         {

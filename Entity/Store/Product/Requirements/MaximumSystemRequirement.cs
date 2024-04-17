@@ -2,6 +2,9 @@
 {
     public class MaximumSystemRequirement
     {
+        public MaximumSystemRequirement()
+        {
+        }
 
         public MaximumSystemRequirement(Guid id, String gameId, String oS, String processor, String rAM, String video, String freeDiskSpace, DateTime? createdAt)
         {

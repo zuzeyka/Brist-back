@@ -5,6 +5,10 @@ namespace Slush.Data.Entity.Community
 {
     public class GroupComment
     {
+        public GroupComment()
+        {
+        }
+
         public GroupComment(Guid id, String groupId, String content, Guid userId, DateTime? createdAt)
         {
             this.id = id;

@@ -15,13 +15,12 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameTopic>> GetAllGameTopics()
         {
-            var _gameTopicEntities = await _context.dbGameTopics.AsNoTracking().ToListAsync();
-
-            var _gameTopics = _gameTopicEntities.Select(g => new GameTopic(g.id,
-                                                                            g.attachedId,
-                                                                            g.name,
-                                                                            g.description, g.createdAt)).ToList();
-            return _gameTopics;
+            return await _context.dbGameTopics.Select(g => new GameTopic { 
+                id = g.id,
+                attachedId = g.attachedId,
+                name = g.name,
+                description = g.description,
+                createdAt = g.createdAt}).ToListAsync();
         }
         public void Add(GameTopic topics)
         {

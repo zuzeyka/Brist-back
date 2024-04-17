@@ -16,12 +16,10 @@ namespace Slush.DAO.CategoriesDao
 
         public async Task<List<CategoryForGame>> GetAll()
         {
-            var _categoryForGameEntities = await _context.dbCategoriesForGame.AsNoTracking().ToListAsync();
-
-            var _categoryForGame = _categoryForGameEntities.Select(c => new CategoryForGame(c.id,
-                                                                                            c.gameId,
-                                                                                            c.categoryId, c.createdAt)).ToList();
-            return _categoryForGame;
+            return await _context.dbCategoriesForGame.Select(c => new CategoryForGame{      id = c.id,
+                                                                                            gameId = c.gameId,
+                                                                                            categoryId = c.categoryId,
+                                                                                            createdAt = c.createdAt}).ToListAsync();
         }
         public void Add(CategoryForGame category)
         {
