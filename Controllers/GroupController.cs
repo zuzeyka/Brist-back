@@ -48,5 +48,32 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Group>> GetGroup(Guid id)
+        {
+            var response = await _groupDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteGroup(Guid id)
+        {
+            await _groupDao.DeleteGroup(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateGroup(Guid id, [FromBody] GroupModel group)
+        {
+            var result = new Group(id, group.attachedId, group.name, group.description, group.createdAt);
+            await _groupDao.UpdateGroup(result);
+            return NoContent();
+        }
     }
 }

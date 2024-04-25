@@ -16,5 +16,6 @@
         public virtual List<String> languagesId { get; set; }
         public virtual List<String> systemRequirementsId { get; set; }
         public String urlForContent { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

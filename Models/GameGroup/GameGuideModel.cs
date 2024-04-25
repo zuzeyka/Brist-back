@@ -12,5 +12,6 @@
         public Guid authorId { get; set; }
         public Guid gameGroupId { get; set; }
         public String content { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

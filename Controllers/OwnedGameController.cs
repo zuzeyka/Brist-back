@@ -2,6 +2,7 @@
 using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
+using Slush.DAO.RequirementsDao;
 using Slush.Data;
 using Slush.Data.Entity;
 using Slush.Entity.Profile;
@@ -45,6 +46,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbOwnedGames.AddAsync(result);
             return Ok(response);
 
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OwnedGame>> GetOwnedGame(Guid id)
+        {
+            var response = await _ownedGameDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteOwnedGame(Guid id)
+        {
+            await _ownedGameDao.DeleteOwnedGame(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMinimalSystemRequirement(Guid id, [FromBody] OwnedGameModel game)
+        {
+            var result = new OwnedGame(id, game.ownedGameId, game.userId, game.createdAt);
+            await _ownedGameDao.UpdateOwnedGame(result);
+            return NoContent();
         }
     }
 }

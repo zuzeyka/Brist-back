@@ -44,5 +44,32 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CategoryForGame>> GetCategoryForGame(Guid id)
+        {
+            var response = await _categoryForGameDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategoryForGame(Guid id)
+        {
+            await _categoryForGameDao.DeleteCategoryForGame(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCategoryForGame(Guid id, [FromBody] CategoryForGameModel model)
+        {
+            var result = new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now);
+            await _categoryForGameDao.UpdateCategoryForGame(result);
+            return NoContent();
+        }
     }
 }

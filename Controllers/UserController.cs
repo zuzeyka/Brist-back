@@ -50,5 +50,32 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(Guid id)
+        {
+            var response = await _userDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(Guid id)
+        {
+            await _userDao.DeleteUser(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
+        {
+            var result = new User(id, user.name, user.passwordSalt, user.salt, user.email, user.phone, user.createdAt);
+            await _userDao.UpdateUser(result);
+            return NoContent();
+        }
     }
 }

@@ -11,5 +11,6 @@
         public Guid gameId { get; set; }
         public Guid authorId { get; set; }
         public String screenshotUrl { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

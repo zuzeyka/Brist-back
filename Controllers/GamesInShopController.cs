@@ -1,6 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
+using Slush.DAO.GameGroupDao;
 using Slush.DAO.GameInShopDao;
 using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
@@ -61,5 +62,32 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GameInShop>> GetGameInShop(Guid id)
+        {
+            var response = await _gameInShopDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteGameInShop(Guid id)
+        {
+            await _gameInShopDao.DeleteGameInShop(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game)
+        {
+            var result = new GameInShop(id, game.name, game.price, game.discount, game.previeImage, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt);
+            await _gameInShopDao.UpdateGameInShop(result);
+            return NoContent();
+        }
     }
 }

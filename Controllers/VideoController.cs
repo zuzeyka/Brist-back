@@ -55,5 +55,32 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Video>> GetVideo(Guid id)
+        {
+            var response = await _videoDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteVideo(Guid id)
+        {
+            await _videoDao.DeleteVideo(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video)
+        {
+            var result = new Video(id, video.title, video.description, video.likesCount, video.dislikesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt);
+            await _videoDao.UpdateVideo(result);
+            return NoContent();
+        }
+
     }
 }

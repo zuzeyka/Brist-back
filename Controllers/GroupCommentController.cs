@@ -1,6 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
+using Slush.DAO.GameGroupDao;
 using Slush.DAO.GroupDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
@@ -47,6 +48,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbGroupComments.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GroupComment>> GetGroupComment(Guid id)
+        {
+            var response = await _groupCommentDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteGroupComment(Guid id)
+        {
+            await _groupCommentDao.DeleteGroupComment(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateGroupComment(Guid id, [FromBody] GroupCommentModel group)
+        {
+            var result = new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt);
+            await _groupCommentDao.UpdateGroupComment(result);
+            return NoContent();
         }
     }
 }

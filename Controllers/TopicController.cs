@@ -1,6 +1,8 @@
-﻿using FullStackBrist.Server.Models.Group;
+﻿using FullStackBrist.Server.Models.Creators;
+using FullStackBrist.Server.Models.Group;
 using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
+using Slush.DAO.CreatorsDao;
 using Slush.DAO.GroupDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
@@ -50,6 +52,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbTopics.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Topic>> GetTopic(Guid id)
+        {
+            var response = await _topicDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteTopic(Guid id)
+        {
+            await _topicDao.DeleteTopic(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateTopic(Guid id, [FromBody] TopicModel topic)
+        {
+            var result = new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt);
+            await _topicDao.UpdateTopic(result);
+            return NoContent();
         }
     }
 }

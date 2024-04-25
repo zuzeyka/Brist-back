@@ -44,5 +44,32 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<LanguageInGame>> GetLanguageInGame(Guid id)
+        {
+            var response = await _languageInGameDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteLanguageInGame(Guid id)
+        {
+            await _languageInGameDao.DeleteLanguageInGame(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateLanguageInGame(Guid id, [FromBody] LanguageInGameModel language)
+        {
+            var result = new LanguageInGame(id, language.gameId, language.languageId, language.createdAt);
+            await _languageInGameDao.UpdateLanguageInGame(result);
+            return NoContent();
+        }
     }
 }

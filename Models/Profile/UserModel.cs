@@ -8,5 +8,6 @@
         public String salt { get; set; }
         public String email { get; set; }
         public String phone { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

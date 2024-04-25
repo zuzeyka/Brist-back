@@ -34,6 +34,7 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
         [HttpPost]
         public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model)
         {
@@ -45,6 +46,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbCategoriesByAuthors.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CategoryByAuthor>> GetCategoryByAuthor(Guid id)
+        {
+            var response = await _categoriesByAuthorDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategoryByAuthor(Guid id)
+        {
+            await _categoriesByAuthorDao.DeleteCategoryByAuthor(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model)
+        {
+            var result = new CategoryByAuthor(id, model.name, model.description, model.image, DateTime.Now);
+            await _categoriesByAuthorDao.UpdateCategoriesByAuthor(result);
+            return NoContent();
         }
     }
 }

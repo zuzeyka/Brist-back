@@ -5,5 +5,6 @@
         public Guid id { get; set; }
         public Guid userId { get; set; }
         public Guid friendId { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

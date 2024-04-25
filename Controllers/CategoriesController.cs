@@ -44,5 +44,24 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Categories>> GetCategory(Guid id)
+        {
+            var response = await _categoriesDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategoryByAuthor(Guid id)
+        {
+            await _categoriesDao.DeleteCategories(id);
+            return NoContent();
+        }
     }
 }

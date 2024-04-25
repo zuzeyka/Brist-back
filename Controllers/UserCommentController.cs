@@ -2,6 +2,7 @@
 using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using Slush.DAO.GroupDao;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Data.Entity.Community;
@@ -47,6 +48,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbUserComments.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserComment>> GetUserComment(Guid id)
+        {
+            var response = await _userCommentDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUserComment(Guid id)
+        {
+            await _userCommentDao.DeleteUserComment(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUserComment(Guid id, [FromBody] UserCommentModel comment)
+        {
+            var result = new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt);
+            await _userCommentDao.UpdateUserComment(result);
+            return NoContent();
         }
     }
 }

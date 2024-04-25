@@ -1,5 +1,7 @@
-﻿using FullStackBrist.Server.Models.Requirements;
+﻿using FullStackBrist.Server.Models.Language;
+using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
+using Slush.DAO.LanguageDao;
 using Slush.DAO.RequirementsDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -52,6 +54,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbMaximumSystemRequirements.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MaximumSystemRequirement>> GetMaximumSystemRequirement(Guid id)
+        {
+            var response = await _requirementDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMaximumSystemRequirement(Guid id)
+        {
+            await _requirementDao.DeleteMaximumSystemRequirement(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMaximumSystemRequirement(Guid id, [FromBody] MaximumSystemRequirementModel requirement)
+        {
+            var result = new MaximumSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt);
+            await _requirementDao.UpdateMaximumSystemRequirement(result);
+            return NoContent();
         }
     }
 }

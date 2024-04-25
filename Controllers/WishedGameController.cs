@@ -35,7 +35,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<WishedGame>> CreateVideo([FromBody] WishedGameModel model)
+        public async Task<ActionResult<WishedGame>> CreateWishedGame([FromBody] WishedGameModel model)
         {
             var result = new WishedGame(Guid.NewGuid(),
                 model.ownedGameId,
@@ -45,6 +45,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbWishedGames.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetWishedGame(Guid id)
+        {
+            var response = await _wishedGameDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteWishedGame(Guid id)
+        {
+            await _wishedGameDao.DeleteWishedGame(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateWishedGame(Guid id, [FromBody] WishedGameModel game)
+        {
+            var result = new WishedGame(id, game.ownedGameId, game.userId, game.createdAt);
+            await _wishedGameDao.UpdateWishedGame(result);
+            return NoContent();
         }
     }
 }

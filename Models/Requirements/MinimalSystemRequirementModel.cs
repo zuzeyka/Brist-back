@@ -9,5 +9,6 @@
         public String RAM { get; set; }
         public String video { get; set; }
         public String freeDiskSpace { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

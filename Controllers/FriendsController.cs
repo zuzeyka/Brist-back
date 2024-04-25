@@ -1,6 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
+using Slush.DAO.GameInShopDao;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Entity.Profile;
@@ -45,6 +46,34 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbFriends.AddAsync(result);
 
             return Ok(response);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Friends>> GetFriends(Guid id)
+        {
+            var response = await _friendsDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteFriends(Guid id)
+        {
+            await _friendsDao.DeleteFriends(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateFriends(Guid id, [FromBody] FriendsModel model)
+        {
+            var result = new Friends(id, model.userId, model.friendId, model.createdAt);
+            await _friendsDao.UpdateFriends(result);
+            return NoContent();
         }
     }
 }

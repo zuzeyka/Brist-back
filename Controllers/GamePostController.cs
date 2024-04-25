@@ -57,5 +57,33 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GamePosts>> GetGamePosts(Guid id)
+        {
+            var response = await _gamePostsDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteGamePosts(Guid id)
+        {
+            await _gamePostsDao.DeleteGamePosts(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game)
+        {
+            var result = new GamePosts(id, game.title, game.description, game.likesCount, game.dislikesCount, game.discussionId, game.gameId, game.authorId, game.content, game.createdAt);
+            await _gamePostsDao.UpdateGamePosts(result);
+            return NoContent();
+        }
     }
 }

@@ -4,5 +4,6 @@
     {
         public Guid id { get; set; }
         public Guid gameId { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

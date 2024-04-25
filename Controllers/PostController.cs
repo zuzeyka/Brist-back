@@ -1,8 +1,11 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using FullStackBrist.Server.Models.Profile;
+using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GroupDao;
+using Slush.DAO.RequirementsDao;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
 using Slush.Entity.Profile;
 
@@ -57,6 +60,33 @@ namespace FullStackBrist.Server.Controllers
                                             );
             var response = _dataContext.dbPosts.AddAsync(result);
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Post>> GetPost(Guid id)
+        {
+            var response = await _postDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePost(Guid id)
+        {
+            await _postDao.DeletePost(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post)
+        {
+            var result = new Post(id, post.title, post.description, post.likesCount, post.dislikesCount, post.discussionId, post.gameId, post.authorId, post.content, post.createdAt);
+            await _postDao.UpdatePost(result);
+            return NoContent();
         }
     }
 }

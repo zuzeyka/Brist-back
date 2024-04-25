@@ -27,14 +27,14 @@ namespace Slush.DAO.ProfileDao
                 content = s.content,
                 createdAt = s.createdAt}).ToListAsync();
         }
-        public async Task UpdateCategoriesByAuthor(CategoryByAuthor category)
+        public async Task UpdateUserComment(UserComment category)
         {
-            var existing = await _context.dbCategoriesByAuthors.FindAsync(category.id);
+            var existing = await _context.dbUserComments.FindAsync(category.id);
             if (existing != null)
-            {
-                existing.name = category.name;
-                existing.description = category.description;
-                existing.image = category.image;
+            { 
+                existing.userId = category.userId;
+                existing.authorId = category.authorId;
+                existing.content = category.content;
 
                 await _context.SaveChangesAsync();
             }

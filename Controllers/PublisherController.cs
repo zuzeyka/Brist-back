@@ -1,6 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Creators;
+using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CreatorsDao;
+using Slush.DAO.GroupDao;
 using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
 
@@ -50,6 +52,33 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbPublishers.AddAsync(result);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Publisher>> GetPublisher(Guid id)
+        {
+            var response = await _publisherDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePublisher(Guid id)
+        {
+            await _publisherDao.DeletePublisher(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePublisher(Guid id, [FromBody] PublisherModel publisher)
+        {
+            var result = new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt);
+            await _publisherDao.UpdatePublisher(result);
+            return NoContent();
         }
     }
 }

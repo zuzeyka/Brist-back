@@ -51,5 +51,32 @@ namespace FullStackBrist.Server.Controllers
             var response = _dataContext.dbMinimalSystemRequirements.AddAsync(result);
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MinimalSystemRequirement>> GetMinimalSystemRequirement(Guid id)
+        {
+            var response = await _minimalSystemRequirementDao.GetById(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMinimalSystemRequirement(Guid id)
+        {
+            await _minimalSystemRequirementDao.DeleteMinimalSystemRequirement(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMinimalSystemRequirement(Guid id, [FromBody] MinimalSystemRequirementModel requirement)
+        {
+            var result = new MinimalSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt);
+            await _minimalSystemRequirementDao.UpdateMinimalSystemRequirement(result);
+            return NoContent();
+        }
     }
 }
