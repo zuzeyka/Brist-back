@@ -3,6 +3,7 @@ using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -26,7 +27,20 @@ namespace Slush.DAO.ProfileDao
                 content = s.content,
                 createdAt = s.createdAt}).ToListAsync();
         }
-        public void Add(UserComment comment)
+        public async Task UpdateCategoriesByAuthor(CategoryByAuthor category)
+        {
+            var existing = await _context.dbCategoriesByAuthors.FindAsync(category.id);
+            if (existing != null)
+            {
+                existing.name = category.name;
+                existing.description = category.description;
+                existing.image = category.image;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Add(UserComment comment)
         {
             _context.dbUserComments.Add(comment);
             _context.SaveChanges();

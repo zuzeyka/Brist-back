@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.GameGroupDao
 {
@@ -21,6 +22,18 @@ namespace Slush.DAO.GameGroupDao
                 gameId = g.gameId,
                 createdAt = g.createdAt}).ToListAsync();
         }
+
+        public async Task UpdateGameGroup(GameGroup group)
+        {
+            var existing = await _context.dbGameGroups.FindAsync(group.id);
+            if (existing != null)
+            {
+                existing.gameId = group.id;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(GameGroup group)
         {
             _context.dbGameGroups.Add(group);

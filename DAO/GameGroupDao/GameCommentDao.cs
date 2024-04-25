@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Store.Product;
 
@@ -22,6 +23,17 @@ namespace Slush.DAO.GameGroupDao
                 gamePostId = g.gamePostId,
                 content = g.content,
                 createdAt = g.createdAt}).ToListAsync();
+        }
+        public async Task UpdateGameComment(GameComment comment)
+        {
+            var existing = await _context.dbGameComments.FindAsync(comment.id);
+            if (existing != null)
+            {
+                existing.gamePostId = comment.id;
+                existing.content = comment.content;
+
+                await _context.SaveChangesAsync();
+            }
         }
         public void Add(GameComment comment)
         {

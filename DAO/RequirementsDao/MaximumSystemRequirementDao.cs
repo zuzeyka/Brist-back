@@ -30,6 +30,21 @@ namespace Slush.DAO.RequirementsDao
                 createdAt = r.createdAt}).ToListAsync();
         }
 
+        public async Task UpdateMaximumSystemRequirement(MaximumSystemRequirement requirement)
+        {
+            var existing = await _context.dbMaximumSystemRequirements.FindAsync(requirement.id);
+            if (existing != null)
+            {
+                existing.OS = requirement.OS;
+                existing.RAM = requirement.RAM;
+                existing.processor = requirement.processor;
+                existing.video = requirement.video;
+                existing.freeDiskSpace = requirement.freeDiskSpace;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(MaximumSystemRequirement systemRequirements)
         {
             _context.dbMaximumSystemRequirements.Add(systemRequirements);

@@ -2,6 +2,7 @@
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -30,6 +31,20 @@ namespace Slush.DAO.ProfileDao
                 createdAt = v.createdAt}).ToListAsync();
 
         }
+        public async Task UpdateVideo(Video video)
+        {
+            var existing = await _context.dbVideos.FindAsync(video.id);
+            if (existing != null)
+            {
+                existing.title = video.title;
+                existing.description = video.description;
+                existing.likesCount = video.likesCount;
+                existing.dislikesCount = video.dislikesCount;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Video video)
         {
             _context.dbVideos.Add(video);

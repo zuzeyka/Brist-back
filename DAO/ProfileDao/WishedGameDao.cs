@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Profile;
 
@@ -24,6 +25,18 @@ namespace Slush.DAO.ProfileDao
                 userId = s.userId,
                 createdAt = s.createdAt}).ToListAsync();
         }
+
+        public async Task UpdateWishedGame(WishedGame wishedGame)
+        {
+            var existing = await _context.dbWishedGames.FindAsync(wishedGame.id);
+            if (existing != null)
+            {
+                existing.ownedGameId = wishedGame.id;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(WishedGame game)
         {
             _context.dbWishedGames.Add(game);

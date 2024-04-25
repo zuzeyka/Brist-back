@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Store.Product;
 using System.Text.Json;
@@ -33,6 +34,21 @@ namespace Slush.DAO.GameInShopDao
                                         })
                                         .ToListAsync();
         }
+
+        public async Task UpdateGameInShop(GameInShop shop)
+        {
+            var existing = await _context.dbGamesInShops.FindAsync(shop.id);
+            if (existing != null)
+            {
+                existing.name = shop.name;
+                existing.price = shop.price;
+                existing.discount = shop.discount;
+                existing.previeImage = shop.previeImage;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(GameInShop game)
         {
             _context.dbGamesInShops.Add(game);

@@ -29,6 +29,22 @@ namespace Slush.DAO.CreatorsDao
                 createdAt = p.createdAt }).ToListAsync();
         }
 
+        public async Task UpdatePublisher(Publisher publisher)
+        {
+            var existing = await _context.dbPublishers.FindAsync(publisher.id);
+            if (existing != null)
+            {
+                existing.subscribersCount = publisher.subscribersCount;
+                existing.name = publisher.name;
+                existing.description = publisher.description;
+                existing.avatar = publisher.avatar;
+                existing.backgroundImage = publisher.backgroundImage;
+                existing.urlForNewsPage = publisher.urlForNewsPage;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Publisher publisher)
         {
             _context.dbPublishers.Add(publisher);

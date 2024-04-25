@@ -2,6 +2,7 @@
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -27,6 +28,21 @@ namespace Slush.DAO.ProfileDao
                 phone = u.phone,
                 createdAt = u.createdAt}).ToListAsync();
         }
+        public async Task UpdateUser(User user)
+        {
+            var existing = await _context.dbUsers.FindAsync(user.id);
+            if (existing != null)
+            {
+                existing.name = user.name;
+                existing.passwordSalt = user.passwordSalt;
+                existing.salt = user.salt;
+                existing.email = user.email;
+                existing.phone = user.phone;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(User user)
         {
             _context.dbUsers.Add(user);

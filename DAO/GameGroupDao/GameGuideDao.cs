@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.GameGroupDao
 {
@@ -29,6 +30,25 @@ namespace Slush.DAO.GameGroupDao
                 createdAt = g.createdAt }).ToListAsync();
 
         }
+
+        public async Task UpdateGameGuide(GameGuide guide)
+        {
+            var existing = await _context.dbGameGuides.FindAsync(guide.id);
+            if (existing != null)
+            {
+                existing.title = guide.title;
+                existing.description = guide.description;
+                existing.likesCount = guide.likesCount;
+                existing.discussionId = guide.discussionId;
+                existing.gameId = guide.gameId;
+                existing.authorId = guide.authorId;
+                existing.gameGroupId = guide.gameGroupId;
+                existing.content = guide.content;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(GameGuide guide)
         {
             _context.dbGameGuides.Add(guide);

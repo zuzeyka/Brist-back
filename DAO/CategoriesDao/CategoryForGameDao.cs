@@ -23,6 +23,19 @@ namespace Slush.DAO.CategoriesDao
                                                                                             categoryId = c.categoryId,
                                                                                             createdAt = c.createdAt}).ToListAsync();
         }
+
+        public async Task UpdateCategoryForGame(CategoryForGame category)
+        {
+            var existing = await _context.dbCategoriesForGame.FindAsync(category.id);
+            if (existing != null)
+            {
+                existing.gameId = category.gameId;
+                existing.categoryId = category.categoryId;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(CategoryForGame category)
         {
             _context.dbCategoriesForGame.Add(category);

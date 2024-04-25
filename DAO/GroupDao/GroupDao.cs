@@ -2,6 +2,7 @@
 using Slush.Data;
 using Slush.Data.Entity.Community;
 using Microsoft.EntityFrameworkCore;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.GroupDao
 {
@@ -28,6 +29,18 @@ namespace Slush.DAO.GroupDao
             }).ToListAsync();
 
         }
+        public async Task UpdateGroup(Group group)
+        {
+            var existing = await _context.dbGroups.FindAsync(group.id);
+            if (existing != null)
+            {
+                existing.name = group.name;
+                existing.description = group.description;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Group group)
         {
             _context.dbGroups.Add(group);

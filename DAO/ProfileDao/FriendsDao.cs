@@ -3,6 +3,7 @@ using Slush.Data;
 using Slush.Entity.Profile;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -26,6 +27,18 @@ namespace Slush.DAO.ProfileDao
                 createdAt = f.createdAt}).ToListAsync();
 
         }
+
+        public async Task UpdateFriends(Friends friends)
+        {
+            var existing = await _context.dbFriends.FindAsync(friends.id);
+            if (existing != null)
+            {
+                existing.friendId = friends.id;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Friends friend)
         {
             _context.dbFriends.Add(friend);

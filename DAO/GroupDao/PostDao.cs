@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Community.GameGroup;
 
@@ -31,6 +32,18 @@ namespace Slush.DAO.GroupDao
                 createdAt = p.createdAt}).ToListAsync();
 
 
+        }
+        public async Task UpdatePost(Post post)
+        {
+            var existing = await _context.dbPosts.FindAsync(post.id);
+            if (existing != null)
+            {
+                existing.title = post.title;
+                existing.description = post.description;
+                existing.likesCount = post.likesCount;
+                existing.content = post.content;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public void Add(Post post)

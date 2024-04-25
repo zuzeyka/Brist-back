@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Community.GameGroup;
 using System.Linq;
@@ -30,6 +31,16 @@ namespace Slush.DAO.GroupDao
             }).ToListAsync();
 
 
+        }
+        public async Task UpdateGroupComment(GroupComment comment)
+        {
+            var existing = await _context.dbGroupComments.FindAsync(comment.id);
+            if (existing != null)
+            {
+                existing.content = comment.content;
+
+                await _context.SaveChangesAsync();
+            }
         }
         public void Add(GroupComment comment)
         {

@@ -28,6 +28,17 @@ namespace Slush.DAO.LanguageDao
 
         }
 
+        public async Task UpdateLanguageInGame(LanguageInGame language)
+        {
+            var existing = await _context.dbLanguagesInGame.FindAsync(language.id);
+            if (existing != null)
+            {
+                existing.languageId = language.id;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(LanguageInGame language)
         {
             _context.dbLanguagesInGame.Add(language);

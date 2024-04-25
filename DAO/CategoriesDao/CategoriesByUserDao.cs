@@ -26,6 +26,19 @@ namespace Slush.DAO.CategoriesDao
             }).ToListAsync();
 
         }
+
+        public async Task UpdateCategoriesByUser(CategoryByUser category)
+        {
+            var existing = await _context.dbCategoriesByUsers.FindAsync(category.id);
+            if (existing != null)
+            {
+                existing.name = category.name;
+                existing.description = category.description;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(CategoryByUser category)
         {
             _context.dbCategoriesByUsers.Add(category);

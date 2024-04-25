@@ -31,6 +31,23 @@ namespace Slush.DAO.CreatorsDao
             }).ToListAsync();
 
         }
+
+        public async Task UpdateDeveloper(Developer developer)
+        {
+            var existing = await _context.dbDevelopers.FindAsync(developer.id);
+            if (existing != null)
+            {
+                existing.subscribersCount = developer.subscribersCount;
+                existing.name = developer.name;
+                existing.description = developer.description;
+                existing.avatar = developer.avatar;
+                existing.backgroundImage = developer.backgroundImage;
+                existing.urlForNewsPage = developer.urlForNewsPage;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Developer developer)
         {
             _context.dbDevelopers.Add(developer);

@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Slush.Data.Entity;
 
 namespace Slush.DAO.GameGroupDao
 {
@@ -27,6 +28,24 @@ namespace Slush.DAO.GameGroupDao
                 content = g.content,
                 createdAt = g.createdAt}).ToListAsync();
         }
+
+        public async Task UpdateGameNews(GameNews news)
+        {
+            var existing = await _context.dbGameNews.FindAsync(news.id);
+            if (existing != null)
+            {
+                existing.title = news.title;
+                existing.description = news.description;
+                existing.likesCount = news.likesCount;
+                existing.dislikesCount = news.dislikesCount;
+                existing.gameId = news.gameId;
+                existing.authorId = news.authorId;
+                existing.content = news.content;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(GameNews news)
         {
             _context.dbGameNews.Add(news);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
@@ -31,6 +32,22 @@ namespace Slush.DAO.ProfileDao
                 screenshotUrl = s.screenshotUrl,
                 createdAt = s.createdAt}).ToListAsync();
         }
+
+        public async Task UpdateScreenshot(Screenshot screenshot)
+        {
+            var existing = await _context.dbScreenshots.FindAsync(screenshot.id);
+            if (existing != null)
+            {
+                existing.title = screenshot.title;
+                existing.description = screenshot.description;
+                existing.likesCount = screenshot.likesCount;
+                existing.dislikesCount = screenshot.dislikesCount;
+                existing.discussionId = screenshot.discussionId;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Add(Screenshot screenshot)
         {
             _context.dbScreenshots.Add(screenshot);
