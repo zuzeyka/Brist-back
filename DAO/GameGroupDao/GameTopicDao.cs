@@ -15,7 +15,9 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GameTopic>> GetAllGameTopics()
         {
-            return await _context.dbGameTopics.Select(g => new GameTopic { 
+            return await _context.dbGameTopics
+                .Where(g => g.deleteAt == null)
+                .Select(g => new GameTopic { 
                 id = g.id,
                 attachedId = g.attachedId,
                 name = g.name,
@@ -26,6 +28,21 @@ namespace Slush.DAO.GameGroupDao
         {
             _context.dbGameTopics.Add(topics);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteGameTopic(Guid id)
+        {
+            var requirement = await _context.dbGameTopics.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<GameTopic> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbGameTopics.FirstOrDefault(g => g.id == id));
         }
     }
 }

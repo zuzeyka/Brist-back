@@ -1,6 +1,7 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Slush.Data.Entity.Community.GameGroup;
 
 namespace Slush.DAO.LanguageDao
 {
@@ -15,7 +16,9 @@ namespace Slush.DAO.LanguageDao
 
         public async Task<List<LanguageInGame>> GetAllLanguageInGames()
         {
-            return await _context.dbLanguagesInGame.Select(l => new LanguageInGame
+            return await _context.dbLanguagesInGame
+                .Where(l => l.deleteAt == null)
+                .Select(l => new LanguageInGame
             {
                 id = l.id,
                 gameId = l.gameId,
@@ -29,6 +32,21 @@ namespace Slush.DAO.LanguageDao
         {
             _context.dbLanguagesInGame.Add(language);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteLanguageInGame(Guid id)
+        {
+            var requirement = await _context.dbLanguagesInGame.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<LanguageInGame> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbLanguagesInGame.FirstOrDefault(l => l.id == id));
         }
     }
 }

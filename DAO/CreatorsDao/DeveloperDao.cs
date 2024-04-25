@@ -16,7 +16,9 @@ namespace Slush.DAO.CreatorsDao
 
         public async Task<List<Developer>> GetAllDevelopersDao()
         {
-            return await _context.dbDevelopers.Select(d => new Developer
+            return await _context.dbDevelopers
+                .Where(d => d.deleteAt == null)
+                .Select(d => new Developer
             {
                 id = d.id,
                 subscribersCount = d.subscribersCount,
@@ -33,6 +35,21 @@ namespace Slush.DAO.CreatorsDao
         {
             _context.dbDevelopers.Add(developer);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteDeveloper(Guid id)
+        {
+            var requirement = await _context.dbDevelopers.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Developer> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbDevelopers.FirstOrDefault(d => d.id == id));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
 
@@ -16,7 +17,9 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<Screenshot>> GetAllScreenshots()
         {
-            return await _context.dbScreenshots.Select(s => new Screenshot {
+            return await _context.dbScreenshots
+                .Where(s => s.deleteAt == null)
+                .Select(s => new Screenshot {
                 id = s.id,
                 title = s.title,
                 description = s.description,
@@ -32,6 +35,21 @@ namespace Slush.DAO.ProfileDao
         {
             _context.dbScreenshots.Add(screenshot);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteScreenshot(Guid id)
+        {
+            var requirement = await _context.dbScreenshots.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Screenshot> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbScreenshots.FirstOrDefault(s => s.id == id));
         }
     }
 }

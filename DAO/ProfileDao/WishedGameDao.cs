@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
+using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Profile;
 
 namespace Slush.DAO.ProfileDao
@@ -15,7 +16,9 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<List<WishedGame>> GetAllWishedGames()
         {
-            return await _context.dbWishedGames.Select(s => new WishedGame {
+            return await _context.dbWishedGames
+                .Where(s => s.deleteAt == null)
+                .Select(s => new WishedGame {
                 id = s.id,
                 ownedGameId = s.ownedGameId,
                 userId = s.userId,
@@ -25,6 +28,21 @@ namespace Slush.DAO.ProfileDao
         {
             _context.dbWishedGames.Add(game);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteWishedGame(Guid id)
+        {
+            var requirement = await _context.dbWishedGames.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<WishedGame> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbWishedGames.FirstOrDefault(w => w.id == id));
         }
     }
 }

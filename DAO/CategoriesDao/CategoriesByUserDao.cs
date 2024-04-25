@@ -15,7 +15,9 @@ namespace Slush.DAO.CategoriesDao
 
         public async Task<List<CategoryByUser>> GetAllCategoriesByUser()
         {
-            return await _context.dbCategoriesByUsers.Select(c => new CategoryByUser
+            return await _context.dbCategoriesByUsers
+                .Where(c => c.deleteAt == null)
+                .Select(c => new CategoryByUser
             {
                 id = c.id,
                 name = c.name,
@@ -28,6 +30,21 @@ namespace Slush.DAO.CategoriesDao
         {
             _context.dbCategoriesByUsers.Add(category);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteCategoryByUser(Guid id)
+        {
+            var requirement = await _context.dbCategoriesByUsers.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CategoryByUser> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbCategoriesByUsers.FirstOrDefault(c => c.id == id));
         }
     }
 }

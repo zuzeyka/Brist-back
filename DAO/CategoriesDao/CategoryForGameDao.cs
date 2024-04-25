@@ -16,7 +16,9 @@ namespace Slush.DAO.CategoriesDao
 
         public async Task<List<CategoryForGame>> GetAll()
         {
-            return await _context.dbCategoriesForGame.Select(c => new CategoryForGame{      id = c.id,
+            return await _context.dbCategoriesForGame
+                .Where(c => c.deleteAt == null)
+                .Select(c => new CategoryForGame{      id = c.id,
                                                                                             gameId = c.gameId,
                                                                                             categoryId = c.categoryId,
                                                                                             createdAt = c.createdAt}).ToListAsync();
@@ -25,6 +27,21 @@ namespace Slush.DAO.CategoriesDao
         {
             _context.dbCategoriesForGame.Add(category);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteCategoryForGame(Guid id)
+        {
+            var requirement = await _context.dbCategoriesForGame.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CategoryForGame> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbCategoriesForGame.FirstOrDefault(c => c.id == id));
         }
     }
 }

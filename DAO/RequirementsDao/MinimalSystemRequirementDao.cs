@@ -2,6 +2,7 @@
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Profile;
+using Slush.Data.Entity.Community.GameGroup;
 
 namespace Slush.DAO.RequirementsDao
 {
@@ -16,7 +17,9 @@ namespace Slush.DAO.RequirementsDao
 
         public async Task<List<MinimalSystemRequirement>> GetAllMinimalSystemRequirements()
         {
-            return await _context.dbMinimalSystemRequirements.Select(r => new MinimalSystemRequirement {
+            return await _context.dbMinimalSystemRequirements
+                .Where(r => r.deleteAt == null)
+                .Select(r => new MinimalSystemRequirement {
                 id = r.id,
                 gameId = r.gameId,
                 OS = r.OS,
@@ -31,6 +34,20 @@ namespace Slush.DAO.RequirementsDao
         {
             _context.dbMinimalSystemRequirements.Add(systemRequirements);
             _context.SaveChanges();
+        }
+        public async Task DeleteMinimalSystemRequirement(Guid id)
+        {
+            var requirement = await _context.dbMinimalSystemRequirements.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<MinimalSystemRequirement> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbMinimalSystemRequirements.FirstOrDefault(m => m.id == id));
         }
     }
 }

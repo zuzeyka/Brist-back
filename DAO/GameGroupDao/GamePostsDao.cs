@@ -15,7 +15,9 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<List<GamePosts>> GetAllGamePosts()
         {
-            return await _context.dbGamePosts.Select(g => new GamePosts {
+            return await _context.dbGamePosts
+                .Where(g => g.deleteAt == null)
+                .Select(g => new GamePosts {
                 id = g.id,
                 title = g.title,
                 description = g.description,
@@ -31,6 +33,21 @@ namespace Slush.DAO.GameGroupDao
         {
             _context.dbGamePosts.Add(posts);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteGamePosts(Guid id)
+        {
+            var requirement = await _context.dbGamePosts.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<GamePosts> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbGamePosts.FirstOrDefault(g => g.id == id));
         }
     }
 }

@@ -16,7 +16,9 @@ namespace Slush.DAO.CreatorsDao
 
         public async Task<List<Publisher>> GetAllPublishers()
         {
-            return await _context.dbPublishers.Select(p => new Publisher{  
+            return await _context.dbPublishers
+                .Where(p => p.deleteAt == null)
+                .Select(p => new Publisher{  
                 id = p.id,
                 subscribersCount = p.subscribersCount,
                 name = p.name,
@@ -31,6 +33,21 @@ namespace Slush.DAO.CreatorsDao
         {
             _context.dbPublishers.Add(publisher);
             _context.SaveChanges();
+        }
+
+        public async Task DeletePublisher(Guid id)
+        {
+            var requirement = await _context.dbPublishers.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Publisher> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbPublishers.FirstOrDefault(p => p.id == id));
         }
     }
 }

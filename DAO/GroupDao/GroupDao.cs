@@ -16,7 +16,9 @@ namespace Slush.DAO.GroupDao
 
         public async Task<List<Group>> GetAllGroups()
         {
-            return await _context.dbGroups.Select(g => new Group
+            return await _context.dbGroups
+                .Where(g => g.deleteAt == null)
+                .Select(g => new Group
             {
                 id = g.id,
                 attachedId = g.attachedId,
@@ -30,6 +32,21 @@ namespace Slush.DAO.GroupDao
         {
             _context.dbGroups.Add(group);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteGroup(Guid id)
+        {
+            var requirement = await _context.dbGroups.FindAsync(id);
+            if (requirement != null)
+            {
+                requirement.deleteAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Group> GetById(Guid id)
+        {
+            return await Task.FromResult(_context.dbGroups.FirstOrDefault(g => g.id == id));
         }
     }
 }
