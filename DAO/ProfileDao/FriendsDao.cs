@@ -57,7 +57,23 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<Friends> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbFriends.FirstOrDefault(f => f.id == id));
+            var response = await _context.dbFriends
+                .Where(x => x.id == id)
+                .Select(f => new Friends
+                {
+                    id = f.id,
+                    userId = f.userId,
+                    friendId = f.friendId,
+                    createdAt = f.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

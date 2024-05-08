@@ -24,8 +24,5 @@ namespace Slush.Data.Entity.Community
         public String description { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-        public virtual List<User> users { get; set; }               = null!;
-        public virtual List<Topic> topics { get; set; }             = null!;
-        public virtual List<GroupComment> comments { get; set; } = null!;
     }
 }

@@ -24,6 +24,5 @@ namespace Slush.Data.Entity.Community.GameGroup
         public String description { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-        public virtual List<GamePosts> posts { get; set; } = null!; // virtual связи всем поставить !!!!!!!!!
     }
 }

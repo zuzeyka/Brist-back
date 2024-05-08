@@ -21,10 +21,5 @@ namespace Slush.Data.Entity.Community.GameGroup
         public Guid gameId { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-
-        public virtual List<GameNews> news { get; set; }                = null!;
-        public virtual List<Video> videos { get; set; }                 = null!;
-        public virtual List<Screenshot> screenshots { get; set; }       = null!;
-        public virtual List<GameTopic> topics { get; set; } = null!;
     }
 }

@@ -62,7 +62,27 @@ namespace Slush.DAO.RequirementsDao
 
         public async Task<MinimalSystemRequirement> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbMinimalSystemRequirements.FirstOrDefault(m => m.id == id));
+            var response = await _context.dbMinimalSystemRequirements
+                .Where(x => x.id == id)
+                .Select(r => new MinimalSystemRequirement
+                {
+                    id = r.id,
+                    gameId = r.gameId,
+                    OS = r.OS,
+                    processor = r.processor,
+                    RAM = r.RAM,
+                    video = r.video,
+                    freeDiskSpace = r.freeDiskSpace,
+                    createdAt = r.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

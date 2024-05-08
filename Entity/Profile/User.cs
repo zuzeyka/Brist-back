@@ -33,13 +33,5 @@ namespace Slush.Data.Entity.Profile
 
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-
-        public virtual List<OwnedGame> ownedGames { get; set; }     = null!;
-        public virtual List<WishedGame> wishedGames { get; set; }   = null!;
-        public virtual List<Friends> friends { get; set; }          = null!;
-        public virtual List<UserComment> comments { get; set; }     = null!;
-        public virtual List<Screenshot> screenshots { get; set; }   = null!;
-        public virtual List<Video> videos { get; set; }             = null!;
-        public virtual List<Group> groups { get; set; } = null!;
     }
 }

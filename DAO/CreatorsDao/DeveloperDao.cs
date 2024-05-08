@@ -66,7 +66,27 @@ namespace Slush.DAO.CreatorsDao
 
         public async Task<Developer> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbDevelopers.FirstOrDefault(d => d.id == id));
+            var response = await _context.dbDevelopers
+                .Where(x => x.id == id)
+                .Select(d => new Developer
+                {
+                    id = d.id,
+                    subscribersCount = d.subscribersCount,
+                    name = d.name,
+                    description = d.description,
+                    avatar = d.avatar,
+                    backgroundImage = d.backgroundImage,
+                    urlForNewsPage = d.urlForNewsPage,
+                    createdAt = d.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

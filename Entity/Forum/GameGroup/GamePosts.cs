@@ -8,7 +8,7 @@ namespace Slush.Data.Entity.Community.GameGroup
         {
         }
 
-        public GamePosts(Guid id, String title, String? description, int likesCount, int dislikesCount, Guid discussionId, Guid gameId, Guid authorId, String content, DateTime? createdAt)
+        public GamePosts(Guid id, String title, String? description, int likesCount, int dislikesCount, Guid discussionId, Guid gameId, Guid gameTopicId, Guid authorId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -17,6 +17,7 @@ namespace Slush.Data.Entity.Community.GameGroup
             this.dislikesCount = dislikesCount;
             this.discussionId = discussionId;
             this.gameId = gameId;
+            this.gameTopicId = gameTopicId;
             this.authorId = authorId;
             this.content = content;
             this.createdAt = createdAt;
@@ -29,11 +30,10 @@ namespace Slush.Data.Entity.Community.GameGroup
         public int dislikesCount { get; set; }
         public Guid discussionId { get; set; }
         public Guid gameId { get; set; }
+        public Guid gameTopicId { get; set; }
         public Guid authorId { get; set; }
         public String content { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-        public virtual GameGroup gameGroup { get; set; } = null!;
-        public virtual List<GameComment> comments { get; set; } = null!;
     }
 }

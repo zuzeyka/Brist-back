@@ -67,7 +67,30 @@ namespace Slush.DAO.GameInShopDao
 
         public async Task<DLCInShop> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbDLCsInShop.FirstOrDefault(d => d.id == id));
+            var response =  await _context.dbDLCsInShop
+                .Where(x => x.id == id)
+                .Select(d => new DLCInShop
+                {
+                    id = d.id,
+                    gameId = d.gameId,
+                    name = d.name,
+                    price = d.price,
+                    discount = d.discount,
+                    previeImage = d.previeImage,
+                    gameImages = d.gameImages,
+                    dateOfRelease = d.dateOfRelease,
+                    developerId = d.developerId,
+                    publisherId = d.publisherId,
+                    createdAt = d.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

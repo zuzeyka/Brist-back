@@ -58,7 +58,24 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<UserComment> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbUserComments.FirstOrDefault(u => u.id == id));
+            var response = await _context.dbUserComments
+                .Where(x => x.id == id)
+                .Select(s => new UserComment
+                {
+                    id = s.id,
+                    userId = s.userId,
+                    authorId = s.authorId,
+                    content = s.content,
+                    createdAt = s.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

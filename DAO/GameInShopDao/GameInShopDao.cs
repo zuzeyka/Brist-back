@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
@@ -57,17 +58,57 @@ namespace Slush.DAO.GameInShopDao
 
         public async Task DeleteGameInShop(Guid id)
         {
-            var requirement = await _context.dbGamesInShops.FindAsync(id);
+            var requirement = await _context.dbGamesInShops
+                        .Where(x => x.id == id)
+                        .Select(g => new GameInShop
+                        {
+                            id = Guid.Parse(g.id.ToString()),
+                            name = g.name,
+                            price = g.price,
+                            discount = g.discount,
+                            previeImage = g.previeImage,
+                            dateOfRelease = g.dateOfRelease,
+                            developerId = g.developerId,
+                            publisherId = g.publisherId,
+                            urlForContent = g.urlForContent,
+                            createdAt = g.createdAt
+                        })
+                        .FirstOrDefaultAsync();
             if (requirement != null)
             {
-                requirement.deleteAt = DateTime.Now;
+                requirement.deleteAt = DateTime.MinValue;
+
+                _context.Update<GameInShop>(requirement);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<GameInShop> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbGamesInShops.FirstOrDefault(g => g.id == id));
+            var response = await _context.dbGamesInShops
+                   .Where(x => x.id == id)
+                   .Select(g => new GameInShop
+                   {
+                       id = Guid.Parse(g.id.ToString()),
+                       name = g.name,
+                       price = g.price,
+                       discount = g.discount,
+                       previeImage = g.previeImage,
+                       dateOfRelease = g.dateOfRelease,
+                       developerId = g.developerId,
+                       publisherId = g.publisherId,
+                       urlForContent = g.urlForContent,
+                       createdAt = g.createdAt
+                   })
+                   .FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

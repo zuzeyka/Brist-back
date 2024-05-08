@@ -57,7 +57,23 @@ namespace Slush.DAO.LanguageDao
 
         public async Task<LanguageInGame> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbLanguagesInGame.FirstOrDefault(l => l.id == id));
+            var response = await _context.dbLanguagesInGame
+                .Where(x => x.id == id)
+                .Select(l => new LanguageInGame
+                {
+                    id = l.id,
+                    gameId = l.gameId,
+                    languageId = l.languageId,
+                    createdAt = l.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

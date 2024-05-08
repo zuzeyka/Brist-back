@@ -33,11 +33,5 @@ namespace Slush.Entity.Store.Product
         public String urlForContent { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-
-        public virtual List<String> categoriesId { get; set; }           = null!;
-        public virtual List<String> gameImages { get; set; }           = null!;
-        public virtual List<LanguageInGame> languages { get; set; }    = null!;
-        public virtual List<String> languagesId { get; set; }          = null!;
-        public virtual List<String> systemRequirementsId { get; set; } = null!;
     }
 }

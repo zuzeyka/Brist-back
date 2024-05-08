@@ -64,7 +64,29 @@ namespace Slush.DAO.GroupDao
 
         public async Task<Post> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbPosts.FirstOrDefault(p => p.id == id));
+            var response = await _context.dbPosts
+                .Where(x => x.id == id)
+                .Select(p => new Post
+                {
+                    id = p.id,
+                    title = p.title,
+                    description = p.description,
+                    likesCount = p.likesCount,
+                    dislikesCount = p.dislikesCount,
+                    discussionId = p.discussionId,
+                    gameId = p.gameId,
+                    authorId = p.authorId,
+                    content = p.content,
+                    createdAt = p.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

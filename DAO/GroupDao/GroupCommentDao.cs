@@ -60,7 +60,24 @@ namespace Slush.DAO.GroupDao
 
         public async Task<GroupComment> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbGroupComments.FirstOrDefault(g => g.id == id));
+            var response = await _context.dbGroupComments
+                .Where(x => x.id == id)
+                .Select(g => new GroupComment
+                {
+                    id = g.id,
+                    groupId = g.groupId,
+                    content = g.content,
+                    userId = g.userId,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

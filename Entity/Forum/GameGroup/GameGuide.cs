@@ -31,6 +31,5 @@
         public String content {  get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-        public virtual GameGroup gameGroup { get; set; } = null!;
     }
 }

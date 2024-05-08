@@ -52,7 +52,22 @@ namespace Slush.DAO.GameGroupDao
 
         public async Task<GameGroup> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbGameGroups.FirstOrDefault(g => g.id == id));
+            var response = await _context.dbGameGroups
+                .Where(x => x.id == id)
+                .Select(g => new GameGroup
+                {
+                    id = g.id,
+                    gameId = g.gameId,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

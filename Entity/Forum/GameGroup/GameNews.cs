@@ -6,7 +6,7 @@
         {
         }
 
-        public GameNews(Guid id, String title, String? description, int likesCount, int dislikesCount, Guid gameId, Guid authorId, String content, DateTime? createdAt)
+        public GameNews(Guid id, String title, String? description, int likesCount, int dislikesCount, Guid gameId, Guid gameGroupId, Guid authorId, String content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -14,6 +14,7 @@
             this.likesCount = likesCount;
             this.dislikesCount = dislikesCount;
             this.gameId = gameId;
+            this.gameGroupId = gameGroupId;
             this.authorId = authorId;
             this.content = content;
             this.createdAt = createdAt;
@@ -26,10 +27,10 @@
         public int dislikesCount { get; set; }
         public Guid discussionId { get; set; }
         public Guid gameId { get; set; }
+        public Guid gameGroupId { get; set; }
         public Guid authorId { get; set; }
         public String content { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
-        public virtual GameGroup gameGroup { get; set; } = null!;
     }
 }
