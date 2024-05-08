@@ -55,7 +55,7 @@ namespace Slush.DAO.ProfileDao
 
         public async Task<WishedGame> GetById(Guid id)
         {
-            var response =  await _context.dbWishedGames
+            var response = await _context.dbWishedGames
                 .Where(x => x.id == id)
                 .Select(s => new WishedGame
                 {
@@ -64,6 +64,14 @@ namespace Slush.DAO.ProfileDao
                     userId = s.userId,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

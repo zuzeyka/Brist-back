@@ -31,6 +31,7 @@ namespace FullStackBrist.Server.Controllers
 
             var response = _gameComment.Select(g => new GameComment(id: g.id,
                                                                     gamePostId: g.gamePostId,
+                                                                    authorId: g.authorId,
                                                                     content: g.content,
                                                                     createdAt: g.createdAt)).ToList();
 
@@ -43,6 +44,7 @@ namespace FullStackBrist.Server.Controllers
             var result = new GameComment(Guid.NewGuid(),
                                             model.gamePostId, 
                                             model.content,
+                                            model.authorId,
                                             DateTime.Now
                                             );
             var response = _dataContext.dbGameComments.AddAsync(result);
@@ -71,7 +73,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameComment(Guid id, [FromBody] GameCommentModel game)
         {
-            var gameRes = new GameComment(id, game.gamePostId, game.content, game.createdAt);
+            var gameRes = new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt);
             await _gameCommentDao.UpdateGameComment(gameRes);
             return NoContent();
         }

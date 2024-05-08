@@ -9,6 +9,7 @@
         public int dislikesCount { get; set; }
         public Guid discussionId { get; set; }
         public Guid gameId { get; set; }
+        public Guid gameTopicId { get; set; }
         public Guid authorId { get; set; }
         public String content { get; set; }
         public DateTime createdAt { get; set; }

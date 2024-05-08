@@ -41,7 +41,6 @@ namespace Slush.DAO.GameGroupDao
                 existing.dislikesCount = post.dislikesCount;
                 existing.gameId = post.gameId;
                 existing.authorId = post.authorId;
-                existing.comments = post.comments;
 
                 await _context.SaveChangesAsync();
             }
