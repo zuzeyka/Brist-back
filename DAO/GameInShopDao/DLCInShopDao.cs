@@ -28,7 +28,6 @@ namespace Slush.DAO.GameInShopDao
                 price = d.price,
                 discount = d.discount,
                 previeImage = d.previeImage,
-                gameImages = d.gameImages,
                 dateOfRelease = d.dateOfRelease,
                 developerId = d.developerId,
                 publisherId = d.publisherId,
@@ -43,7 +42,6 @@ namespace Slush.DAO.GameInShopDao
                 existing.price = dlc.price;
                 existing.discount = dlc.discount;
                 existing.previeImage = dlc.previeImage;
-                existing.gameImages = dlc.gameImages;
 
                 await _context.SaveChangesAsync();
             }
@@ -77,7 +75,6 @@ namespace Slush.DAO.GameInShopDao
                     price = d.price,
                     discount = d.discount,
                     previeImage = d.previeImage,
-                    gameImages = d.gameImages,
                     dateOfRelease = d.dateOfRelease,
                     developerId = d.developerId,
                     publisherId = d.publisherId,

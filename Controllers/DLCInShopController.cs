@@ -36,7 +36,6 @@ namespace FullStackBrist.Server.Controllers
                                                           price: d.price,
                                                           discount: d.discount,
                                                           previeImage: d.previeImage,
-                                                          gameImages: d.gameImages,
                                                           dateOfRelease: d.dateOfRelease,
                                                           developerId: d.developerId,
                                                           publisherId: d.publisherId,
@@ -53,7 +52,6 @@ namespace FullStackBrist.Server.Controllers
                                         model.price,
                                         model.discount,
                                         model.previeImage,
-                                        model.gameImages,
                                         model.dateOfRelease,
                                         model.developerId,
                                         model.publisherId,
@@ -87,7 +85,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model)
         {
-            var result = new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.previeImage, model.gameImages, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt);
+            var result = new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.previeImage, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt);
             await _dLCInShopDao.UpdateDLCInShop(result);
             return NoContent();
         }
