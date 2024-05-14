@@ -5,7 +5,7 @@ build-docker:
   stage: build
   image: docker:stable
   only:
-    - main
+    - development_branch
   services:
     - docker:dind
   before_script:
