@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+=======
+>>>>>>> b57bf1406d7dca600907c00c4d268787db1db1bc
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
 USER app

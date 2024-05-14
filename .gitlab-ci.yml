@@ -1,0 +1,15 @@
+stages:
+  - build
+
+build-docker:
+  stage: build
+  image: docker:stable
+  only:
+    - development_branch
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u gitlab+deploy-token-1 -p ${ACCESS_TOKEN} registry.brist.loc
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} --build-arg branch=${CI_COMMIT_REF_NAME} .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
