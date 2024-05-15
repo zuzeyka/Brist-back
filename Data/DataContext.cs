@@ -7,6 +7,7 @@ using Slush.Data.Entity.Profile;
 using Slush.Data.Entity;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Entity.Store.Product;
+using Slush.Entity.Chat;
 
 namespace Slush.Data
 {
@@ -49,6 +50,9 @@ namespace Slush.Data
 
         public DbSet<DLCInShop>                dbDLCsInShop                { get; set; }
         public DbSet<GameInShop>               dbGamesInShops              { get; set; }
+
+        public DbSet<Chat>                     dbChats                     { get; set; }
+        public DbSet<Message>                  dbMessages                  { get; set; }
 
         public DataContext(DbContextOptions options) : base(options)
         {
