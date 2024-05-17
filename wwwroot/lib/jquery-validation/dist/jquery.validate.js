@@ -406,7 +406,11 @@ $.extend( $.validator, {
 				groups = ( this.groups = {} ),
 				rules;
 			$.each( this.settings.groups, function( key, value ) {
+<<<<<<< HEAD
 				if ( typeof value === "string" ) {
+=======
+				if ( typeof value === "String" ) {
+>>>>>>> development_branch
 					value = value.split( /\s/ );
 				}
 				$.each( value, function( index, name ) {
@@ -757,7 +761,11 @@ $.extend( $.validator, {
 				return val;
 			}
 
+<<<<<<< HEAD
 			if ( typeof val === "string" ) {
+=======
+			if ( typeof val === "String" ) {
+>>>>>>> development_branch
 				return val.replace( /\r/g, "" );
 			}
 			return val;
@@ -839,7 +847,11 @@ $.extend( $.validator, {
 		// return the generic message if present and no method specific message is present
 		customDataMessage: function( element, method ) {
 			return $( element ).data( "msg" + method.charAt( 0 ).toUpperCase() +
+<<<<<<< HEAD
 				method.substring( 1 ).toLowerCase() ) || $( element ).data( "msg" );
+=======
+				method.subString( 1 ).toLowerCase() ) || $( element ).data( "msg" );
+>>>>>>> development_branch
 		},
 
 		// Return the custom message for the given element name and validation method
@@ -848,7 +860,11 @@ $.extend( $.validator, {
 			return m && ( m.constructor === String ? m : m[ method ] );
 		},
 
+<<<<<<< HEAD
 		// Return the first defined argument, allowing empty strings
+=======
+		// Return the first defined argument, allowing empty Strings
+>>>>>>> development_branch
 		findDefined: function() {
 			for ( var i = 0; i < arguments.length; i++ ) {
 				if ( arguments[ i ] !== undefined ) {
@@ -858,7 +874,11 @@ $.extend( $.validator, {
 			return undefined;
 		},
 
+<<<<<<< HEAD
 		// The second parameter 'rule' used to be a string, and extended to an object literal
+=======
+		// The second parameter 'rule' used to be a String, and extended to an object literal
+>>>>>>> development_branch
 		// of the following form:
 		// rule = {
 		//     method: "method name",
@@ -868,7 +888,11 @@ $.extend( $.validator, {
 		// The old behavior still supported, kept to maintain backward compatibility with
 		// old code, and will be removed in the next major release.
 		defaultMessage: function( element, rule ) {
+<<<<<<< HEAD
 			if ( typeof rule === "string" ) {
+=======
+			if ( typeof rule === "String" ) {
+>>>>>>> development_branch
 				rule = { method: rule };
 			}
 
@@ -876,7 +900,11 @@ $.extend( $.validator, {
 					this.customMessage( element.name, rule.method ),
 					this.customDataMessage( element, rule.method ),
 
+<<<<<<< HEAD
 					// 'title' is never undefined, so handle empty string as undefined
+=======
+					// 'title' is never undefined, so handle empty String as undefined
+>>>>>>> development_branch
 					!this.settings.ignoreTitle && element.title || undefined,
 					$.validator.messages[ rule.method ],
 					"<strong>Warning: No message defined for " + element.name + "</strong>"
@@ -1021,7 +1049,11 @@ $.extend( $.validator, {
 			}
 			if ( !message && this.settings.success ) {
 				error.text( "" );
+<<<<<<< HEAD
 				if ( typeof this.settings.success === "string" ) {
+=======
+				if ( typeof this.settings.success === "String" ) {
+>>>>>>> development_branch
 					error.addClass( this.settings.success );
 				} else {
 					this.settings.success( error, element );
@@ -1049,12 +1081,21 @@ $.extend( $.validator, {
 		// See https://api.jquery.com/category/selectors/, for CSS
 		// meta-characters that should be escaped in order to be used with JQuery
 		// as a literal part of a name/id or any selector.
+<<<<<<< HEAD
 		escapeCssMeta: function( string ) {
 			if ( string === undefined ) {
 				return "";
 			}
 
 			return string.replace( /([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1" );
+=======
+		escapeCssMeta: function( String ) {
+			if ( String === undefined ) {
+				return "";
+			}
+
+			return String.replace( /([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1" );
+>>>>>>> development_branch
 		},
 
 		idOrName: function( element ) {
@@ -1100,7 +1141,11 @@ $.extend( $.validator, {
 			"boolean": function( param ) {
 				return param;
 			},
+<<<<<<< HEAD
 			"string": function( param, element ) {
+=======
+			"String": function( param, element ) {
+>>>>>>> development_branch
 				return !!$( param, element.form ).length;
 			},
 			"function": function( param, element ) {
@@ -1149,7 +1194,11 @@ $.extend( $.validator, {
 		},
 
 		previousValue: function( element, method ) {
+<<<<<<< HEAD
 			method = typeof method === "string" && method || "remote";
+=======
+			method = typeof method === "String" && method || "remote";
+>>>>>>> development_branch
 
 			return $.data( element, "previousValue" ) || $.data( element, "previousValue", {
 				old: null,
@@ -1220,7 +1269,11 @@ $.extend( $.validator, {
 	normalizeAttributeRule: function( rules, type, method, value ) {
 
 		// Convert the value to a number for number inputs, and for text for backwards compability
+<<<<<<< HEAD
 		// allows type="date" and others to be compared as strings
+=======
+		// allows type="date" and others to be compared as Strings
+>>>>>>> development_branch
 		if ( /min|max|step/.test( method ) && ( type === null || /number|range|text/.test( type ) ) ) {
 			value = Number( value );
 
@@ -1252,7 +1305,11 @@ $.extend( $.validator, {
 			if ( method === "required" ) {
 				value = element.getAttribute( method );
 
+<<<<<<< HEAD
 				// Some browsers return an empty string for the required attribute
+=======
+				// Some browsers return an empty String for the required attribute
+>>>>>>> development_branch
 				// and non-HTML5 browsers might have required="" markup
 				if ( value === "" ) {
 					value = true;
@@ -1282,7 +1339,11 @@ $.extend( $.validator, {
 			method, value;
 
 		for ( method in $.validator.methods ) {
+<<<<<<< HEAD
 			value = $element.data( "rule" + method.charAt( 0 ).toUpperCase() + method.substring( 1 ).toLowerCase() );
+=======
+			value = $element.data( "rule" + method.charAt( 0 ).toUpperCase() + method.subString( 1 ).toLowerCase() );
+>>>>>>> development_branch
 
 			// Cast empty attributes like `data-rule-required` to `true`
 			if ( value === "" ) {
@@ -1317,7 +1378,11 @@ $.extend( $.validator, {
 			if ( val.param || val.depends ) {
 				var keepRule = true;
 				switch ( typeof val.depends ) {
+<<<<<<< HEAD
 				case "string":
+=======
+				case "String":
+>>>>>>> development_branch
 					keepRule = !!$( val.depends, element.form ).length;
 					break;
 				case "function":
@@ -1349,7 +1414,11 @@ $.extend( $.validator, {
 			if ( rules[ this ] ) {
 				if ( Array.isArray( rules[ this ] ) ) {
 					rules[ this ] = [ Number( rules[ this ][ 0 ] ), Number( rules[ this ][ 1 ] ) ];
+<<<<<<< HEAD
 				} else if ( typeof rules[ this ] === "string" ) {
+=======
+				} else if ( typeof rules[ this ] === "String" ) {
+>>>>>>> development_branch
 					parts = rules[ this ].replace( /[\[\]]/g, "" ).split( /[\s,]+/ );
 					rules[ this ] = [ Number( parts[ 0 ] ), Number( parts[ 1 ] ) ];
 				}
@@ -1374,9 +1443,15 @@ $.extend( $.validator, {
 		return rules;
 	},
 
+<<<<<<< HEAD
 	// Converts a simple string to a {string: true} rule, e.g., "required" to {required:true}
 	normalizeRule: function( data ) {
 		if ( typeof data === "string" ) {
+=======
+	// Converts a simple String to a {String: true} rule, e.g., "required" to {required:true}
+	normalizeRule: function( data ) {
+		if ( typeof data === "String" ) {
+>>>>>>> development_branch
 			var transformed = {};
 			$.each( data.split( /\s/ ), function() {
 				transformed[ this ] = true;
@@ -1407,7 +1482,11 @@ $.extend( $.validator, {
 			}
 			if ( element.nodeName.toLowerCase() === "select" ) {
 
+<<<<<<< HEAD
 				// Could be an array for select-multiple or a string, both are fine this way
+=======
+				// Could be an array for select-multiple or a String, both are fine this way
+>>>>>>> development_branch
 				var val = $( element ).val();
 				return val && val.length > 0;
 			}
@@ -1564,7 +1643,11 @@ $.extend( $.validator, {
 				return "dependency-mismatch";
 			}
 
+<<<<<<< HEAD
 			method = typeof method === "string" && method || "remote";
+=======
+			method = typeof method === "String" && method || "remote";
+>>>>>>> development_branch
 
 			var previous = this.previousValue( element, method ),
 				validator, data, optionDataString;
@@ -1575,7 +1658,11 @@ $.extend( $.validator, {
 			previous.originalMessage = previous.originalMessage || this.settings.messages[ element.name ][ method ];
 			this.settings.messages[ element.name ][ method ] = previous.message;
 
+<<<<<<< HEAD
 			param = typeof param === "string" && { url: param } || param;
+=======
+			param = typeof param === "String" && { url: param } || param;
+>>>>>>> development_branch
 			optionDataString = $.param( $.extend( { data: value }, param.data ) );
 			if ( previous.old === optionDataString ) {
 				return previous.valid;

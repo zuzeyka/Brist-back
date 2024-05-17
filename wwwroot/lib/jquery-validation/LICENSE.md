@@ -1,5 +1,9 @@
 The MIT License (MIT)
+<<<<<<< HEAD
 =====================
+=======
+
+>>>>>>> development_branch
 
 Copyright Jörn Zaefferer
 
