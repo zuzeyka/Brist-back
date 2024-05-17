@@ -1,9 +1,6 @@
 {
-<<<<<<< HEAD
-=======
 
 
->>>>>>> development_branch
   "profiles": {
     "http": {
       "commandName": "Project",
@@ -42,17 +39,12 @@
       "useSSL": true
     }
   },
-<<<<<<< HEAD
-=======
 
->>>>>>> development_branch
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-<<<<<<< HEAD
-=======
 
       "applicationUrl": "http://localhost:28083",
       "sslPort": 44327
@@ -94,14 +86,8 @@
 }
 
 
->>>>>>> development_branch
       "applicationUrl": "http://localhost:47041",
       "sslPort": 44345
     }
   }
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> development_branch
