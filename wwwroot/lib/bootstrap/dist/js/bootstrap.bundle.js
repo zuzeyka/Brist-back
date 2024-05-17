@@ -125,11 +125,7 @@
       return obj.jquery ? obj[0] : obj;
     }
 
-<<<<<<< HEAD
-    if (typeof obj === 'string' && obj.length > 0) {
-=======
     if (typeof obj === 'String' && obj.length > 0) {
->>>>>>> development_branch
       return document.querySelector(obj);
     }
 
@@ -418,11 +414,7 @@
   }
 
   function normalizeParams(originalTypeEvent, handler, delegationFn) {
-<<<<<<< HEAD
-    const delegation = typeof handler === 'string';
-=======
     const delegation = typeof handler === 'String';
->>>>>>> development_branch
     const originalHandler = delegation ? delegationFn : handler;
     let typeEvent = getTypeEvent(originalTypeEvent);
     const isNative = nativeEvents.has(typeEvent);
@@ -435,11 +427,7 @@
   }
 
   function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {
-<<<<<<< HEAD
-    if (typeof originalTypeEvent !== 'string' || !element) {
-=======
     if (typeof originalTypeEvent !== 'String' || !element) {
->>>>>>> development_branch
       return;
     }
 
@@ -523,11 +511,7 @@
     },
 
     off(element, originalTypeEvent, handler, delegationFn) {
-<<<<<<< HEAD
-      if (typeof originalTypeEvent !== 'string' || !element) {
-=======
       if (typeof originalTypeEvent !== 'String' || !element) {
->>>>>>> development_branch
         return;
       }
 
@@ -564,11 +548,7 @@
     },
 
     trigger(element, event, args) {
-<<<<<<< HEAD
-      if (typeof event !== 'string' || !element) {
-=======
       if (typeof event !== 'String' || !element) {
->>>>>>> development_branch
         return null;
       }
 
@@ -834,11 +814,7 @@
       return this.each(function () {
         const data = Alert.getOrCreateInstance(this);
 
-<<<<<<< HEAD
-        if (typeof config !== 'string') {
-=======
         if (typeof config !== 'String') {
->>>>>>> development_branch
           return;
         }
 
@@ -1115,13 +1091,8 @@
   const DefaultType$a = {
     interval: '(number|boolean)',
     keyboard: 'boolean',
-<<<<<<< HEAD
-    slide: '(boolean|string)',
-    pause: '(string|boolean)',
-=======
     slide: '(boolean|String)',
     pause: '(String|boolean)',
->>>>>>> development_branch
     wrap: 'boolean',
     touch: 'boolean'
   };
@@ -1561,19 +1532,11 @@
         };
       }
 
-<<<<<<< HEAD
-      const action = typeof config === 'string' ? config : _config.slide;
-
-      if (typeof config === 'number') {
-        data.to(config);
-      } else if (typeof action === 'string') {
-=======
       const action = typeof config === 'String' ? config : _config.slide;
 
       if (typeof config === 'number') {
         data.to(config);
       } else if (typeof action === 'String') {
->>>>>>> development_branch
         if (typeof data[action] === 'undefined') {
           throw new TypeError(`No method named "${action}"`);
         }
@@ -1865,11 +1828,7 @@
         ...Manipulator.getDataAttributes(this._element),
         ...config
       };
-<<<<<<< HEAD
-      config.toggle = Boolean(config.toggle); // Coerce string values
-=======
       config.toggle = Boolean(config.toggle); // Coerce String values
->>>>>>> development_branch
 
       config.parent = getElement(config.parent);
       typeCheckConfig(NAME$a, config, DefaultType$9);
@@ -1916,21 +1875,13 @@
       return this.each(function () {
         const _config = {};
 
-<<<<<<< HEAD
-        if (typeof config === 'string' && /show|hide/.test(config)) {
-=======
         if (typeof config === 'String' && /show|hide/.test(config)) {
->>>>>>> development_branch
           _config.toggle = false;
         }
 
         const data = Collapse.getOrCreateInstance(this, _config);
 
-<<<<<<< HEAD
-        if (typeof config === 'string') {
-=======
         if (typeof config === 'String') {
->>>>>>> development_branch
           if (typeof data[config] === 'undefined') {
             throw new TypeError(`No method named "${config}"`);
           }
@@ -2094,11 +2045,7 @@
       Object.keys(state.elements).forEach(function (name) {
         var element = state.elements[name];
         var attributes = state.attributes[name] || {};
-<<<<<<< HEAD
-        var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty string to unset them
-=======
         var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty String to unset them
->>>>>>> development_branch
 
         var style = styleProperties.reduce(function (style, property) {
           style[property] = '';
@@ -2383,11 +2330,7 @@
     } // CSS selector
 
 
-<<<<<<< HEAD
-    if (typeof arrowElement === 'string') {
-=======
     if (typeof arrowElement === 'String') {
->>>>>>> development_branch
       arrowElement = state.elements.popper.querySelector(arrowElement);
 
       if (!arrowElement) {
@@ -3810,21 +3753,12 @@
     autoClose: true
   };
   const DefaultType$8 = {
-<<<<<<< HEAD
-    offset: '(array|string|function)',
-    boundary: '(string|element)',
-    reference: '(string|element|object)',
-    display: 'string',
-    popperConfig: '(null|object|function)',
-    autoClose: '(boolean|string)'
-=======
     offset: '(array|String|function)',
     boundary: '(String|element)',
     reference: '(String|element|object)',
     display: 'String',
     popperConfig: '(null|object|function)',
     autoClose: '(boolean|String)'
->>>>>>> development_branch
   };
   /**
    * ------------------------------------------------------------------------
@@ -4034,11 +3968,7 @@
         offset
       } = this._config;
 
-<<<<<<< HEAD
-      if (typeof offset === 'string') {
-=======
       if (typeof offset === 'String') {
->>>>>>> development_branch
         return offset.split(',').map(val => Number.parseInt(val, 10));
       }
 
@@ -4097,11 +4027,7 @@
       return this.each(function () {
         const data = Dropdown.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config !== 'string') {
-=======
         if (typeof config !== 'String') {
->>>>>>> development_branch
           return;
         }
 
@@ -4354,17 +4280,10 @@
     clickCallback: null
   };
   const DefaultType$7 = {
-<<<<<<< HEAD
-    className: 'string',
-    isVisible: 'boolean',
-    isAnimated: 'boolean',
-    rootElement: '(element|string)',
-=======
     className: 'String',
     isVisible: 'boolean',
     isAnimated: 'boolean',
     rootElement: '(element|String)',
->>>>>>> development_branch
     clickCallback: '(function|null)'
   };
   const NAME$8 = 'backdrop';
@@ -4595,11 +4514,7 @@
     focus: true
   };
   const DefaultType$5 = {
-<<<<<<< HEAD
-    backdrop: '(boolean|string)',
-=======
     backdrop: '(boolean|String)',
->>>>>>> development_branch
     keyboard: 'boolean',
     focus: 'boolean'
   };
@@ -4945,11 +4860,7 @@
       return this.each(function () {
         const data = Modal.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config !== 'string') {
-=======
         if (typeof config !== 'String') {
->>>>>>> development_branch
           return;
         }
 
@@ -5200,11 +5111,7 @@
       return this.each(function () {
         const data = Offcanvas.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config !== 'string') {
-=======
         if (typeof config !== 'String') {
->>>>>>> development_branch
           return;
         }
 
@@ -5393,20 +5300,6 @@
   const DISALLOWED_ATTRIBUTES = new Set(['sanitize', 'allowList', 'sanitizeFn']);
   const DefaultType$3 = {
     animation: 'boolean',
-<<<<<<< HEAD
-    template: 'string',
-    title: '(string|element|function)',
-    trigger: 'string',
-    delay: '(number|object)',
-    html: 'boolean',
-    selector: '(string|boolean)',
-    placement: '(string|function)',
-    offset: '(array|string|function)',
-    container: '(string|element|boolean)',
-    fallbackPlacements: 'array',
-    boundary: '(string|element)',
-    customClass: '(string|function)',
-=======
     template: 'String',
     title: '(String|element|function)',
     trigger: 'String',
@@ -5419,7 +5312,6 @@
     fallbackPlacements: 'array',
     boundary: '(String|element)',
     customClass: '(String|function)',
->>>>>>> development_branch
     sanitize: 'boolean',
     sanitizeFn: '(null|function)',
     allowList: 'object',
@@ -5493,11 +5385,7 @@
       this._timeout = 0;
       this._hoverState = '';
       this._activeTrigger = {};
-<<<<<<< HEAD
-      this._popper = null; // Protected
-=======
       this._popper = null; // public
->>>>>>> development_branch
 
       this._config = this._getConfig(config);
       this.tip = null;
@@ -5714,11 +5602,7 @@
       if (this._popper !== null) {
         this._popper.update();
       }
-<<<<<<< HEAD
-    } // Protected
-=======
     } // public
->>>>>>> development_branch
 
 
     isWithContent() {
@@ -5814,11 +5698,7 @@
         offset
       } = this._config;
 
-<<<<<<< HEAD
-      if (typeof offset === 'string') {
-=======
       if (typeof offset === 'String') {
->>>>>>> development_branch
         return offset.split(',').map(val => Number.parseInt(val, 10));
       }
 
@@ -5918,11 +5798,7 @@
 
       const originalTitleType = typeof this._element.getAttribute('data-bs-original-title');
 
-<<<<<<< HEAD
-      if (title || originalTitleType !== 'string') {
-=======
       if (title || originalTitleType !== 'String') {
->>>>>>> development_branch
         this._element.setAttribute('data-bs-original-title', title || '');
 
         if (title && !this._element.getAttribute('aria-label') && !this._element.textContent) {
@@ -6083,11 +5959,7 @@
       return this.each(function () {
         const data = Tooltip.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config === 'string') {
-=======
         if (typeof config === 'String') {
->>>>>>> development_branch
           if (typeof data[config] === 'undefined') {
             throw new TypeError(`No method named "${config}"`);
           }
@@ -6132,11 +6004,7 @@
     template: '<div class="popover" role="tooltip">' + '<div class="popover-arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>'
   };
   const DefaultType$2 = { ...Tooltip.DefaultType,
-<<<<<<< HEAD
-    content: '(string|element|function)'
-=======
     content: '(String|element|function)'
->>>>>>> development_branch
   };
   const Event$1 = {
     HIDE: `hide${EVENT_KEY$3}`,
@@ -6201,11 +6069,7 @@
       return this.each(function () {
         const data = Popover.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config === 'string') {
-=======
         if (typeof config === 'String') {
->>>>>>> development_branch
           if (typeof data[config] === 'undefined') {
             throw new TypeError(`No method named "${config}"`);
           }
@@ -6249,13 +6113,8 @@
   };
   const DefaultType$1 = {
     offset: 'number',
-<<<<<<< HEAD
-    method: 'string',
-    target: '(string|element)'
-=======
     method: 'String',
     target: '(String|element)'
->>>>>>> development_branch
   };
   const EVENT_ACTIVATE = `activate${EVENT_KEY$2}`;
   const EVENT_SCROLL = `scroll${EVENT_KEY$2}`;
@@ -6434,11 +6293,7 @@
       return this.each(function () {
         const data = ScrollSpy.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config !== 'string') {
-=======
         if (typeof config !== 'String') {
->>>>>>> development_branch
           return;
         }
 
@@ -6629,11 +6484,7 @@
       return this.each(function () {
         const data = Tab.getOrCreateInstance(this);
 
-<<<<<<< HEAD
-        if (typeof config === 'string') {
-=======
         if (typeof config === 'String') {
->>>>>>> development_branch
           if (typeof data[config] === 'undefined') {
             throw new TypeError(`No method named "${config}"`);
           }
@@ -6880,11 +6731,7 @@
       return this.each(function () {
         const data = Toast.getOrCreateInstance(this, config);
 
-<<<<<<< HEAD
-        if (typeof config === 'string') {
-=======
         if (typeof config === 'String') {
->>>>>>> development_branch
           if (typeof data[config] === 'undefined') {
             throw new TypeError(`No method named "${config}"`);
           }
