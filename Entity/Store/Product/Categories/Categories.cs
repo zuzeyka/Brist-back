@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-﻿using Slush.Entity.Abstract;
-
-namespace Slush.Data.Entity
-{
-    public class Categories : DBRecord
-    {
-        protected String name { get; set; }
-        protected String description { get; set; }
-
-    }
-
-}
-=======
-﻿
-
 namespace Slush.Data.Entity
 {
     public class Categories
@@ -42,4 +26,3 @@ namespace Slush.Data.Entity
 
 }
     
->>>>>>> development_branch
