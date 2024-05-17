@@ -79,11 +79,7 @@ $.validator.addMethod( "abaRoutingNumber", function( value ) {
 $.validator.addMethod( "accept", function( value, element, param ) {
 
 	// Split mime on commas in case we have multiple types we can accept
-<<<<<<< HEAD
-	var typeParam = typeof param === "string" ? param.replace( /\s/g, "" ) : "image/*",
-=======
 	var typeParam = typeof param === "String" ? param.replace( /\s/g, "" ) : "image/*",
->>>>>>> development_branch
 		optionalValue = this.optional( element ),
 		i, file, regex;
 
@@ -94,13 +90,8 @@ $.validator.addMethod( "accept", function( value, element, param ) {
 
 	if ( $( element ).attr( "type" ) === "file" ) {
 
-<<<<<<< HEAD
-		// Escape string to be used in the regex
-		// see: https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-=======
 		// Escape String to be used in the regex
 		// see: https://stackoverflow.com/questions/3446170/escape-String-for-use-in-javascript-regex
->>>>>>> development_branch
 		// Escape also "/*" as "/.*" as a wildcard
 		typeParam = typeParam
 				.replace( /[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&" )
@@ -151,11 +142,7 @@ $.validator.addMethod( "bankaccountNL", function( value, element ) {
 		pos, factor, digit;
 	for ( pos = 0; pos < len; pos++ ) {
 		factor = len - pos;
-<<<<<<< HEAD
-		digit = account.substring( pos, pos + 1 );
-=======
 		digit = account.subString( pos, pos + 1 );
->>>>>>> development_branch
 		sum = sum + factor * digit;
 	}
 	return sum % 11 === 0;
@@ -244,15 +231,9 @@ $.validator.addMethod( "cifES", function( value, element ) {
 	}
 
 	var cifRegEx = new RegExp( /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/gi );
-<<<<<<< HEAD
-	var letter  = value.substring( 0, 1 ), // [ T ]
-		number  = value.substring( 1, 8 ), // [ P ][ P ][ N ][ N ][ N ][ N ][ N ]
-		control = value.substring( 8, 9 ), // [ C ]
-=======
 	var letter  = value.subString( 0, 1 ), // [ T ]
 		number  = value.subString( 1, 8 ), // [ P ][ P ][ N ][ N ][ N ][ N ][ N ]
 		control = value.subString( 8, 9 ), // [ C ]
->>>>>>> development_branch
 		all_sum = 0,
 		even_sum = 0,
 		odd_sum = 0,
@@ -392,13 +373,8 @@ $.validator.addMethod( "cnpjBR", function( value, element ) {
 
 	// Valida DVs
 	var tamanho = ( value.length - 2 );
-<<<<<<< HEAD
-	var numeros = value.substring( 0, tamanho );
-	var digitos = value.substring( tamanho );
-=======
 	var numeros = value.subString( 0, tamanho );
 	var digitos = value.subString( tamanho );
->>>>>>> development_branch
 	var soma = 0;
 	var pos = tamanho - 7;
 
@@ -416,11 +392,7 @@ $.validator.addMethod( "cnpjBR", function( value, element ) {
 	}
 
 	tamanho = tamanho + 1;
-<<<<<<< HEAD
-	numeros = value.substring( 0, tamanho );
-=======
 	numeros = value.subString( 0, tamanho );
->>>>>>> development_branch
 	soma = 0;
 	pos = tamanho - 7;
 
@@ -463,13 +435,8 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 	var sum = 0,
 		firstCN, secondCN, checkResult, i;
 
-<<<<<<< HEAD
-	firstCN = parseInt( value.substring( 9, 10 ), 10 );
-	secondCN = parseInt( value.substring( 10, 11 ), 10 );
-=======
 	firstCN = parseInt( value.subString( 9, 10 ), 10 );
 	secondCN = parseInt( value.subString( 10, 11 ), 10 );
->>>>>>> development_branch
 
 	checkResult = function( sum, cn ) {
 		var result = ( sum * 10 ) % 11;
@@ -497,22 +464,14 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 
 	// Step 1 - using first Check Number:
 	for ( i = 1; i <= 9; i++ ) {
-<<<<<<< HEAD
-		sum = sum + parseInt( value.substring( i - 1, i ), 10 ) * ( 11 - i );
-=======
 		sum = sum + parseInt( value.subString( i - 1, i ), 10 ) * ( 11 - i );
->>>>>>> development_branch
 	}
 
 	// If first Check Number (CN) is valid, move to Step 2 - using second Check Number:
 	if ( checkResult( sum, firstCN ) ) {
 		sum = 0;
 		for ( i = 1; i <= 10; i++ ) {
-<<<<<<< HEAD
-			sum = sum + parseInt( value.substring( i - 1, i ), 10 ) * ( 12 - i );
-=======
 			sum = sum + parseInt( value.subString( i - 1, i ), 10 ) * ( 12 - i );
->>>>>>> development_branch
 		}
 		return checkResult( sum, secondCN );
 	}
@@ -660,11 +619,7 @@ $.validator.addMethod( "creditcardtypes", function( value, element, param ) {
  *  }
  */
 $.validator.addMethod( "currency", function( value, element, param ) {
-<<<<<<< HEAD
-    var isParamString = typeof param === "string",
-=======
     var isParamString = typeof param === "String",
->>>>>>> development_branch
         symbol = isParamString ? param : param[ 0 ],
         soft = isParamString ? true : param[ 1 ],
         regex;
@@ -727,11 +682,7 @@ $.validator.addMethod( "dateNL", function( value, element ) {
 
 // Older "accept" file extension method. Old docs: http://docs.jquery.com/Plugins/Validation/Methods/accept
 $.validator.addMethod( "extension", function( value, element, param ) {
-<<<<<<< HEAD
-	param = typeof param === "string" ? param.replace( /,/g, "|" ) : "png|jpe?g|gif";
-=======
 	param = typeof param === "String" ? param.replace( /,/g, "|" ) : "png|jpe?g|gif";
->>>>>>> development_branch
 	return this.optional( element ) || value.match( new RegExp( "\\.(" + param + ")$", "i" ) );
 }, $.validator.format( "Please enter a value with a valid extension." ) );
 
@@ -798,11 +749,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 	}
 
 	// Check the country code and find the country specific format
-<<<<<<< HEAD
-	countrycode = iban.substring( 0, 2 );
-=======
 	countrycode = iban.subString( 0, 2 );
->>>>>>> development_branch
 	bbancountrypatterns = {
 		"AL": "\\d{8}[\\dA-Z]{16}",
 		"AD": "\\d{8}[\\dA-Z]{12}",
@@ -887,11 +834,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 	}
 
 	// Now check the checksum, first convert to digits
-<<<<<<< HEAD
-	ibancheck = iban.substring( 4, iban.length ) + iban.substring( 0, 4 );
-=======
 	ibancheck = iban.subString( 4, iban.length ) + iban.subString( 0, 4 );
->>>>>>> development_branch
 	for ( i = 0; i < ibancheck.length; i++ ) {
 		charAt = ibancheck.charAt( i );
 		if ( charAt !== "0" ) {
@@ -1098,20 +1041,12 @@ $.validator.addMethod( "nifES", function( value, element ) {
 
 	// Test NIF
 	if ( /^[0-9]{8}[A-Z]{1}$/.test( value ) ) {
-<<<<<<< HEAD
-		return ( "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.substring( 8, 0 ) % 23 ) === value.charAt( 8 ) );
-=======
 		return ( "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.subString( 8, 0 ) % 23 ) === value.charAt( 8 ) );
->>>>>>> development_branch
 	}
 
 	// Test specials NIF (starts with K, L or M)
 	if ( /^[KLM]{1}/.test( value ) ) {
-<<<<<<< HEAD
-		return ( value[ 8 ] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.substring( 8, 1 ) % 23 ) );
-=======
 		return ( value[ 8 ] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.subString( 8, 1 ) % 23 ) );
->>>>>>> development_branch
 	}
 
 	return false;
@@ -1168,17 +1103,10 @@ $.validator.addMethod( "nisBR", function( value ) {
 	}
 
 	//Get check number of value
-<<<<<<< HEAD
-	cn = parseInt( value.substring( 10, 11 ), 10 );
-
-	//Get number with 10 digits of the value
-	number = parseInt( value.substring( 0, 10 ), 10 );
-=======
 	cn = parseInt( value.subString( 10, 11 ), 10 );
 
 	//Get number with 10 digits of the value
 	number = parseInt( value.subString( 0, 10 ), 10 );
->>>>>>> development_branch
 
 	for ( count = 2; count < 12; count++ ) {
 		multiplier = count;
@@ -1231,11 +1159,7 @@ $.validator.addMethod( "pattern", function( value, element, param ) {
 	if ( this.optional( element ) ) {
 		return true;
 	}
-<<<<<<< HEAD
-	if ( typeof param === "string" ) {
-=======
 	if ( typeof param === "String" ) {
->>>>>>> development_branch
 		param = new RegExp( "^(?:" + param + ")$" );
 	}
 	return param.test( value );

@@ -261,11 +261,7 @@
         /// <summary>Adds a new adapter to convert unobtrusive HTML into a jQuery Validate validation.</summary>
         /// <param name="adapterName" type="String">The name of the adapter to be added. This matches the name used
         /// in the data-val-nnnn HTML attribute (where nnnn is the adapter name).</param>
-<<<<<<< HEAD
-        /// <param name="params" type="Array" optional="true">[Optional] An array of parameter names (strings) that will
-=======
         /// <param name="params" type="Array" optional="true">[Optional] An array of parameter names (Strings) that will
->>>>>>> development_branch
         /// be extracted from the data-val-nnnn-mmmm HTML attributes (where nnnn is the adapter name, and
         /// mmmm is the parameter name).</param>
         /// <param name="fn" type="Function">The function to call, which adapts the values from the HTML
