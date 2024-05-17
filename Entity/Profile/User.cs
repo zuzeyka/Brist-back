@@ -1,5 +1,5 @@
 ﻿using Slush.Data.Entity.Community;
-using Slush.Entity.Abstract;
+
 using Slush.Entity.Profile;
 using Slush.Entity.Store.Product;
 

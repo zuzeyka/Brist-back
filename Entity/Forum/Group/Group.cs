@@ -1,5 +1,5 @@
 ﻿using Slush.Data.Entity.Profile;
-using Slush.Entity.Abstract;
+
 
 namespace Slush.Data.Entity.Community
 {

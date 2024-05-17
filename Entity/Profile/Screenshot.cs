@@ -1,4 +1,4 @@
-﻿using Slush.Entity.Abstract;
+﻿
 
 namespace Slush.Data.Entity.Profile
 {

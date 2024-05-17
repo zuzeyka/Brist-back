@@ -1,6 +1,6 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
-using Slush.Entity.Abstract;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Slush.DAO.CategoriesDao

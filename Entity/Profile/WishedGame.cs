@@ -1,8 +1,8 @@
-﻿using Slush.Entity.Abstract;
+﻿
 
 namespace Slush.Entity.Profile
 {
-    public class WishedGame :ProfileGame
+    public class WishedGame
     {
         public WishedGame()
         {

@@ -1,5 +1,5 @@
 ﻿using Slush.Data.Entity;
-using Slush.Entity.Abstract;
+
 
 namespace Slush.Entity.Store.Product
 {

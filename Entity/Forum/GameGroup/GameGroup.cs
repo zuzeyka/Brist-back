@@ -1,5 +1,5 @@
 ﻿using Slush.Data.Entity.Profile;
-using Slush.Entity.Abstract;
+
 using Slush.Entity.Store.Product;
 
 namespace Slush.Data.Entity.Community.GameGroup
