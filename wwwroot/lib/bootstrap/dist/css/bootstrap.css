@@ -6049,11 +6049,7 @@ textarea.form-control-lg {
 
 /* rtl:options: {
   "autoRename": true,
-<<<<<<< HEAD
-  "stringMap":[ {
-=======
   "StringMap":[ {
->>>>>>> development_branch
     "name"    : "prev-next",
     "search"  : "prev",
     "replace" : "next"
