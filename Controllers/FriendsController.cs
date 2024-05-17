@@ -43,7 +43,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.friendId,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbFriends.AddAsync(result);
+            var response = await _dataContext.dbFriends.AddAsync(result);
 
             return Ok(response);
         }

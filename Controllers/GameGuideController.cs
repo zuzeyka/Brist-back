@@ -53,7 +53,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.content,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGameGuides.AddAsync(result);
+            var response = await _dataContext.dbGameGuides.AddAsync(result);
 
             return Ok(response);
         }

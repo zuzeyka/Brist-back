@@ -45,7 +45,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.userId,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGroupComments.AddAsync(result);
+            var response = await _dataContext.dbGroupComments.AddAsync(result);
 
             return Ok(response);
         }

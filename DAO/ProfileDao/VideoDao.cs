@@ -45,9 +45,9 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public void Add(Video video)
+        public async Task Add(Video video)
         {
-            _context.dbVideos.Add(video);
+            await _context.dbVideos.AddAsync(video);
             _context.SaveChanges();
         }
 
@@ -61,7 +61,7 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public async Task<Video> GetById(Guid id)
+        public async Task<Video?> GetById(Guid id)
         {
             var response = await _context.dbVideos
                 .Where(x => x.id == id)

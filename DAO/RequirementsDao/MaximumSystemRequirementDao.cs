@@ -45,9 +45,9 @@ namespace Slush.DAO.RequirementsDao
             }
         }
 
-        public void Add(MaximumSystemRequirement systemRequirements)
+        public async Task Add(MaximumSystemRequirement systemRequirements)
         {
-            _context.dbMaximumSystemRequirements.Add(systemRequirements);
+            await _context.dbMaximumSystemRequirements.AddAsync(systemRequirements);
             _context.SaveChanges();
         }
 
@@ -61,7 +61,7 @@ namespace Slush.DAO.RequirementsDao
             }
         }
 
-        public async Task<MaximumSystemRequirement> GetById(Guid id)
+        public async Task<MaximumSystemRequirement?> GetById(Guid id)
         {
             var response = await _context.dbMaximumSystemRequirements
                 .Where(x => x.id == id)

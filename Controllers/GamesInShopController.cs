@@ -57,7 +57,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.urlForContent,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGamesInShops.AddAsync(result);
+            var response = await _dataContext.dbGamesInShops.AddAsync(result);
 
             return Ok(response);
         }

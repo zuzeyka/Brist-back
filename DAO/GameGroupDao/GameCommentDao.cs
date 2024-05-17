@@ -35,9 +35,9 @@ namespace Slush.DAO.GameGroupDao
                 await _context.SaveChangesAsync();
             }
         }
-        public void Add(GameComment comment)
+        public async Task Add(GameComment comment)
         {
-            _context.dbGameComments.Add(comment);
+            await _context.dbGameComments.AddAsync(comment);
             _context.SaveChanges();
         }
 
@@ -51,7 +51,7 @@ namespace Slush.DAO.GameGroupDao
             }
         }
 
-        public async Task<GameComment> GetById(Guid id)
+        public async Task<GameComment?> GetById(Guid id)
         {
             var response = await _context.dbGameComments
                 .Where(x => x.id == id)

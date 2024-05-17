@@ -39,7 +39,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            var response = _dataContext.dbCategoriesByUsers.AddAsync(result);
+            var response = await _dataContext.dbCategoriesByUsers.AddAsync(result);
 
             return Ok(response);
         }

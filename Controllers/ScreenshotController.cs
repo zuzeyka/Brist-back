@@ -54,7 +54,7 @@ namespace FullStackBrist.Server.Controllers
                 model.screenshotUrl,
                 DateTime.Now);
 
-            var response = _dataContext.dbScreenshots.AddAsync(result);
+            var response = await _dataContext.dbScreenshots.AddAsync(result);
 
             return Ok(response);
         }

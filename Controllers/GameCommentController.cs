@@ -47,7 +47,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.authorId,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGameComments.AddAsync(result);
+            var response = await _dataContext.dbGameComments.AddAsync(result);
             return Ok(response);
         }
 

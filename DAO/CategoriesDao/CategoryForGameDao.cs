@@ -36,9 +36,9 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public void Add(CategoryForGame category)
+        public async Task Add(CategoryForGame category)
         {
-            _context.dbCategoriesForGame.Add(category);
+            await _context.dbCategoriesForGame.AddAsync(category);
             _context.SaveChanges();
         }
 
@@ -52,7 +52,7 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public async Task<CategoryForGame> GetById(Guid id)
+        public async Task<CategoryForGame?> GetById(Guid id)
         {
             return await Task.FromResult(_context.dbCategoriesForGame.FirstOrDefault(c => c.id == id));
         }

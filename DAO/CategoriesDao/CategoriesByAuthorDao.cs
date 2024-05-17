@@ -40,9 +40,9 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public void Add(CategoryByAuthor category)
+        public async Task Add(CategoryByAuthor category)
         {
-            _context.dbCategoriesByAuthors.Add(category);
+            await _context.dbCategoriesByAuthors.AddAsync(category);
             _context.SaveChanges();
         }
 
@@ -56,7 +56,7 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public async Task<CategoryByAuthor> GetById(Guid id)
+        public async Task<CategoryByAuthor?> GetById(Guid id)
         {
             return await Task.FromResult(_context.dbCategoriesByAuthors.FirstOrDefault(c => c.id == id));
         }

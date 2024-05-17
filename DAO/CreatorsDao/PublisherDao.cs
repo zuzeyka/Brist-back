@@ -45,9 +45,9 @@ namespace Slush.DAO.CreatorsDao
             }
         }
 
-        public void Add(Publisher publisher)
+        public async Task Add(Publisher publisher)
         {
-            _context.dbPublishers.Add(publisher);
+            await _context.dbPublishers.AddAsync(publisher);
             _context.SaveChanges();
         }
 
@@ -61,7 +61,7 @@ namespace Slush.DAO.CreatorsDao
             }
         }
 
-        public async Task<Publisher> GetById(Guid id)
+        public async Task<Publisher?> GetById(Guid id)
         {
             var response = await _context.dbPublishers
                 .Where(x => x.id == id)

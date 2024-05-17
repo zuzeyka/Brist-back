@@ -43,9 +43,9 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public void Add(User user)
+        public async Task Add(User user)
         {
-            _context.dbUsers.Add(user);
+            await _context.dbUsers.AddAsync(user);
             _context.SaveChanges();
         }
 
@@ -59,7 +59,7 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public async Task<User> GetById(Guid id)
+        public async Task<User?> GetById(Guid id)
         {
             var response = await _context.dbUsers
                 .Where(x => x.id == id)

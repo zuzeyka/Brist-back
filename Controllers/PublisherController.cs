@@ -49,7 +49,7 @@ namespace FullStackBrist.Server.Controllers
                 null,
                 DateTime.Now);
 
-            var response = _dataContext.dbPublishers.AddAsync(result);
+            var response = await _dataContext.dbPublishers.AddAsync(result);
 
             return Ok(response);
         }

@@ -41,9 +41,9 @@ namespace Slush.DAO.GroupDao
             }
         }
 
-        public void Add(Group group)
+        public async Task Add(Group group)
         {
-            _context.dbGroups.Add(group);
+            await _context.dbGroups.AddAsync(group);
             _context.SaveChanges();
         }
 
@@ -57,7 +57,7 @@ namespace Slush.DAO.GroupDao
             }
         }
 
-        public async Task<Group> GetById(Guid id)
+        public async Task<Group?> GetById(Guid id)
         {
             var response = await _context.dbGroups
                 .Where(x => x.id == id)

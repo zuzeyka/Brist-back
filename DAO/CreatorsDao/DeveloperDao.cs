@@ -48,9 +48,9 @@ namespace Slush.DAO.CreatorsDao
             }
         }
 
-        public void Add(Developer developer)
+        public async Task Add(Developer developer)
         {
-            _context.dbDevelopers.Add(developer);
+            await _context.dbDevelopers.AddAsync(developer);
             _context.SaveChanges();
         }
 
@@ -64,7 +64,7 @@ namespace Slush.DAO.CreatorsDao
             }
         }
 
-        public async Task<Developer> GetById(Guid id)
+        public async Task<Developer?> GetById(Guid id)
         {
             var response = await _context.dbDevelopers
                 .Where(x => x.id == id)

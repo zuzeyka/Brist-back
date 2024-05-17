@@ -57,7 +57,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.publisherId,
                                         DateTime.Now
                                             );
-            var response = _dataContext.dbDLCsInShop.AddAsync(result);
+            var response = await _dataContext.dbDLCsInShop.AddAsync(result);
 
             return Ok(response);
         }

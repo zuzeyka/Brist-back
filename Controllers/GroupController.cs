@@ -44,7 +44,7 @@ namespace FullStackBrist.Server.Controllers
                 model.description,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGroups.AddAsync(result);
+            var response =  await _dataContext.dbGroups.AddAsync(result);
 
             return Ok(response);
         }

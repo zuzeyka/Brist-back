@@ -43,7 +43,7 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbOwnedGames.AddAsync(result);
+            var response = await _dataContext.dbOwnedGames.AddAsync(result);
             return Ok(response);
 
         }

@@ -46,7 +46,7 @@ namespace FullStackBrist.Server.Controllers
                 model.phone,
                 DateTime.Now);
 
-            var response = _dataContext.dbUsers.AddAsync(result);
+            var response = await _dataContext.dbUsers.AddAsync(result);
 
             return Ok(response);
         }

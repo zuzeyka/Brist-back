@@ -118,7 +118,7 @@ namespace FullStackBrist.Server.Services.Email
             }
             catch (Exception ex)
             {
-                return false;
+                throw new Exception("Exception: ", ex);
             }
         }
     }

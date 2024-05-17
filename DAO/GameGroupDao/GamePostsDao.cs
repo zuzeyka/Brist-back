@@ -46,9 +46,9 @@ namespace Slush.DAO.GameGroupDao
             }
         }
 
-        public void Add(GamePosts posts)
+        public async Task Add(GamePosts posts)
         {
-            _context.dbGamePosts.Add(posts);
+            await _context.dbGamePosts.AddAsync(posts);
             _context.SaveChanges();
         }
 
@@ -62,7 +62,7 @@ namespace Slush.DAO.GameGroupDao
             }
         }
 
-        public async Task<GamePosts> GetById(Guid id)
+        public async Task<GamePosts?> GetById(Guid id)
         {
             var response = await _context.dbGamePosts
                 .Where(x => x.id == id)

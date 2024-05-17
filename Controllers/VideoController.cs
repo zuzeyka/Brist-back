@@ -50,7 +50,7 @@ namespace FullStackBrist.Server.Controllers
                 model.videoUrl,
                 DateTime.Now);
 
-            var response = _dataContext.dbVideos.AddAsync(result);
+            var response = await _dataContext.dbVideos.AddAsync(result);
 
             return Ok(response);
         }

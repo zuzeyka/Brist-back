@@ -50,7 +50,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.backgroundImage,
                                         null,
                                         DateTime.Now);
-            var response = _dataContext.dbDevelopers.AddAsync(result);
+            var response = await _dataContext.dbDevelopers.AddAsync(result);
 
             return Ok(response);
         }

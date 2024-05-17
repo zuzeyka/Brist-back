@@ -42,7 +42,7 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                 DateTime.Now);
 
-            var response = _dataContext.dbWishedGames.AddAsync(result);
+            var response = await _dataContext.dbWishedGames.AddAsync(result);
 
             return Ok(response);
         }

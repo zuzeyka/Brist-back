@@ -48,9 +48,9 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public void Add(Screenshot screenshot)
+        public async Task Add(Screenshot screenshot)
         {
-            _context.dbScreenshots.Add(screenshot);
+            await _context.dbScreenshots.AddAsync(screenshot);
             _context.SaveChanges();
         }
 
@@ -64,7 +64,7 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public async Task<Screenshot> GetById(Guid id)
+        public async Task<Screenshot?> GetById(Guid id)
         {
             var response = await _context.dbScreenshots
                 .Where(x => x.id == id)

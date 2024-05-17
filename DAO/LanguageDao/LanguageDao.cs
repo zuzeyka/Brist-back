@@ -37,9 +37,9 @@ namespace Slush.DAO.LanguageDao
             }
         }
 
-        public void Add(Language language)
+        public async Task Add(Language language)
         {
-            _context.dbLanguages.Add(language);
+            await _context.dbLanguages.AddAsync(language);
             _context.SaveChanges();
         }
 
@@ -53,7 +53,7 @@ namespace Slush.DAO.LanguageDao
             }
         }
 
-        public async Task<Language> GetById(Guid id)
+        public async Task<Language?> GetById(Guid id)
         {
             var response = await _context.dbLanguages
                 .Where(x => x.id == id)

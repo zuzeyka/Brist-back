@@ -50,9 +50,9 @@ namespace Slush.DAO.GameInShopDao
             }
         }
 
-        public void Add(GameInShop game)
+        public async Task Add(GameInShop game)
         {
-            _context.dbGamesInShops.Add(game);
+            await _context.dbGamesInShops.AddAsync(game);
             _context.SaveChanges();
         }
 
@@ -83,7 +83,7 @@ namespace Slush.DAO.GameInShopDao
             }
         }
 
-        public async Task<GameInShop> GetById(Guid id)
+        public async Task<GameInShop?> GetById(Guid id)
         {
             var response = await _context.dbGamesInShops
                    .Where(x => x.id == id)

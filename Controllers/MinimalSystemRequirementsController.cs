@@ -48,7 +48,7 @@ namespace FullStackBrist.Server.Controllers
                 model.freeDiskSpace,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbMinimalSystemRequirements.AddAsync(result);
+            var response = await _dataContext.dbMinimalSystemRequirements.AddAsync(result);
             return Ok(response);
         }
 

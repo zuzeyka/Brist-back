@@ -52,7 +52,7 @@ namespace FullStackBrist.Server.Controllers
                 model.content,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGameNews.AddAsync(result);
+            var response = await _dataContext.dbGameNews.AddAsync(result);
 
             return Ok(response);
         }

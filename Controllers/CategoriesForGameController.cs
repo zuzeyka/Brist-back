@@ -40,7 +40,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.gameId,
                                         model.categoryId,
                                         DateTime.Now);
-            var response = _dataContext.dbCategoriesForGame.AddAsync(result);
+            var response = await _dataContext.dbCategoriesForGame.AddAsync(result);
 
             return Ok(response);
         }

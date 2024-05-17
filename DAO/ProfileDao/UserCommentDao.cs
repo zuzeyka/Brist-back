@@ -42,7 +42,7 @@ namespace Slush.DAO.ProfileDao
 
         public async Task Add(UserComment comment)
         {
-            _context.dbUserComments.Add(comment);
+            await _context.dbUserComments.AddAsync(comment);
             _context.SaveChanges();
         }
 
@@ -56,7 +56,7 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public async Task<UserComment> GetById(Guid id)
+        public async Task<UserComment?> GetById(Guid id)
         {
             var response = await _context.dbUserComments
                 .Where(x => x.id == id)

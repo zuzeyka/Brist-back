@@ -38,7 +38,7 @@ namespace Slush.Controllers
         {
             var result = new Message(Guid.NewGuid(), model.id, model.senderId, model.content, DateTime.Now);
 
-            var response = _dataContext.dbMessages.AddAsync(result);
+            var response = await _dataContext.dbMessages.AddAsync(result);
 
             return Ok(response);
         }

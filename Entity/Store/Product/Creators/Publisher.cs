@@ -3,7 +3,7 @@
     public class Publisher
     {
         public Publisher() { }
-        public Publisher(Guid id, int subscribersCount, String name, String description, String avatar, String backgroundImage, String? urlForNewsPage, DateTime? createdAt)
+        public Publisher(Guid id, int subscribersCount, String? name, String? description, String? avatar, String? backgroundImage, String? urlForNewsPage, DateTime? createdAt)
         {
             this.id = id;
             this.subscribersCount = subscribersCount;
@@ -16,10 +16,10 @@
         }
         public Guid id { get; set; }
         public int subscribersCount { get; set; }
-        public String name { get; set; }
-        public String description { get; set; }
-        public String avatar { get; set; }
-        public String backgroundImage { get; set; }
+        public String? name { get; set; }
+        public String? description { get; set; }
+        public String? avatar { get; set; }
+        public String? backgroundImage { get; set; }
         public String? urlForNewsPage { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }

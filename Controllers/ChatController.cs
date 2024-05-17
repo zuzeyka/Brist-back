@@ -35,7 +35,7 @@ namespace Slush.Controllers
         public async Task<ActionResult<Chat>> CreateChat([FromBody] ChatModel model)
         {
             var result = new Chat(Guid.NewGuid(), model.firstUser, model.secondUser, DateTime.Now);
-            var response = _dataContext.dbChats.AddAsync(result);
+            var response =  await _dataContext.dbChats.AddAsync(result);
 
             return Ok(response);
         }

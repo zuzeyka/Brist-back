@@ -38,7 +38,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.gameId,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbGameGroups.AddAsync(result);
+            var response = await _dataContext.dbGameGroups.AddAsync(result);
 
             return Ok(response);
         }

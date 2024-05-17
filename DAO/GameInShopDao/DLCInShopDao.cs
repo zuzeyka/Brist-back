@@ -47,9 +47,9 @@ namespace Slush.DAO.GameInShopDao
             }
         }
 
-        public void Add(DLCInShop dlc)
+        public async Task Add(DLCInShop dlc)
         {
-            _context.dbDLCsInShop.Add(dlc);
+            await _context.dbDLCsInShop.AddAsync(dlc);
             _context.SaveChanges();
         }
 
@@ -63,7 +63,7 @@ namespace Slush.DAO.GameInShopDao
             }
         }
 
-        public async Task<DLCInShop> GetById(Guid id)
+        public async Task<DLCInShop?> GetById(Guid id)
         {
             var response =  await _context.dbDLCsInShop
                 .Where(x => x.id == id)

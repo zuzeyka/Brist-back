@@ -8,7 +8,7 @@ namespace Slush.Data.Entity
         {
         }
 
-        public Language(Guid id, String name, DateTime? createdAt)
+        public Language(Guid id, String? name, DateTime? createdAt)
         {
             this.id = id;
             this.name = name;
@@ -16,7 +16,7 @@ namespace Slush.Data.Entity
         }
 
         public Guid id { get; set; }
-        public String name { get; set; }
+        public String? name { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }

@@ -51,7 +51,7 @@ namespace FullStackBrist.Server.Controllers
                 model.postId,
                 DateTime.Now);
 
-            var response = _dataContext.dbTopics.AddAsync(result);
+            var response = await _dataContext.dbTopics.AddAsync(result);
 
             return Ok(response);
         }

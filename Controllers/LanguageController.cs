@@ -40,7 +40,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.name,
                                             DateTime.Now
                                             );
-            var response = _dataContext.dbLanguages.AddAsync(result);
+            var response = await _dataContext.dbLanguages.AddAsync(result);
 
             return Ok(response);
         }

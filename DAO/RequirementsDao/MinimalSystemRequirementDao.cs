@@ -45,9 +45,9 @@ namespace Slush.DAO.RequirementsDao
             }
         }
 
-        public void Add(MinimalSystemRequirement systemRequirements)
+        public async Task Add(MinimalSystemRequirement systemRequirements)
         {
-            _context.dbMinimalSystemRequirements.Add(systemRequirements);
+            await _context.dbMinimalSystemRequirements.AddAsync(systemRequirements);
             _context.SaveChanges();
         }
         public async Task DeleteMinimalSystemRequirement(Guid id)
@@ -60,7 +60,7 @@ namespace Slush.DAO.RequirementsDao
             }
         }
 
-        public async Task<MinimalSystemRequirement> GetById(Guid id)
+        public async Task<MinimalSystemRequirement?> GetById(Guid id)
         {
             var response = await _context.dbMinimalSystemRequirements
                 .Where(x => x.id == id)

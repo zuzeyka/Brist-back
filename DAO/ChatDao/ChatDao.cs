@@ -38,9 +38,9 @@ namespace Slush.DAO.ChatDao
             }
         }
 
-        public void AddChat(Chat chat) 
+        public async Task AddChat(Chat chat) 
         {
-            _context.dbChats.Add(chat);
+            await _context.dbChats.AddAsync(chat);
             _context.SaveChanges();
         }
 
@@ -54,7 +54,7 @@ namespace Slush.DAO.ChatDao
             }
         }
 
-        public async Task<Chat> GetById(Guid id)
+        public async Task<Chat?> GetById(Guid id)
         {
             var response =  await _context.dbChats
                .Where(c => c.id == id)

@@ -8,7 +8,7 @@ namespace Slush.Data.Entity.Profile
         {
         }
 
-        public Video(Guid id, String title, String? description, int likesCount, int dislikesCount, Guid gameId, Guid authorId, String videoUrl, DateTime? createdAt)
+        public Video(Guid id, String? title, String? description, int likesCount, int dislikesCount, Guid gameId, Guid authorId, String? videoUrl, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -24,14 +24,14 @@ namespace Slush.Data.Entity.Profile
 
 
         public Guid id { get; set; }
-        public String title { get; set; }
+        public String? title { get; set; }
         public String? description { get; set; }
         public int likesCount { get; set; }
         public int dislikesCount { get; set; }
         public Guid discussionId { get; set; }
         public Guid gameId { get; set; }
         public Guid authorId { get; set; }
-        public String videoUrl { get; set; }
+        public String? videoUrl { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }

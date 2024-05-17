@@ -39,9 +39,9 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public void Add(CategoryByUser category)
+        public async Task Add(CategoryByUser category)
         {
-            _context.dbCategoriesByUsers.Add(category);
+            await _context.dbCategoriesByUsers.AddAsync(category);
             _context.SaveChanges();
         }
 
@@ -55,7 +55,7 @@ namespace Slush.DAO.CategoriesDao
             }
         }
 
-        public async Task<CategoryByUser> GetById(Guid id)
+        public async Task<CategoryByUser?> GetById(Guid id)
         {
             return await Task.FromResult(_context.dbCategoriesByUsers.FirstOrDefault(c => c.id == id));
         }

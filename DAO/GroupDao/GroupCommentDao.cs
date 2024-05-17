@@ -42,9 +42,9 @@ namespace Slush.DAO.GroupDao
                 await _context.SaveChangesAsync();
             }
         }
-        public void Add(GroupComment comment)
+        public async Task Add(GroupComment comment)
         {
-            _context.dbGroupComments.Add(comment);
+            await _context.dbGroupComments.AddAsync(comment);
             _context.SaveChanges();
         }
 
@@ -58,7 +58,7 @@ namespace Slush.DAO.GroupDao
             }
         }
 
-        public async Task<GroupComment> GetById(Guid id)
+        public async Task<GroupComment?> GetById(Guid id)
         {
             var response = await _context.dbGroupComments
                 .Where(x => x.id == id)

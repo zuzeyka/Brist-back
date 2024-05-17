@@ -36,9 +36,9 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public void Add(OwnedGame game)
+        public async Task Add(OwnedGame game)
         {
-            _context.dbOwnedGames.Add(game);
+            await _context.dbOwnedGames.AddAsync(game);
             _context.SaveChanges();
         }
 
@@ -52,7 +52,7 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
-        public async Task<OwnedGame> GetById(Guid id)
+        public async Task<OwnedGame?> GetById(Guid id)
         {
             var response = await _context.dbOwnedGames
                 .Where(x => x.id == id)

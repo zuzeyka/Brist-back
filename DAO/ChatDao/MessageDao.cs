@@ -42,9 +42,9 @@ namespace Slush.DAO.ChatDao
             }
         }
 
-        public void Add(Message message)
+        public async Task Add(Message message)
         {
-            _context.dbMessages.Add(message);
+            await _context.dbMessages.AddAsync(message);
             _context.SaveChanges();
         }
 
@@ -58,7 +58,7 @@ namespace Slush.DAO.ChatDao
             }
         }
 
-        public async Task<Message> GetById(Guid id)
+        public async Task<Message?> GetById(Guid id)
         {
             var response = await _context.dbMessages
                 .Where(m => m.id == id)

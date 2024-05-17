@@ -43,7 +43,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.description,
                                         model.image,
                                         DateTime.Now);
-            var response = _dataContext.dbCategoriesByAuthors.AddAsync(result);
+            var response = await _dataContext.dbCategoriesByAuthors.AddAsync(result);
 
             return Ok(response);
         }

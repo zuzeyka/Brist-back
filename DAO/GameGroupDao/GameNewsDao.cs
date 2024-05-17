@@ -46,9 +46,9 @@ namespace Slush.DAO.GameGroupDao
             }
         }
 
-        public void Add(GameNews news)
+        public async Task Add(GameNews news)
         {
-            _context.dbGameNews.Add(news);
+            await _context.dbGameNews.AddAsync(news);
             _context.SaveChanges();
         }
 
@@ -62,7 +62,7 @@ namespace Slush.DAO.GameGroupDao
             }
         }
 
-        public async Task<GameNews> GetById(Guid id)
+        public async Task<GameNews?> GetById(Guid id)
         {
             var response = await _context.dbGameNews
                 .Where(x => x.id == id)
