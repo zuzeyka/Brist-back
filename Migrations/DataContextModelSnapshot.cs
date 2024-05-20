@@ -44,7 +44,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbCategories");
+                    b.ToTable("dbCategories", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryByAuthor", b =>
@@ -73,7 +73,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbCategoriesByAuthors");
+                    b.ToTable("dbCategoriesByAuthors", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryByUser", b =>
@@ -98,7 +98,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbCategoriesByUsers");
+                    b.ToTable("dbCategoriesByUsers", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.CategoryForGame", b =>
@@ -121,7 +121,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbCategoriesForGame");
+                    b.ToTable("dbCategoriesForGame", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameComment", b =>
@@ -148,7 +148,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGameComments");
+                    b.ToTable("dbGameComments", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGroup", b =>
@@ -168,7 +168,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGameGroups");
+                    b.ToTable("dbGameGroups", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGuide", b =>
@@ -214,7 +214,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGameGuides");
+                    b.ToTable("dbGameGuides", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameNews", b =>
@@ -260,7 +260,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGameNews");
+                    b.ToTable("dbGameNews", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GamePosts", b =>
@@ -306,7 +306,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGamePosts");
+                    b.ToTable("dbGamePosts", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameTopic", b =>
@@ -334,7 +334,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGameTopics");
+                    b.ToTable("dbGameTopics", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Group", b =>
@@ -362,7 +362,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGroups");
+                    b.ToTable("dbGroups", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GroupComment", b =>
@@ -389,7 +389,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGroupComments");
+                    b.ToTable("dbGroupComments", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Post", b =>
@@ -432,7 +432,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbPosts");
+                    b.ToTable("dbPosts", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Topic", b =>
@@ -466,7 +466,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbTopics");
+                    b.ToTable("dbTopics", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Language", b =>
@@ -487,7 +487,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbLanguages");
+                    b.ToTable("dbLanguages", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.LanguageInGame", b =>
@@ -510,7 +510,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbLanguagesInGame");
+                    b.ToTable("dbLanguagesInGame", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.MaximumSystemRequirement", b =>
@@ -550,7 +550,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbMaximumSystemRequirements");
+                    b.ToTable("dbMaximumSystemRequirements", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.MinimalSystemRequirement", b =>
@@ -590,7 +590,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbMinimalSystemRequirements");
+                    b.ToTable("dbMinimalSystemRequirements", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Screenshot", b =>
@@ -633,7 +633,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbScreenshots");
+                    b.ToTable("dbScreenshots", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.User", b =>
@@ -670,7 +670,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbUsers");
+                    b.ToTable("dbUsers", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.UserComment", b =>
@@ -697,7 +697,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbUserComments");
+                    b.ToTable("dbUserComments", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Video", b =>
@@ -740,7 +740,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbVideos");
+                    b.ToTable("dbVideos", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.SystemRequirement", b =>
@@ -780,7 +780,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbSystemRequirements");
+                    b.ToTable("dbSystemRequirements", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.Friends", b =>
@@ -803,7 +803,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbFriends");
+                    b.ToTable("dbFriends", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.OwnedGame", b =>
@@ -826,7 +826,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbOwnedGames");
+                    b.ToTable("dbOwnedGames", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.WishedGame", b =>
@@ -849,7 +849,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbWishedGames");
+                    b.ToTable("dbWishedGames", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Store.Product.Creators.Developer", b =>
@@ -888,7 +888,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbDevelopers");
+                    b.ToTable("dbDevelopers", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Store.Product.Creators.Publisher", b =>
@@ -927,7 +927,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbPublishers");
+                    b.ToTable("dbPublishers", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Store.Product.DLCInShop", b =>
@@ -978,7 +978,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbDLCsInShop");
+                    b.ToTable("dbDLCsInShop", (string)null);
                 });
 
             modelBuilder.Entity("Slush.Entity.Store.Product.GameInShop", b =>
@@ -1022,7 +1022,7 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("dbGamesInShops");
+                    b.ToTable("dbGamesInShops", (string)null);
                 });
 
             modelBuilder.Entity("System.Collections.Generic.List<object>", b =>
@@ -1030,7 +1030,7 @@ namespace Slush.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.ToTable("List<object>");
+                    b.ToTable("List<object>", (string)null);
                 });
 #pragma warning restore 612, 618
         }

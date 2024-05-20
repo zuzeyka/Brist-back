@@ -8,13 +8,12 @@ namespace Slush.Data.Entity.Community.GameGroup
         {
         }
 
-        public GamePosts(Guid id, String? title, String? description, int likesCount, int dislikesCount, Guid discussionId, Guid gameId, Guid gameTopicId, Guid authorId, String? content, DateTime? createdAt)
+        public GamePosts(Guid id, String? title, String? description, int likesCount,  Guid discussionId, Guid gameId, Guid gameTopicId, Guid authorId, String? content, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
             this.description = description;
             this.likesCount = likesCount;
-            this.dislikesCount = dislikesCount;
             this.discussionId = discussionId;
             this.gameId = gameId;
             this.gameTopicId = gameTopicId;
@@ -27,7 +26,6 @@ namespace Slush.Data.Entity.Community.GameGroup
         public String? title { get; set; }
         public String? description { get; set; }
         public int likesCount { get; set; }
-        public int dislikesCount { get; set; }
         public Guid discussionId { get; set; }
         public Guid gameId { get; set; }
         public Guid gameTopicId { get; set; }

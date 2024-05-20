@@ -24,7 +24,6 @@ namespace Slush.DAO.ProfileDao
                 title = v.title,
                 description = v.description,
                 likesCount = v.likesCount,
-                dislikesCount = v.dislikesCount,
                 gameId = v.gameId,
                 authorId = v.authorId,
                 videoUrl = v.videoUrl,
@@ -39,7 +38,6 @@ namespace Slush.DAO.ProfileDao
                 existing.title = video.title;
                 existing.description = video.description;
                 existing.likesCount = video.likesCount;
-                existing.dislikesCount = video.dislikesCount;
 
                 await _context.SaveChangesAsync();
             }
@@ -71,7 +69,6 @@ namespace Slush.DAO.ProfileDao
                     title = v.title,
                     description = v.description,
                     likesCount = v.likesCount,
-                    dislikesCount = v.dislikesCount,
                     gameId = v.gameId,
                     authorId = v.authorId,
                     videoUrl = v.videoUrl,

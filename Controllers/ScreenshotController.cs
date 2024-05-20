@@ -30,7 +30,6 @@ namespace FullStackBrist.Server.Controllers
                                                                    title: s.title,
                                                                    description: s.description,
                                                                    likesCount: s.likesCount,
-                                                                   dislikesCount: s.dislikesCount,
                                                                    discussionId: s.discussionId,
                                                                    gameId: s.gameId,
                                                                    authorId: s.authorId,
@@ -46,7 +45,6 @@ namespace FullStackBrist.Server.Controllers
             var result = new Screenshot(Guid.NewGuid(),
                 model.title,
                 model.description,
-                0,
                 0,
                 model.discussionId,
                 model.gameId,
@@ -81,7 +79,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot)
         {
-            var result = new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.dislikesCount, screenshot.discussionId, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt);
+            var result = new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.discussionId, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt);
             await _screenshotDao.UpdateScreenshot(result);
             return NoContent();
         }

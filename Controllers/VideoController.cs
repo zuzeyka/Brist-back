@@ -28,7 +28,6 @@ namespace FullStackBrist.Server.Controllers
                                                         title: v.title,
                                                         description: v.description,
                                                         likesCount: v.likesCount,
-                                                        dislikesCount: v.dislikesCount,
                                                         gameId: v.gameId,
                                                         authorId: v.authorId,
                                                         videoUrl: v.videoUrl,
@@ -43,7 +42,6 @@ namespace FullStackBrist.Server.Controllers
             var result = new Video(Guid.NewGuid(),
                 model.title,
                 model.description,
-                0,
                 0,
                 model.gameId,
                 model.authorId,
@@ -77,7 +75,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video)
         {
-            var result = new Video(id, video.title, video.description, video.likesCount, video.dislikesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt);
+            var result = new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt);
             await _videoDao.UpdateVideo(result);
             return NoContent();
         }
