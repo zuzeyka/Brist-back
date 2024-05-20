@@ -27,9 +27,10 @@ deploy:
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s) # Start the SSH agent
-    - echo "$ID_RSA" | ssh-add - # Add the private key
+    - echo "$ID_RSA_B64" | base64 -d | ssh-add - # Decode and add the private key
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
   script:
     - ssh dev@172.16.10.22 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f my-app || true && docker run -d -p 80:80 -p 3000:3000 --name my-app $TAG_COMMIT"
+
 
