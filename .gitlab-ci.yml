@@ -33,7 +33,8 @@ deploy:
     - ssh-add -l # List the keys added to the agent to ensure the key is added
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
   script:
-    - ssh dev@172.16.10.22 "docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} && docker run -d --name my-container ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}"
+    - sudo ssh dev@172.16.10.22 "docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} 
+    - sudo docker run -d --name brist-back ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}"
 
 
 
