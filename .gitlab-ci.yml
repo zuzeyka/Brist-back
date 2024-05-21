@@ -24,7 +24,7 @@ deploy:
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s) # Start the SSH agent
-    - echo "$ID_RSA" | ssh-add - # Add the private key
+    - echo "${ID_RSA}" | ssh-add - # Add the private key
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
   script:
