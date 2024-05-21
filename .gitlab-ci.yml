@@ -33,7 +33,7 @@ deploy:
     - ssh-add -l # List the keys added to the agent to ensure the key is added
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
   script:
-    - ssh dev@172.16.10.22 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f brist-back || true && docker run -d -p 80:80 -p 3000:3000 --name brist-back $TAG_COMMIT"
+    - ssh dev@172.16.10.22 "docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f brist-back || true && docker run brist-back "
 
 
 
