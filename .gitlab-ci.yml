@@ -23,7 +23,6 @@ deploy:
   variables:
    DOCKER_HOST: "ssh://dev@172.16.10.22"
   before_script:
-    - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s) # Start the SSH agent
     # Handle line breaks in the private key and ensure correct formatting
