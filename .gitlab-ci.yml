@@ -25,7 +25,7 @@ deploy:
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s) # Start the SSH agent
     - echo "${ID_RSA}"
-    - echo «${ID_RSA}» | tr -d '\r' | ssh-add -
+    - echo "$ID_RSA" | tr -d '\r' | sed 's/\\n/\n/g' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
   script:
