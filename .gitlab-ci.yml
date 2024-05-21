@@ -20,6 +20,8 @@ deploy:
   image: alpine:latest
   only:
     - main
+  variables:
+   DOCKER_HOST: "ssh://dev@172.16.10.22"
   before_script:
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
@@ -32,8 +34,12 @@ deploy:
     - ssh-add ~/.ssh/id_rsa # Add the private key
     - ssh-add -l # List the keys added to the agent to ensure the key is added
     - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - ssh dev@172.16.10.22 "docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f brist-back || true && docker run brist-back "
+    - docker compose --env-file $ENV_FILE pull
+    - docker compose --env-file $ENV_FILE down --timeout=60 --remove-orphans
+    - docker compose --env-file $ENV_FILE up --build --detach
+    - docker image prune -f || true
 
 
 
