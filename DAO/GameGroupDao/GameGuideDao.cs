@@ -22,7 +22,6 @@ namespace Slush.DAO.GameGroupDao
                 title = g.title,
                 description = g.description,
                 likesCount = g.likesCount,
-                discussionId = g.discussionId,
                 gameId = g.gameId,
                 authorId = g.authorId,
                 gameGroupId = g.gameGroupId,
@@ -39,7 +38,6 @@ namespace Slush.DAO.GameGroupDao
                 existing.title = guide.title;
                 existing.description = guide.description;
                 existing.likesCount = guide.likesCount;
-                existing.discussionId = guide.discussionId;
                 existing.gameId = guide.gameId;
                 existing.authorId = guide.authorId;
                 existing.gameGroupId = guide.gameGroupId;
@@ -75,7 +73,6 @@ namespace Slush.DAO.GameGroupDao
                     title = g.title,
                     description = g.description,
                     likesCount = g.likesCount,
-                    discussionId = g.discussionId,
                     gameId = g.gameId,
                     authorId = g.authorId,
                     gameGroupId = g.gameGroupId,

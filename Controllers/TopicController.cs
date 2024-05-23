@@ -33,7 +33,6 @@ namespace FullStackBrist.Server.Controllers
                                                         name: t.name,
                                                         description: t.description,
                                                         authorId: t.authorId,
-                                                        postId: t.postId,
                                                         createdAt: t.createdAt)).ToList();
 
             return Ok(response);
@@ -48,7 +47,6 @@ namespace FullStackBrist.Server.Controllers
                 model.name,
                 model.description,
                 model.authorId,
-                model.postId,
                 DateTime.Now);
 
             var response = await _dataContext.dbTopics.AddAsync(result);
@@ -78,7 +76,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTopic(Guid id, [FromBody] TopicModel topic)
         {
-            var result = new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.postId, topic.createdAt);
+            var result = new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt);
             await _topicDao.UpdateTopic(result);
             return NoContent();
         }

@@ -12,8 +12,8 @@ using Slush.Data;
 namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240417163954_Initial")]
-    partial class Initial
+    [Migration("20240523131734_fix-rows")]
+    partial class fixrows
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Slush.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.Property<Guid>("groupsid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("usersid")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("groupsid", "usersid");
-
-                    b.HasIndex("usersid");
-
-                    b.ToTable("GroupUser");
-                });
 
             modelBuilder.Entity("Slush.Data.Entity.Categories", b =>
                 {
@@ -53,11 +38,9 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -71,6 +54,9 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
@@ -78,18 +64,17 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("image")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("authorId");
 
                     b.ToTable("dbCategoriesByAuthors");
                 });
@@ -100,6 +85,9 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
@@ -107,11 +95,9 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -139,6 +125,10 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("categoryId");
+
+                    b.HasIndex("gameId");
+
                     b.ToTable("dbCategoriesForGame");
                 });
 
@@ -148,14 +138,10 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Authorid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("GamePostsid")
+                    b.Property<Guid>("authorId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -169,9 +155,9 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Authorid");
+                    b.HasIndex("authorId");
 
-                    b.HasIndex("GamePostsid");
+                    b.HasIndex("gamePostId");
 
                     b.ToTable("dbGameComments");
                 });
@@ -193,6 +179,8 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("gameId");
+
                     b.ToTable("dbGameGroups");
                 });
 
@@ -206,7 +194,6 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -218,12 +205,6 @@ namespace Slush.Migrations
                     b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("discussionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("gameGroupId")
                         .HasColumnType("char(36)");
 
@@ -234,12 +215,15 @@ namespace Slush.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
+                    b.HasIndex("authorId");
+
                     b.HasIndex("gameGroupId");
+
+                    b.HasIndex("gameId");
 
                     b.ToTable("dbGameGuides");
                 });
@@ -254,7 +238,6 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -269,10 +252,7 @@ namespace Slush.Migrations
                     b.Property<Guid>("discussionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("gameGroupid")
+                    b.Property<Guid>("gameGroupId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("gameId")
@@ -282,12 +262,15 @@ namespace Slush.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("gameGroupid");
+                    b.HasIndex("authorId");
+
+                    b.HasIndex("gameGroupId");
+
+                    b.HasIndex("gameId");
 
                     b.ToTable("dbGameNews");
                 });
@@ -298,14 +281,10 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("GameTopicid")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("authorId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -317,30 +296,25 @@ namespace Slush.Migrations
                     b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("discussionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("gameGroupid")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("gameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("gameTopicId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("GameTopicid");
+                    b.HasIndex("authorId");
 
-                    b.HasIndex("gameGroupid");
+                    b.HasIndex("gameId");
+
+                    b.HasIndex("gameTopicId");
 
                     b.ToTable("dbGamePosts");
                 });
@@ -349,9 +323,6 @@ namespace Slush.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("GameGroupid")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("attachedId")
@@ -364,16 +335,14 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("GameGroupid");
+                    b.HasIndex("attachedId");
 
                     b.ToTable("dbGameTopics");
                 });
@@ -394,14 +363,14 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("attachedId");
 
                     b.ToTable("dbGroups");
                 });
@@ -413,7 +382,6 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -432,6 +400,8 @@ namespace Slush.Migrations
 
                     b.HasIndex("groupId");
 
+                    b.HasIndex("userId");
+
                     b.ToTable("dbGroupComments");
                 });
 
@@ -441,14 +411,10 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("Topicid")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("authorId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -463,22 +429,17 @@ namespace Slush.Migrations
                     b.Property<Guid>("discussionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("gameId")
-                        .HasColumnType("char(36)");
-
                     b.Property<int>("likesCount")
                         .HasColumnType("int");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Topicid");
+                    b.HasIndex("authorId");
+
+                    b.HasIndex("discussionId");
 
                     b.ToTable("dbPosts");
                 });
@@ -487,9 +448,6 @@ namespace Slush.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("Groupid")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("attachedId")
@@ -505,16 +463,16 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Groupid");
+                    b.HasIndex("attachedId");
+
+                    b.HasIndex("authorId");
 
                     b.ToTable("dbTopics");
                 });
@@ -532,7 +490,6 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -544,12 +501,6 @@ namespace Slush.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("DLCInShopid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("GameInShopid")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("createdAt")
@@ -566,9 +517,9 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("DLCInShopid");
+                    b.HasIndex("gameId");
 
-                    b.HasIndex("GameInShopid");
+                    b.HasIndex("languageId");
 
                     b.ToTable("dbLanguagesInGame");
                 });
@@ -580,11 +531,9 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("OS")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("RAM")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -594,18 +543,15 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("freeDiskSpace")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("processor")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("video")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -620,11 +566,9 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("OS")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("RAM")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -634,18 +578,15 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("freeDiskSpace")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("processor")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("video")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -657,12 +598,6 @@ namespace Slush.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("GameGroupid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("Userid")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("authorId")
@@ -677,12 +612,6 @@ namespace Slush.Migrations
                     b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("discussionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
@@ -690,18 +619,16 @@ namespace Slush.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("screenshotUrl")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("GameGroupid");
+                    b.HasIndex("authorId");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex("gameId");
 
                     b.ToTable("dbScreenshots");
                 });
@@ -719,23 +646,18 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("passwordSalt")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("phone")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("salt")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -753,7 +675,6 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -767,6 +688,8 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("authorId");
+
                     b.HasIndex("userId");
 
                     b.ToTable("dbUserComments");
@@ -776,12 +699,6 @@ namespace Slush.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("GameGroupid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("Userid")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("authorId")
@@ -796,12 +713,6 @@ namespace Slush.Migrations
                     b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("discussionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("dislikesCount")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
@@ -809,18 +720,16 @@ namespace Slush.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("videoUrl")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
 
-                    b.HasIndex("GameGroupid");
+                    b.HasIndex("authorId");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex("gameId");
 
                     b.ToTable("dbVideos");
                 });
@@ -832,11 +741,9 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("OS")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("RAM")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -846,18 +753,15 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("freeDiskSpace")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("processor")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("video")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
@@ -865,24 +769,114 @@ namespace Slush.Migrations
                     b.ToTable("dbSystemRequirements");
                 });
 
-            modelBuilder.Entity("Slush.Entity.Abstract.Author", b =>
+            modelBuilder.Entity("Slush.Entity.Chat.Chat", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("deletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("firstUser")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("secondUser")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("firstUser");
+
+                    b.HasIndex("secondUser");
+
+                    b.ToTable("dbChats");
+                });
+
+            modelBuilder.Entity("Slush.Entity.Chat.Message", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("chatId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("deletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("senderId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("chatId");
+
+                    b.HasIndex("senderId");
+
+                    b.ToTable("dbMessages");
+                });
+
+            modelBuilder.Entity("Slush.Entity.Discussion", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("attachedId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("authorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("content")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("deleteAt")
+                    b.Property<DateTime?>("deletedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("subscribersCount")
+                    b.Property<int>("likesCount")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.ToTable("Author");
+                    b.ToTable("dbDiscussions");
+                });
+
+            modelBuilder.Entity("Slush.Entity.Profile.CategoryByUserForGame", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("deletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("dbCategoryByUserForGames");
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.Friends", b =>
@@ -904,6 +898,8 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("friendId");
 
                     b.HasIndex("userId");
 
@@ -930,9 +926,43 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("ownedGameId");
+
                     b.HasIndex("userId");
 
                     b.ToTable("dbOwnedGames");
+                });
+
+            modelBuilder.Entity("Slush.Entity.Profile.UserCategory", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("categoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("deletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("ownedGameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("categoryId");
+
+                    b.HasIndex("ownedGameId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("dbUserCategories");
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.WishedGame", b =>
@@ -955,6 +985,8 @@ namespace Slush.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("ownedGameId");
+
                     b.HasIndex("userId");
 
                     b.ToTable("dbWishedGames");
@@ -967,11 +999,9 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("avatar")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("backgroundImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -981,11 +1011,9 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("subscribersCount")
@@ -1006,11 +1034,9 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("avatar")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("backgroundImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
@@ -1020,11 +1046,9 @@ namespace Slush.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("subscribersCount")
@@ -1044,14 +1068,6 @@ namespace Slush.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("categories")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("categoriesId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
@@ -1070,20 +1086,10 @@ namespace Slush.Migrations
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("gameImages")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("languagesId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("previeImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<float>("price")
@@ -1092,15 +1098,16 @@ namespace Slush.Migrations
                     b.Property<Guid>("publisherId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("systemRequirementsId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("urlForContent")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("developerId");
+
+                    b.HasIndex("gameId");
+
+                    b.HasIndex("publisherId");
 
                     b.ToTable("dbDLCsInShop");
                 });
@@ -1110,10 +1117,6 @@ namespace Slush.Migrations
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("categoriesId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
@@ -1130,20 +1133,10 @@ namespace Slush.Migrations
                     b.Property<int>("discount")
                         .HasColumnType("int");
 
-                    b.Property<string>("gameImages")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("languagesId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("previeImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<float>("price")
@@ -1152,15 +1145,14 @@ namespace Slush.Migrations
                     b.Property<Guid>("publisherId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("systemRequirementsId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("urlForContent")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("id");
+
+                    b.HasIndex("developerId");
+
+                    b.HasIndex("publisherId");
 
                     b.ToTable("dbGamesInShops");
                 });
@@ -1173,129 +1165,220 @@ namespace Slush.Migrations
                     b.ToTable("List<object>");
                 });
 
-            modelBuilder.Entity("GroupUser", b =>
+            modelBuilder.Entity("Slush.Data.Entity.CategoryByAuthor", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.Group", null)
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
-                        .HasForeignKey("groupsid")
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Data.Entity.CategoryForGame", b =>
+                {
+                    b.HasOne("Slush.Data.Entity.Categories", null)
+                        .WithMany()
+                        .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
-                        .HasForeignKey("usersid")
+                        .HasForeignKey("gameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameComment", b =>
                 {
-                    b.HasOne("Slush.Entity.Abstract.Author", "Author")
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
-                        .HasForeignKey("Authorid")
+                        .HasForeignKey("authorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GamePosts", null)
-                        .WithMany("comments")
-                        .HasForeignKey("GamePostsid");
+                        .WithMany()
+                        .HasForeignKey("gamePostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Author");
+            modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGroup", b =>
+                {
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGuide", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", "gameGroup")
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
                         .WithMany()
                         .HasForeignKey("gameGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("gameGroup");
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameNews", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", "gameGroup")
-                        .WithMany("news")
-                        .HasForeignKey("gameGroupid")
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("authorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("gameGroup");
+                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
+                        .WithMany()
+                        .HasForeignKey("gameGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GamePosts", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameTopic", null)
-                        .WithMany("posts")
-                        .HasForeignKey("GameTopicid");
-
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", "gameGroup")
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
-                        .HasForeignKey("gameGroupid")
+                        .HasForeignKey("authorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("gameGroup");
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameTopic", null)
+                        .WithMany()
+                        .HasForeignKey("gameTopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameTopic", b =>
                 {
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
-                        .WithMany("topics")
-                        .HasForeignKey("GameGroupid");
+                        .WithMany()
+                        .HasForeignKey("attachedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Data.Entity.Community.Group", b =>
+                {
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("attachedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.GroupComment", b =>
                 {
                     b.HasOne("Slush.Data.Entity.Community.Group", null)
-                        .WithMany("comments")
+                        .WithMany()
                         .HasForeignKey("groupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Post", b =>
                 {
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Slush.Data.Entity.Community.Topic", null)
-                        .WithMany("posts")
-                        .HasForeignKey("Topicid");
+                        .WithMany()
+                        .HasForeignKey("discussionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Community.Topic", b =>
                 {
                     b.HasOne("Slush.Data.Entity.Community.Group", null)
-                        .WithMany("topics")
-                        .HasForeignKey("Groupid");
+                        .WithMany()
+                        .HasForeignKey("attachedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.LanguageInGame", b =>
                 {
-                    b.HasOne("Slush.Entity.Store.Product.DLCInShop", null)
-                        .WithMany("languages")
-                        .HasForeignKey("DLCInShopid");
-
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
-                        .WithMany("languages")
-                        .HasForeignKey("GameInShopid");
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Language", null)
+                        .WithMany()
+                        .HasForeignKey("languageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Screenshot", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
-                        .WithMany("screenshots")
-                        .HasForeignKey("GameGroupid");
-
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("screenshots")
-                        .HasForeignKey("Userid");
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.UserComment", b =>
                 {
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("comments")
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1303,19 +1386,59 @@ namespace Slush.Migrations
 
             modelBuilder.Entity("Slush.Data.Entity.Profile.Video", b =>
                 {
-                    b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
-                        .WithMany("videos")
-                        .HasForeignKey("GameGroupid");
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("authorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Entity.Chat.Chat", b =>
+                {
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("firstUser")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("videos")
-                        .HasForeignKey("Userid");
+                        .WithMany()
+                        .HasForeignKey("secondUser")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Entity.Chat.Message", b =>
+                {
+                    b.HasOne("Slush.Entity.Chat.Chat", null)
+                        .WithMany()
+                        .HasForeignKey("chatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("senderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Entity.Profile.Friends", b =>
                 {
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("friends")
+                        .WithMany()
+                        .HasForeignKey("friendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1323,8 +1446,35 @@ namespace Slush.Migrations
 
             modelBuilder.Entity("Slush.Entity.Profile.OwnedGame", b =>
                 {
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("ownedGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("ownedGames")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Entity.Profile.UserCategory", b =>
+                {
+                    b.HasOne("Slush.Entity.Profile.CategoryByUserForGame", null)
+                        .WithMany()
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Profile.OwnedGame", null)
+                        .WithMany()
+                        .HasForeignKey("ownedGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1332,69 +1482,53 @@ namespace Slush.Migrations
 
             modelBuilder.Entity("Slush.Entity.Profile.WishedGame", b =>
                 {
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("ownedGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany("wishedGames")
+                        .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameGroup", b =>
-                {
-                    b.Navigation("news");
-
-                    b.Navigation("screenshots");
-
-                    b.Navigation("topics");
-
-                    b.Navigation("videos");
-                });
-
-            modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GamePosts", b =>
-                {
-                    b.Navigation("comments");
-                });
-
-            modelBuilder.Entity("Slush.Data.Entity.Community.GameGroup.GameTopic", b =>
-                {
-                    b.Navigation("posts");
-                });
-
-            modelBuilder.Entity("Slush.Data.Entity.Community.Group", b =>
-                {
-                    b.Navigation("comments");
-
-                    b.Navigation("topics");
-                });
-
-            modelBuilder.Entity("Slush.Data.Entity.Community.Topic", b =>
-                {
-                    b.Navigation("posts");
-                });
-
-            modelBuilder.Entity("Slush.Data.Entity.Profile.User", b =>
-                {
-                    b.Navigation("comments");
-
-                    b.Navigation("friends");
-
-                    b.Navigation("ownedGames");
-
-                    b.Navigation("screenshots");
-
-                    b.Navigation("videos");
-
-                    b.Navigation("wishedGames");
-                });
-
             modelBuilder.Entity("Slush.Entity.Store.Product.DLCInShop", b =>
                 {
-                    b.Navigation("languages");
+                    b.HasOne("Slush.Entity.Store.Product.Creators.Developer", null)
+                        .WithMany()
+                        .HasForeignKey("developerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
+                        .WithMany()
+                        .HasForeignKey("gameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.Creators.Publisher", null)
+                        .WithMany()
+                        .HasForeignKey("publisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Slush.Entity.Store.Product.GameInShop", b =>
                 {
-                    b.Navigation("languages");
+                    b.HasOne("Slush.Entity.Store.Product.Creators.Developer", null)
+                        .WithMany()
+                        .HasForeignKey("developerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Entity.Store.Product.Creators.Publisher", null)
+                        .WithMany()
+                        .HasForeignKey("publisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

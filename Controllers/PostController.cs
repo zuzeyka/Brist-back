@@ -34,7 +34,6 @@ namespace FullStackBrist.Server.Controllers
                                                        description: p.description,
                                                        likesCount: p.likesCount,
                                                        discussionId: p.discussionId,
-                                                       gameId: p.gameId,
                                                        authorId: p.authorId,
                                                        content: p.content,
                                                        createdAt: p.createdAt)).ToList();
@@ -51,7 +50,6 @@ namespace FullStackBrist.Server.Controllers
                 model.description,
                 0,
                 model.discussionId,
-                model.gameId,
                model.authorId,
                model.content,
                                             DateTime.Now
@@ -82,7 +80,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post)
         {
-            var result = new Post(id, post.title, post.description, post.likesCount,  post.discussionId, post.gameId, post.authorId, post.content, post.createdAt);
+            var result = new Post(id, post.title, post.description, post.likesCount,  post.discussionId,  post.authorId, post.content, post.createdAt);
             await _postDao.UpdatePost(result);
             return NoContent();
         }

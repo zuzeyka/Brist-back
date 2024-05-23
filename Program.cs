@@ -13,6 +13,7 @@ using Slush.Entity.Profile;
 using Slush.DAO.ProfileDao;
 using Slush.DAO.RequirementsDao;
 using Slush.DAO.ChatDao;
+using Slush.DAO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,8 @@ builder.Services.AddTransient<MinimalSystemRequirementDao>();
 
 builder.Services.AddTransient<MessageDao>();
 builder.Services.AddTransient<ChatDao>();
+
+builder.Services.AddTransient<DiscussionDao>();
 
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>

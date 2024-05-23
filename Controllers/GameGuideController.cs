@@ -28,7 +28,6 @@ namespace FullStackBrist.Server.Controllers
                                                                  title: g.title,
                                                                  description: g.description,
                                                                  likesCount: g.likesCount,
-                                                                 discussionId: g.discussionId,
                                                                  gameId: g.gameId,
                                                                  authorId: g.authorId,
                                                                  gameGroupId: g.gameGroupId,
@@ -46,7 +45,6 @@ namespace FullStackBrist.Server.Controllers
                                             model.title,
                                             model.description,
                                             0,
-                                            model.discussionId,
                                             model.gameId,
                                             model.authorId,
                                             model.gameGroupId,
@@ -80,7 +78,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGuideModel game)
         {
-            var result = new GameGuide(id, game.title, game.description, game.likesCount, game.discussionId, game.gameId, game.authorId, game.gameGroupId, game.content, game.createdAt);
+            var result = new GameGuide(id, game.title, game.description, game.likesCount,  game.gameId, game.authorId, game.gameGroupId, game.content, game.createdAt);
             await _gameGuideDao.UpdateGameGuide(result);
             return NoContent();
         }

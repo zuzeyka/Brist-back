@@ -17,8 +17,6 @@ namespace Slush.Data.Entity.Profile
             this.createdAt = createdAt;
         }
 
-
-
         public Guid id { get; set; }
         public Guid userId { get; set; }
         public Guid authorId { get; set; }

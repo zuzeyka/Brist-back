@@ -25,7 +25,6 @@ namespace Slush.DAO.GroupDao
                 description = p.description,
                 likesCount = p.likesCount,
                 discussionId = p.discussionId,
-                gameId = p.gameId,
                 authorId = p.authorId,
                 content = p.content,
                 createdAt = p.createdAt}).ToListAsync();
@@ -72,7 +71,6 @@ namespace Slush.DAO.GroupDao
                     description = p.description,
                     likesCount = p.likesCount,
                     discussionId = p.discussionId,
-                    gameId = p.gameId,
                     authorId = p.authorId,
                     content = p.content,
                     createdAt = p.createdAt

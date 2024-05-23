@@ -27,6 +27,7 @@ namespace FullStackBrist.Server.Controllers
             var _categoriesByAuthor = await _categoriesByAuthorDao.GetAllCategoriesByAuthor();
 
             var response = _categoriesByAuthor.Select(c => new CategoryByAuthor(id: c.id,
+                                                                                authorId: c.authorId,
                                                                                 name: c.name,
                                                                                 description: c.description,
                                                                                 image: c.image,
@@ -39,6 +40,7 @@ namespace FullStackBrist.Server.Controllers
         public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model)
         {
             var result = new CategoryByAuthor(Guid.NewGuid(),
+                                        model.authorId,
                                         model.name,
                                         model.description,
                                         model.image,
@@ -70,7 +72,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model)
         {
-            var result = new CategoryByAuthor(id, model.name, model.description, model.image, DateTime.Now);
+            var result = new CategoryByAuthor(id, model.authorId, model.name, model.description, model.image, DateTime.Now);
             await _categoriesByAuthorDao.UpdateCategoriesByAuthor(result);
             return NoContent();
         }

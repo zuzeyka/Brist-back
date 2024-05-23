@@ -25,7 +25,6 @@ namespace Slush.DAO.ProfileDao
                 title = s.title,
                 description = s.description,
                 likesCount = s.likesCount,
-                discussionId = s.discussionId,
                 gameId = s.gameId,
                 authorId = s.authorId,
                 screenshotUrl = s.screenshotUrl,
@@ -40,7 +39,6 @@ namespace Slush.DAO.ProfileDao
                 existing.title = screenshot.title;
                 existing.description = screenshot.description;
                 existing.likesCount = screenshot.likesCount;
-                existing.discussionId = screenshot.discussionId;
 
                 await _context.SaveChangesAsync();
             }
@@ -72,7 +70,6 @@ namespace Slush.DAO.ProfileDao
                     title = s.title,
                     description = s.description,
                     likesCount = s.likesCount,
-                    discussionId = s.discussionId,
                     gameId = s.gameId,
                     authorId = s.authorId,
                     screenshotUrl = s.screenshotUrl,
