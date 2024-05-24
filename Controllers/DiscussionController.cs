@@ -9,7 +9,7 @@ using Slush.Models;
 namespace Slush.Controllers
 {
     [ApiController]
-    [Route("{controller}")]
+    [Route("api/{controller}")]
     public class DiscussionController : Controller
     {
         private readonly DataContext _dataContext;

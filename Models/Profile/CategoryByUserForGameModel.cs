@@ -5,5 +5,6 @@
         public Guid id { get; set; }
         public String name { get; set; } = null!;
         public String? image {  get; set; }
+        public DateTime createdAt {  get; set; }
     }
 }

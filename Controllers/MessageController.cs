@@ -19,7 +19,7 @@ namespace Slush.Controllers
             _messageDao = messageDao;
         }
 
-        [HttpGet]
+        [HttpGet("bychat/{id}")]
         public async Task<ActionResult<List<MessageDao>>> GetAllMessages([FromBody] Chat chat)
         {
             var messages = await _messageDao.GetAllMessages(chat.id);

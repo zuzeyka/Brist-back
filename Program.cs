@@ -70,6 +70,9 @@ builder.Services.AddTransient<ChatDao>();
 
 builder.Services.AddTransient<DiscussionDao>();
 
+builder.Services.AddTransient<CategoryByUserForGameDao>();
+builder.Services.AddTransient<UserCategoryDao>();
+
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
