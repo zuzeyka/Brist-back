@@ -21,7 +21,7 @@ deploy:
   only:
     - main
   variables:
-   DOCKER_HOST: "ssh://dev@172.16.10.22"
+   DOCKER_HOST: "ssh://$SERVER_USER@$SERVER_IP" #server user - dev server ip - 172.16.10.22
   before_script:
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s) # Start the SSH agent
@@ -32,10 +32,10 @@ deploy:
     #- cat ~/.ssh/id_rsa
     - ssh-add ~/.ssh/id_rsa # Add the private key
     - ssh-add -l # List the keys added to the agent to ensure the key is added
-    - ssh-keyscan -H 172.16.10.22 >> ~/.ssh/known_hosts
+    - ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts #server ip - 172.16.10.22
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - ssh dev@172.16.10.22 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f $TAG_COMMIT || true && docker run -d -p 80:80 --name brist-back $TAG_COMMIT"
+    - ssh $SERVER_USER@$SERVER_IP "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $TAG_COMMIT && docker container rm -f $TAG_COMMIT || true && docker run -d -p 80:80 --name brist-back $TAG_COMMIT"
 
 
 
