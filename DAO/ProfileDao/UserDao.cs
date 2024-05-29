@@ -23,9 +23,9 @@ namespace Slush.DAO.ProfileDao
                 id = u.id,
                 name = u.name,
                 passwordSalt = u.passwordSalt,
-                salt = u.salt,
                 email = u.email,
                 phone = u.phone,
+                verified = u.verified,
                 createdAt = u.createdAt}).ToListAsync();
         }
         public async Task UpdateUser(User user)
@@ -35,9 +35,9 @@ namespace Slush.DAO.ProfileDao
             {
                 existing.name = user.name;
                 existing.passwordSalt = user.passwordSalt;
-                existing.salt = user.salt;
                 existing.email = user.email;
                 existing.phone = user.phone;
+                existing.verified = user.verified;
 
                 await _context.SaveChangesAsync();
             }
@@ -68,9 +68,32 @@ namespace Slush.DAO.ProfileDao
                     id = u.id,
                     name = u.name,
                     passwordSalt = u.passwordSalt,
-                    salt = u.salt,
                     email = u.email,
                     phone = u.phone,
+                    verified = u.verified,
+                    createdAt = u.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<User?> GetByEmail(String email)
+        {
+            var response = await _context.dbUsers
+                .Where(x => x.email == email)
+                .Select(u => new User
+                {
+                    id = u.id,
+                    name = u.name,
+                    passwordSalt = u.passwordSalt,
+                    email = u.email,
+                    phone = u.phone,
+                    verified = u.verified,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)

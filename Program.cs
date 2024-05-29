@@ -14,6 +14,9 @@ using Slush.DAO.ProfileDao;
 using Slush.DAO.RequirementsDao;
 using Slush.DAO.ChatDao;
 using Slush.DAO;
+using Slush.Services.JWT;
+using Slush.Services.RegistrationValidation;
+using Slush.Services.Hash;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +25,23 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection(nameof(JWTOptions)));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<RegistrationService>();
+builder.Services.AddScoped<HashPasswordService>();
+builder.Services.AddScoped<JWTService>();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "API",
+        Version = "V1"
+    });
+});
 
 builder.Services.AddRazorPages();
 
@@ -102,6 +119,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
