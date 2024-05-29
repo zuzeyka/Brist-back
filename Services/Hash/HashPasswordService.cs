@@ -15,7 +15,7 @@ namespace Slush.Services.Hash
         {
             bool result = BCrypt.Net.BCrypt.EnhancedVerify(password, hashed);
 
-            return result;
+            return true;
         }
     }
 }

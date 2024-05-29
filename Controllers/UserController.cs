@@ -1,4 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
@@ -23,14 +24,16 @@ namespace FullStackBrist.Server.Controllers
         private readonly RegistrationService _registrationService;
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(DataContext dataContext, UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService)
+        public UserController(DataContext dataContext, UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger)
         {
             _dataContext = dataContext;
             _userDao = userDao;
             _registrationService = registrationService;
             _passwordService = passwordService;
             _jwtService = jwtService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -62,11 +65,18 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("validatelogin")]
         public async Task<IActionResult> LoginByModel([FromBody] LoginValidationModel model)
         {
+            _logger.LogInformation("HttpContext is null: {0}", HttpContext == null);
             var token = await Login(model);
 
-            HttpContext.Response.Cookies.Append("somedonuts", token);
+            var httpContext = HttpContext;
+            httpContext.Response.Cookies.Append("somedonuts", token);
 
-            return Ok(token);
+            var result = new
+            {
+                res = token,
+            };
+
+            return Ok(result);
         }
 
         private async Task<string> Login(LoginValidationModel validationModel)
@@ -77,7 +87,7 @@ namespace FullStackBrist.Server.Controllers
 
             if (!result)
             {
-                throw new Exception("Failed to login");
+                throw new Exception("Failed to login in controller");
             }
 
             var token = _jwtService.GenerateToken(user);

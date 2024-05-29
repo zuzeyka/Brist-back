@@ -16,10 +16,10 @@ namespace Slush.Services.JWT
         }
         public String GenerateToken(User user)
         {
-            Claim[] claims = [new("userId", user.id.ToString())]; 
+            Claim[] claims = { new Claim("userId", user.id.ToString()) };
 
             var signingCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.Sha256);
+                (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 claims: claims,

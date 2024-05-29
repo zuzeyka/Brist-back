@@ -17,6 +17,7 @@ using Slush.DAO;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection(nameof(J
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<RegistrationService>();
 builder.Services.AddScoped<HashPasswordService>();
@@ -91,18 +94,29 @@ builder.Services.AddTransient<CategoryByUserForGameDao>();
 builder.Services.AddTransient<UserCategoryDao>();
 
 
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+builder.Services.AddCors(options =>
 {
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
+    options.AddPolicy("corsapp", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
-
 app.UseCors("corsapp");
+
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 
 if (app.Environment.IsDevelopment())
 {
