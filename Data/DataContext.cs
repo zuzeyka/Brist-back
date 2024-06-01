@@ -60,6 +60,8 @@ namespace Slush.Data
         #region Game
         public DbSet<DLCInShop>                dbDLCsInShop                { get; set; }
         public DbSet<GameInShop>               dbGamesInShops              { get; set; }
+        public DbSet<GameBundle>               dbGameBundles               { get; set; }
+        public DbSet<GameBundleCollection>     dbGameBundleCollections     { get; set; }
         #endregion
         #region Chat
         public DbSet<Chat>                     dbChats                     { get; set; }
@@ -366,6 +368,18 @@ namespace Slush.Data
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(g => g.authorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GameBundleCollection>()
+                .HasOne<GameInShop>()
+                .WithMany()
+                .HasForeignKey(g => g.id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GameBundleCollection>()
+                .HasOne<DLCInShop>()
+                .WithMany()
+                .HasForeignKey(d => d.id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<List<object>>().HasNoKey();
