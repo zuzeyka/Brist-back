@@ -93,7 +93,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] SettingsModel model)
         {
-            var settings = new Settings(Guid.NewGuid(),
+            var settings = new Settings(id,
                 model.attachedUserId,
                 model.bigSaleNotification,
                model.saleFromWishlistNotification,
