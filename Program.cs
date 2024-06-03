@@ -93,6 +93,9 @@ builder.Services.AddTransient<DiscussionDao>();
 builder.Services.AddTransient<CategoryByUserForGameDao>();
 builder.Services.AddTransient<UserCategoryDao>();
 
+builder.Services.AddTransient<SettingsDao>();
+builder.Services.AddTransient<WalletTransactionsDao>();
+
 
 builder.Services.AddCors(options =>
 {
