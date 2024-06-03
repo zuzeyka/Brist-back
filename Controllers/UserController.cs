@@ -47,6 +47,7 @@ namespace FullStackBrist.Server.Controllers
                                                        email: u.email,
                                                        phone: u.phone,
                                                        verified: u.verified,
+                                                       descripton: u.description,
                                                        createdAt: u.createdAt)).ToList();
 
             return Ok(response);
@@ -118,7 +119,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
         {
-            var result = new User(id, user.name, user.passwordSalt, user.email, user.phone, user.verified, user.createdAt);
+            var result = new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.createdAt);
             await _userDao.UpdateUser(result);
             return NoContent();
         }

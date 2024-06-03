@@ -26,6 +26,7 @@ namespace Slush.Services.RegistrationValidation
                 hashedPassword,
                 model.email,
                 model.phone,
+                model.description,
                 false,
                 DateTime.Now
                 ));

@@ -37,6 +37,7 @@ namespace Slush.Data
         public DbSet<WishedGame>               dbWishedGames               { get; set; }
         public DbSet<CategoryByUserForGame>    dbCategoryByUserForGames    { get; set; }
         public DbSet<UserCategory>             dbUserCategories            { get; set; }
+        public DbSet<Settings>                 dbSettings                  { get; set; }
         #endregion
         #region Categories
         public DbSet<Categories>               dbCategories                { get; set; }
@@ -380,6 +381,12 @@ namespace Slush.Data
                 .HasOne<DLCInShop>()
                 .WithMany()
                 .HasForeignKey(d => d.id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Settings>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(g => g.attachedUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<List<object>>().HasNoKey();
