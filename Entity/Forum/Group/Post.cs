@@ -1,4 +1,4 @@
-﻿using Slush.Data.Entity.Profile;
+using Slush.Data.Entity.Profile;
 
 namespace Slush.Data.Entity.Community
 {

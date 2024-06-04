@@ -1,4 +1,4 @@
-﻿
+
 
 namespace Slush.Data.Entity.Profile
 {

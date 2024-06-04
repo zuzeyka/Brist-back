@@ -1,4 +1,4 @@
-﻿
+
 
 namespace Slush.Data.Entity
 {
@@ -25,3 +25,4 @@ namespace Slush.Data.Entity
         public DateTime? deleteAt { get; set; }
     }
 }
+

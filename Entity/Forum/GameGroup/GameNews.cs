@@ -1,4 +1,4 @@
-﻿namespace Slush.Data.Entity.Community.GameGroup
+namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameNews
     {

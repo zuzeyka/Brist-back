@@ -1,5 +1,3 @@
-﻿
-
 namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GameComment

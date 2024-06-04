@@ -1,4 +1,4 @@
-﻿namespace Slush.Entity.Profile
+namespace Slush.Entity.Profile
 {
     public class Friends
     {
