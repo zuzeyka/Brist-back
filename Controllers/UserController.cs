@@ -66,7 +66,6 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("validatelogin")]
         public async Task<IActionResult> LoginByModel([FromBody] LoginValidationModel model)
         {
-            _logger.LogInformation("HttpContext is null: {0}", HttpContext == null);
             var token = await Login(model);
 
             var httpContext = HttpContext;

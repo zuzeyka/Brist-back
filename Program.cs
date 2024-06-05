@@ -1,15 +1,11 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MySqlConnector;
 using Slush.DAO.GameInShopDao;
 using Slush.DAO.CategoriesDao;
 using Slush.Data;
 using Slush.DAO.CreatorsDao;
 using Slush.DAO.GameGroupDao;
 using Slush.DAO.GroupDao;
-using Slush.Data.Entity;
 using Slush.DAO.LanguageDao;
-using Slush.Entity.Profile;
 using Slush.DAO.ProfileDao;
 using Slush.DAO.RequirementsDao;
 using Slush.DAO.ChatDao;
@@ -17,11 +13,10 @@ using Slush.DAO;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("MsSqlDb") ?? throw new InvalidOperationException("Connection String 'MsSqlDb' not found.");
+var connectionString = builder.Configuration.GetConnectionString("MySqlDb") ?? throw new InvalidOperationException("Connection String 'MySqlDb' not found.");
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
