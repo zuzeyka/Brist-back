@@ -20,7 +20,7 @@ namespace Slush.Services.RegistrationValidation
         {
             var hashedPassword = _passwordService.Generate(model.passwordSalt);
 
-            var result = _userDao.Add(new User(
+            await _userDao.Add(new User(
                 Guid.NewGuid(),
                 model.name,
                 hashedPassword,

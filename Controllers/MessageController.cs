@@ -36,7 +36,7 @@ namespace Slush.Controllers
         [HttpPost]
         public async Task<ActionResult<Message>> CreateMessage([FromBody] MessageModel model)
         {
-            var result = new Message(Guid.NewGuid(), model.id, model.senderId, model.content, DateTime.Now);
+            var result = new Message(Guid.NewGuid(), model.chatId, model.senderId, model.content, DateTime.Now);
 
             var response = await _dataContext.dbMessages.AddAsync(result);
 

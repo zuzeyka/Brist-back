@@ -6,7 +6,7 @@
         {
         }
 
-        public Chat(Guid id, Guid firstUser, Guid secondUser, DateTime createdAt)
+        public Chat(Guid id, Guid firstUser, Guid secondUser, DateTime? createdAt)
         {
             this.id = id;
             this.firstUser = firstUser;
@@ -17,7 +17,7 @@
         public Guid id { get; set; }
         public Guid firstUser { get; set; }
         public Guid secondUser { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deletedAt { get; set; }
     }
 }

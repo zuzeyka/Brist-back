@@ -2,7 +2,6 @@
 {
     public class SettingsModel
     {
-        public Guid id {  get; set; }
         public Guid attachedUserId { get; set; }
         public bool bigSaleNotification { get; set; }
         public bool saleFromWishlistNotification { get; set; }

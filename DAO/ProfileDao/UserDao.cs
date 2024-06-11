@@ -82,10 +82,10 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
-        public async Task<User?> GetByEmail(String email)
+        public async Task<User?> GetByEmail(String name)
         {
             var response = await _context.dbUsers
-                .Where(x => x.email == email)
+                .Where(x => x.name == name)
                 .Select(u => new User
                 {
                     id = u.id,

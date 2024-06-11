@@ -2,7 +2,6 @@
 {
     public class GameBundleModel
     {
-        public Guid id { get; set; }
         public String name { get; set; } = null!;
         public String description { get; set; } = null!;
         public float price { get; set; }

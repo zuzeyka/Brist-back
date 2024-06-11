@@ -4,7 +4,7 @@
     {
         public Message() { }
 
-        public Message(Guid id, Guid chatId, Guid senderId, String? content, DateTime createdAt)
+        public Message(Guid id, Guid chatId, Guid senderId, String? content, DateTime? createdAt)
         {
             this.id = id;
             this.chatId = chatId;
@@ -17,7 +17,7 @@
         public Guid chatId { get; set; }
         public Guid senderId { get; set; }
         public String? content { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deletedAt { get; set; }
     }
 }

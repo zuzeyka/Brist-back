@@ -53,6 +53,8 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        #region Registration
+
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] UserModel model)
         {
@@ -60,7 +62,7 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok();
         }
-
+        #endregion
         #region Login
 
         [HttpPost("validatelogin")]
@@ -68,8 +70,15 @@ namespace FullStackBrist.Server.Controllers
         {
             var token = await Login(model);
 
-            var httpContext = HttpContext;
-            httpContext.Response.Cookies.Append("somedonuts", token);
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                IsEssential = true,
+            };
+            cookieOptions.Expires = DateTime.UtcNow.AddHours(1);
+            Response.Cookies.Append("somedonuts", token, cookieOptions);
 
             var result = new
             {
@@ -81,7 +90,7 @@ namespace FullStackBrist.Server.Controllers
 
         private async Task<string> Login(LoginValidationModel validationModel)
         {
-            var user = await _userDao.GetByEmail(validationModel.email);
+            var user = await _userDao.GetByEmail(validationModel.username);
 
             var result = _passwordService.Verify(validationModel.password, user.passwordSalt);
 

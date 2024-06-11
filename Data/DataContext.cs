@@ -82,13 +82,13 @@ namespace Slush.Data
                  .HasOne<Chat>()
                  .WithMany()
                  .HasForeignKey(m => m.chatId)
-                 .OnDelete(DeleteBehavior.Cascade);
+                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(m => m.senderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Chat>()
                .HasOne<User>()
@@ -106,25 +106,25 @@ namespace Slush.Data
                 .HasOne<GameInShop>()
                 .WithMany()
                 .HasForeignKey(gg => gg.gameId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GameGuide>()
                .HasOne<GameGroup>()
                .WithMany()
                .HasForeignKey(gg => gg.gameGroupId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GameGuide>()
                 .HasOne<GameInShop>()
                 .WithMany()
                 .HasForeignKey(gg => gg.gameId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GameNews>()
                 .HasOne<GameGroup>()
                 .WithMany()
                 .HasForeignKey(gn => gn.gameGroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GameNews>()
                 .HasOne<GameInShop>()

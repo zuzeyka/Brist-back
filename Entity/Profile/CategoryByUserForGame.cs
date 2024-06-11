@@ -4,7 +4,7 @@
     {
         public CategoryByUserForGame() { }
 
-        public CategoryByUserForGame(Guid id, String name, String? image, DateTime createdAt) 
+        public CategoryByUserForGame(Guid id, String name, String? image, DateTime? createdAt) 
         {
             this.id = id;
             this.name = name;
@@ -16,7 +16,7 @@
         public String name { get; set; } = null!;
         public String? image { get; set; }
 
-        public DateTime createdAt { get; set; }
+        public DateTime? createdAt { get; set; }
         public DateTime? deletedAt { get; set; }
     }
 }
