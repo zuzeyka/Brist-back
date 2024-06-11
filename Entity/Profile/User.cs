@@ -1,4 +1,4 @@
-﻿using Slush.Data.Entity.Community;
+using Slush.Data.Entity.Community;
 
 using Slush.Entity.Profile;
 using Slush.Entity.Store.Product;

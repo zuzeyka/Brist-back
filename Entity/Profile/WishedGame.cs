@@ -1,5 +1,3 @@
-﻿
-
 namespace Slush.Entity.Profile
 {
     public class WishedGame
