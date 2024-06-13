@@ -1,9 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Creators;
-using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CreatorsDao;
-using Slush.DAO.GroupDao;
-using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
 
 namespace FullStackBrist.Server.Controllers
@@ -12,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PublisherController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly PublisherDao _publisherDao;
 
-        public PublisherController(DataContext dataContext, PublisherDao publisherDao)
+        public PublisherController(PublisherDao publisherDao)
         {
-            _dataContext = dataContext;
             _publisherDao = publisherDao;
         }
 
@@ -26,16 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var publishers = await _publisherDao.GetAllPublishers();
 
-            var response = publishers.Select(p => new Publisher(id: p.id,
-                                                                subscribersCount: p.subscribersCount,
-                                                                name: p.name,
-                                                                description: p.description,
-                                                                avatar: p.avatar,
-                                                                backgroundImage: p.backgroundImage,
-                                                                urlForNewsPage: p.urlForNewsPage,
-                                                                createdAt: p.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(publishers);
         }
         [HttpPost]
         public async Task<ActionResult<Publisher>> CreatePublisher([FromBody] PublisherModel model)
@@ -49,9 +35,9 @@ namespace FullStackBrist.Server.Controllers
                 null,
                 DateTime.Now);
 
-            var response = await _dataContext.dbPublishers.AddAsync(result);
+            await _publisherDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -76,8 +62,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePublisher(Guid id, [FromBody] PublisherModel publisher)
         {
-            var result = new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt);
-            await _publisherDao.UpdatePublisher(result);
+            await _publisherDao.UpdatePublisher(new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt));
             return NoContent();
         }
     }

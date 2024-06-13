@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -10,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameGroupController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameGroupDao _gameGroupDao;
 
-        public GameGroupController(DataContext dataContext, GameGroupDao gameGroupDao)
+        public GameGroupController(GameGroupDao gameGroupDao)
         {
-            _dataContext = dataContext;
             _gameGroupDao = gameGroupDao;
         }
 
@@ -24,11 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var gameGroups = await _gameGroupDao.GetAllGameGroups();
 
-            var response = gameGroups.Select(g => new GameGroup(id: g.id,
-                                                                gameId: g.gameId,
-                                                                createdAt: g.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(gameGroups);
         }
 
         [HttpPost]
@@ -38,9 +31,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.gameId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGameGroups.AddAsync(result);
+            await _gameGroupDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -65,8 +58,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGroupModel game)
         {
-            var result = new GameGroup(id, game.gameId, game.createdAt);
-            await _gameGroupDao.UpdateGameGroup(result);
+            await _gameGroupDao.UpdateGameGroup(new GameGroup(id, game.gameId, game.createdAt));
             return NoContent();
         }
     }

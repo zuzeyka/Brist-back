@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Data;
 using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
@@ -11,12 +10,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesForGameController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly CategoryForGameDao _categoryForGameDao;
 
-        public CategoriesForGameController(DataContext dataContext, CategoryForGameDao categoryForGameDao)
+        public CategoriesForGameController(CategoryForGameDao categoryForGameDao)
         {
-            _dataContext = dataContext;
             _categoryForGameDao = categoryForGameDao;
         }
 
@@ -25,11 +22,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var categoriesForGame = await _categoryForGameDao.GetAll();
 
-            var response = categoriesForGame.Select(c => new CategoryForGame(id: c.id,
-                                                                             gameId: c.gameId,
-                                                                             categoryId: c.categoryId,
-                                                                             createdAt: c.createdAt)).ToList();
-            return Ok(response);
+            return Ok(categoriesForGame);
         }
 
 
@@ -40,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.gameId,
                                         model.categoryId,
                                         DateTime.Now);
-            var response = await _dataContext.dbCategoriesForGame.AddAsync(result);
+            await _categoryForGameDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -67,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryForGame(Guid id, [FromBody] CategoryForGameModel model)
         {
-            var result = new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now);
-            await _categoryForGameDao.UpdateCategoryForGame(result);
+            await _categoryForGameDao.UpdateCategoryForGame(new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now));
             return NoContent();
         }
     }

@@ -1,8 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto.Operators;
 using Slush.DAO.CategoriesDao;
-using Slush.Data;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly CategoriesDAO _categoriesDao;
 
-        public CategoriesController(DataContext dataContext, CategoriesDAO categoriesDao)
+        public CategoriesController(CategoriesDAO categoriesDao)
         {
-            _dataContext = dataContext;
             _categoriesDao = categoriesDao;
         }
 
@@ -25,12 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var categories = await _categoriesDao.GetAll();
 
-            var response = categories.Select(c => new Categories(id: c.id,
-                                                                 name: c.name,
-                                                                 description: c.description,
-                                                                 createdAt: c.createdAt
-                                                                             )).ToList();
-            return Ok(response);
+            return Ok(categories);
         }
 
         [HttpPost]
@@ -40,9 +31,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            var response = await _dataContext.dbCategories.AddAsync(result);
+            await _categoriesDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

@@ -1,10 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.DAO.RequirementsDao;
-using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -13,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class OwnedGameController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly OwnedGameDao _ownedGameDao;
 
-        public OwnedGameController(DataContext dataContext, OwnedGameDao ownedGameDao)
+        public OwnedGameController(OwnedGameDao ownedGameDao)
         {
-            _dataContext = dataContext;
             _ownedGameDao = ownedGameDao;
         }
 
@@ -27,11 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _ownedGames = await _ownedGameDao.GetAllOwnedGames();
 
-            var response = _ownedGames.Select(o => new OwnedGame(id: o.id,
-                                                                 ownedGameId: o.ownedGameId,
-                                                                 userId: o.userId,
-                                                                 createdAt: o.createdAt)).ToList();
-            return Ok(response);
+            return Ok(_ownedGames);
         }
 
 
@@ -43,8 +33,8 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbOwnedGames.AddAsync(result);
-            return Ok(response);
+            await _ownedGameDao.Add(result);
+            return Ok(result);
 
         }
 
@@ -70,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMinimalSystemRequirement(Guid id, [FromBody] OwnedGameModel game)
         {
-            var result = new OwnedGame(id, game.ownedGameId, game.userId, game.createdAt);
-            await _ownedGameDao.UpdateOwnedGame(result);
+            await _ownedGameDao.UpdateOwnedGame(new OwnedGame(id, game.ownedGameId, game.userId, game.createdAt));
             return NoContent();
         }
     }

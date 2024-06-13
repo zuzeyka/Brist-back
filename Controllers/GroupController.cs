@@ -1,8 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto.Operators;
 using Slush.DAO.GroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GroupDao _groupDao;
 
-        public GroupController(DataContext dataContext, GroupDao groupDao)
+        public GroupController(GroupDao groupDao)
         {
-            _dataContext = dataContext;
             _groupDao = groupDao;
         }
 
@@ -25,13 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _groups = await _groupDao.GetAllGroups();
 
-            var response = _groups.Select(g => new Group(id: g.id,
-                                                         attachedId: g.attachedId,
-                                                         name: g.name,
-                                                         description: g.description,
-                                                         createdAt: g.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_groups);
         }
 
 
@@ -44,9 +34,9 @@ namespace FullStackBrist.Server.Controllers
                 model.description,
                                             DateTime.Now
                                             );
-            var response =  await _dataContext.dbGroups.AddAsync(result);
+            await _groupDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -71,8 +61,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGroup(Guid id, [FromBody] GroupModel group)
         {
-            var result = new Group(id, group.attachedId, group.name, group.description, group.createdAt);
-            await _groupDao.UpdateGroup(result);
+            await _groupDao.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.createdAt));
             return NoContent();
         }
     }

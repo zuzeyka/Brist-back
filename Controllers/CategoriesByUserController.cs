@@ -10,12 +10,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesByUserController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly CategoriesByUserDao _categoriesByUserDao;
 
-        public CategoriesByUserController(DataContext dataContext, CategoriesByUserDao categoriesByUserDao)
+        public CategoriesByUserController( CategoriesByUserDao categoriesByUserDao)
         {
-            _dataContext = dataContext;
             _categoriesByUserDao = categoriesByUserDao;
         }
 
@@ -24,14 +22,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var categoriesByUser = await _categoriesByUserDao.GetAllCategoriesByUser();
 
-            var response = categoriesByUser.Select(c => new CategoryByUser(id: c.id,
-                                                                           authorId: c.authorId,
-                                                                           name: c.name,
-                                                                           description: c.description,
-                                                                           createdAt: c.createdAt
-                                                                        )).ToList();
-
-            return Ok(response);
+            return Ok(categoriesByUser);
         }
         [HttpPost]
         public async Task<ActionResult<CategoryByUser>> CreateCategoryByUser([FromBody] CategoryByUserModel model)
@@ -41,9 +32,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            var response = await _dataContext.dbCategoriesByUsers.AddAsync(result);
+            await _categoriesByUserDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -68,8 +59,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryByUser(Guid id, [FromBody] CategoryByUserModel model)
         {
-            var result = new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now);
-            await _categoriesByUserDao.UpdateCategoriesByUser(result);
+            await _categoriesByUserDao.UpdateCategoriesByUser(new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now));
             return NoContent();
         }
     }

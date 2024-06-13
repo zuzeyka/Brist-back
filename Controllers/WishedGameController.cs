@@ -1,10 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
-using System.Net;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -12,12 +10,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class WishedGameController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly WishedGameDao _wishedGameDao;
 
-        public WishedGameController(DataContext dataContext, WishedGameDao wishedGameDao)
+        public WishedGameController(WishedGameDao wishedGameDao)
         {
-            _dataContext = dataContext;
             _wishedGameDao = wishedGameDao;
         }
 
@@ -26,11 +22,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var wishedGames = await _wishedGameDao.GetAllWishedGames();
 
-            var response = wishedGames.Select(s => new WishedGame(id: s.id,
-                                                                  ownedGameId: s.ownedGameId,
-                                                                  userId: s.userId,
-                                                                  createdAt: s.createdAt)).ToList();
-            return Ok(response);
+            return Ok(wishedGames);
         }
 
 
@@ -42,9 +34,9 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                 DateTime.Now);
 
-            var response = await _dataContext.dbWishedGames.AddAsync(result);
+            await _wishedGameDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -69,8 +61,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateWishedGame(Guid id, [FromBody] WishedGameModel game)
         {
-            var result = new WishedGame(id, game.ownedGameId, game.userId, game.createdAt);
-            await _wishedGameDao.UpdateWishedGame(result);
+            await _wishedGameDao.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));
             return NoContent();
         }
     }

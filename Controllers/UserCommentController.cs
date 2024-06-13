@@ -1,11 +1,6 @@
-﻿using FullStackBrist.Server.Models.Group;
-using FullStackBrist.Server.Models.Profile;
+﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using Slush.DAO.GroupDao;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
-using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -14,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserCommentController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly UserCommentDao _userCommentDao;
 
-        public UserCommentController(DataContext dataContext, UserCommentDao userCommentDao)
+        public UserCommentController(UserCommentDao userCommentDao)
         {
-            _dataContext = dataContext;
             _userCommentDao = userCommentDao;
         }
 
@@ -28,12 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _userComments = await _userCommentDao.GetAllUserComments();
 
-            var response = _userComments.Select(s => new UserComment(id: s.id,
-                                                                     userId: s.userId,
-                                                                     authorId: s.authorId,
-                                                                     content: s.content,
-                                                                     createdAt: s.createdAt)).ToList();
-            return Ok(response);
+            return Ok(_userComments);
         }
 
         [HttpPost]
@@ -45,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                 model.content,
                 DateTime.Now);
 
-            var response = await _dataContext.dbUserComments.AddAsync(result);
+            await _userCommentDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -72,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUserComment(Guid id, [FromBody] UserCommentModel comment)
         {
-            var result = new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt);
-            await _userCommentDao.UpdateUserComment(result);
+            await _userCommentDao.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));
             return NoContent();
         }
     }

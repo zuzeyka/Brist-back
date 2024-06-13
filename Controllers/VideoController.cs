@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -10,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class VideoController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly VideoDao _videoDao;
 
-        public VideoController(DataContext dataContext, VideoDao videoDao)
+        public VideoController(VideoDao videoDao)
         {
-            _dataContext = dataContext;
             _videoDao = videoDao;
         }
 
@@ -24,15 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var videos = await _videoDao.GetAllVideos();
 
-            var response = videos.Select(v => new Video(id: v.id,
-                                                        title: v.title,
-                                                        description: v.description,
-                                                        likesCount: v.likesCount,
-                                                        gameId: v.gameId,
-                                                        authorId: v.authorId,
-                                                        videoUrl: v.videoUrl,
-                                                        createdAt: v.createdAt)).ToList();
-            return Ok(response);
+            return Ok(videos);
         }
 
 
@@ -48,9 +37,9 @@ namespace FullStackBrist.Server.Controllers
                 model.videoUrl,
                 DateTime.Now);
 
-            var response = await _dataContext.dbVideos.AddAsync(result);
+            await _videoDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -75,8 +64,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video)
         {
-            var result = new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt);
-            await _videoDao.UpdateVideo(result);
+            await _videoDao.UpdateVideo(new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt));
             return NoContent();
         }
 

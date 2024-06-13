@@ -1,10 +1,6 @@
-﻿using FullStackBrist.Server.Models.GameGroup;
-using FullStackBrist.Server.Models.ShopContent;
+﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupDao;
 using Slush.DAO.GameInShopDao;
-using Slush.Data;
-using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Store.Product;
 
 namespace FullStackBrist.Server.Controllers
@@ -13,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GamesInShopController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameInShopDao _gameInShopDao;
 
-        public GamesInShopController(DataContext dataContext, GameInShopDao gameInShopDao)
+        public GamesInShopController(GameInShopDao gameInShopDao)
         {
-            _dataContext = dataContext;
             _gameInShopDao = gameInShopDao;
         }
 
@@ -27,20 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var games = await _gameInShopDao.GetAll();
         
-            var response = games.Select(g => new GameInShop(
-                                                id: g.id,
-                                                name: g.name,
-                                                price: g.price,
-                                                discount: g.discount,
-                                                previeImage: g.previeImage,
-                                                dateOfRelease: g.dateOfRelease,
-                                                developerId: g.developerId,
-                                                publisherId: g.publisherId,
-                                                urlForContent: g.urlForContent,
-                                                createdAt: g.createdAt
-                                            )).ToList();
-        
-            return Ok(response);
+            return Ok(_gameInShopDao);
         }
 
         [HttpPost]
@@ -57,9 +38,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.urlForContent,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGamesInShops.AddAsync(result);
+            await _gameInShopDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
 
@@ -85,8 +66,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game)
         {
-            var result = new GameInShop(id, game.name, game.price, game.discount, game.previeImage, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt);
-            await _gameInShopDao.UpdateGameInShop(result);
+            await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.previeImage, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
             return NoContent();
         }
     }

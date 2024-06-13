@@ -1,11 +1,7 @@
-﻿using FullStackBrist.Server.Models.Language;
-using FullStackBrist.Server.Models.Requirements;
+﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.LanguageDao;
 using Slush.DAO.RequirementsDao;
-using Slush.Data;
 using Slush.Data.Entity;
-using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -13,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MaximumSystemRequirementsController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly MaximumSystemRequirementDao _requirementDao;
 
-        public MaximumSystemRequirementsController(DataContext dataContext, MaximumSystemRequirementDao requirementDao)
+        public MaximumSystemRequirementsController(MaximumSystemRequirementDao requirementDao)
         {
-            _dataContext = dataContext;
             _requirementDao = requirementDao;
         }
 
@@ -27,15 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var requirements = await _requirementDao.GetAllMaximumSystemRequirements();
 
-            var response = requirements.Select(r => new MaximumSystemRequirement(id: r.id,
-                                                                                 gameId: r.gameId,
-                                                                                 oS: r.OS,
-                                                                                 processor: r.processor,
-                                                                                 rAM: r.RAM,
-                                                                                 video: r.video,
-                                                                                 freeDiskSpace: r.freeDiskSpace,
-                                                                                 createdAt: r.createdAt)).ToList();
-            return Ok(response);
+            return Ok(requirements);
         }
 
 
@@ -51,9 +37,9 @@ namespace FullStackBrist.Server.Controllers
                 model.freeDiskSpace,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbMaximumSystemRequirements.AddAsync(result);
+            await _requirementDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -78,8 +64,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMaximumSystemRequirement(Guid id, [FromBody] MaximumSystemRequirementModel requirement)
         {
-            var result = new MaximumSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt);
-            await _requirementDao.UpdateMaximumSystemRequirement(result);
+            await _requirementDao.UpdateMaximumSystemRequirement(new MaximumSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));
             return NoContent();
         }
     }

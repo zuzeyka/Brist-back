@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Utilities;
 using Slush.DAO;
-using Slush.Data;
 using Slush.Entity;
 using Slush.Models;
 
@@ -12,12 +9,10 @@ namespace Slush.Controllers
     [Route("api/{controller}")]
     public class DiscussionController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly DiscussionDao _discussionDao;
 
-        public DiscussionController(DataContext dataContext, DiscussionDao discussionDao)
+        public DiscussionController( DiscussionDao discussionDao)
         {
-            _dataContext = dataContext;
             _discussionDao = discussionDao;
         }
 
@@ -26,16 +21,7 @@ namespace Slush.Controllers
         {
             var _discussions = await _discussionDao.GetAllDiscussions();
 
-            var response = _discussions.Select(d => new Discussion(
-                id: d.id,
-                authorId: d.authorId,
-                attachedId: d.attachedId,
-                content: d.content,
-                likesCount: d.likesCount,
-                createdAt: d.createdAt
-                )).ToList();
-
-            return Ok(response);
+            return Ok(_discussions);
         }
 
         [HttpPost]
@@ -76,8 +62,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDiscussion(Guid id, [FromBody] DiscussionModel model)
         {
-            var result = new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.createdAt);
-            await _discussionDao.UpdateDiscussion(result);
+            await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.createdAt));
             return NoContent();
         }
     }

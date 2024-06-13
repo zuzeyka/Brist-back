@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ChatDao;
-using Slush.Data;
 using Slush.Entity.Chat;
 using Slush.Models.Chat;
 
@@ -10,12 +9,10 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly MessageDao _messageDao;
 
-        public MessageController(DataContext dataContext, MessageDao messageDao)
+        public MessageController(MessageDao messageDao)
         {
-            _dataContext = dataContext;
             _messageDao = messageDao;
         }
 
@@ -24,13 +21,7 @@ namespace Slush.Controllers
         {
             var messages = await _messageDao.GetAllMessages(chat.id);
 
-            var response = messages.Select(m => new Message(id: m.id,
-                chatId: m.chatId,
-                senderId: m.senderId,
-                content: m.content,
-                createdAt: m.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(messages);
         }
 
         [HttpPost]
@@ -38,9 +29,9 @@ namespace Slush.Controllers
         {
             var result = new Message(Guid.NewGuid(), model.chatId, model.senderId, model.content, DateTime.Now);
 
-            var response = await _dataContext.dbMessages.AddAsync(result);
+            await _messageDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -66,9 +57,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMessage(Guid id, [FromBody] MessageModel model)
         {
-            var result = new Message(id, model.chatId, model.senderId, model.content, DateTime.Now);
-
-            await _messageDao.UpdateMessage(result);
+            await _messageDao.UpdateMessage(new Message(id, model.chatId, model.senderId, model.content, DateTime.Now));
 
             return NoContent();
         }

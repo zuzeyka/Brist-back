@@ -1,5 +1,4 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
@@ -8,10 +7,6 @@ using Slush.Models.Validation;
 using Slush.Services.Hash;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -19,16 +14,14 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly UserDao _userDao;
         private readonly RegistrationService _registrationService;
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(DataContext dataContext, UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger)
+        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger)
         {
-            _dataContext = dataContext;
             _userDao = userDao;
             _registrationService = registrationService;
             _passwordService = passwordService;
@@ -41,16 +34,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _users = await _userDao.GetAllUsers();
 
-            var response = _users.Select(u => new User(id: u.id,
-                                                       name: u.name,
-                                                       passwordSalt: u.passwordSalt,
-                                                       email: u.email,
-                                                       phone: u.phone,
-                                                       verified: u.verified,
-                                                       descripton: u.description,
-                                                       createdAt: u.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_users);
         }
 
         #region Registration
@@ -127,8 +111,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
         {
-            var result = new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.createdAt);
-            await _userDao.UpdateUser(result);
+            await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.createdAt));
             return NoContent();
         }
     }

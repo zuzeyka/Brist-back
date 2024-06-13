@@ -1,9 +1,6 @@
-﻿using FullStackBrist.Server.Models.Creators;
-using FullStackBrist.Server.Models.Profile;
+﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsDao;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -12,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class ScreenshotController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly ScreenshotDao _screenshotDao;
 
-        public ScreenshotController(DataContext dataContext, ScreenshotDao screenshotDao)
+        public ScreenshotController(ScreenshotDao screenshotDao)
         {
-            _dataContext = dataContext;
             _screenshotDao = screenshotDao;
         }
 
@@ -26,15 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _screenshots = await _screenshotDao.GetAllScreenshots();
 
-            var response = _screenshots.Select(s => new Screenshot(id: s.id,
-                                                                   title: s.title,
-                                                                   description: s.description,
-                                                                   likesCount: s.likesCount,
-                                                                   gameId: s.gameId,
-                                                                   authorId: s.authorId,
-                                                                   screenshotUrl: s.screenshotUrl,
-                                                                   createdAt: s.createdAt)).ToList();
-            return Ok(response);
+            return Ok(_screenshots);
         }
 
 
@@ -50,9 +37,9 @@ namespace FullStackBrist.Server.Controllers
                 model.screenshotUrl,
                 DateTime.Now);
 
-            var response = await _dataContext.dbScreenshots.AddAsync(result);
+            await _screenshotDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -77,8 +64,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot)
         {
-            var result = new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount,  screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt);
-            await _screenshotDao.UpdateScreenshot(result);
+            await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt));
             return NoContent();
         }
     }

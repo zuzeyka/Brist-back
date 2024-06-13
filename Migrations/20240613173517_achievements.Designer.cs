@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Slush.Data;
 
@@ -11,9 +12,11 @@ using Slush.Data;
 namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240613173517_achievements")]
+    partial class achievements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -861,6 +864,9 @@ namespace Slush.Migrations
                     b.Property<int>("amountOfExperience")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("awardTime")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
@@ -887,9 +893,6 @@ namespace Slush.Migrations
                     b.Property<Guid>("achievementId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("awardTime")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime(6)");
 
@@ -900,10 +903,6 @@ namespace Slush.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("id");
-
-                    b.HasIndex("achievementId");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("dbAchievementByUser");
                 });
@@ -1601,21 +1600,6 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("senderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Slush.Entity.Profile.AchievementByUser", b =>
-                {
-                    b.HasOne("Slush.Entity.Profile.Achievement", null)
-                        .WithMany()
-                        .HasForeignKey("achievementId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany()
-                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
-using System.Runtime.CompilerServices;
 
 namespace Slush.Controllers
 {
@@ -11,7 +9,6 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class UserCategoryController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly CategoryByUserForGameDao _categoryByUserForGameDao;
         private readonly UserCategoryDao _userCategoryDao;
         private readonly OwnedGameDao _ownedGameDao;
@@ -19,9 +16,8 @@ namespace Slush.Controllers
         private List<UserCategory>? listOfUserCategory { get; set; }
         private List<OwnedGame>? listOwnedGame { get; set; }
 
-        public UserCategoryController(DataContext dataContext, CategoryByUserForGameDao categoryByUserForGameDao, UserCategoryDao userCategoryDao, OwnedGameDao ownedGameDao)
+        public UserCategoryController(CategoryByUserForGameDao categoryByUserForGameDao, UserCategoryDao userCategoryDao, OwnedGameDao ownedGameDao)
         {
-            _dataContext = dataContext;
             _categoryByUserForGameDao = categoryByUserForGameDao;
             _userCategoryDao = userCategoryDao;
             _ownedGameDao = ownedGameDao;
@@ -31,16 +27,9 @@ namespace Slush.Controllers
         {
             var categories = await _categoryByUserForGameDao.GetAllCategoryByUserForGames();
 
-            var response = categories.Select(c => new CategoryByUserForGame(
-                id: c.id,
-                name: c.name,
-                image: c.image,
-                createdAt: c.createdAt
-                )).ToList();
+            listOfCategoriesByUser = categories;
 
-            listOfCategoriesByUser = response;
-
-            return Ok(response);
+            return Ok(categories);
         }
 
         [HttpGet("getcategoriesbyuser")]
@@ -48,17 +37,9 @@ namespace Slush.Controllers
         {
             var categories = await _userCategoryDao.GetAllUserCategories();
 
-            var response = categories.Select(u => new UserCategory(
-                id: u.id,
-                userId: u.userId,
-                ownedGameId: u.ownedGameId,
-                categoryId: u.categoryId,
-                createdAt: u.createdAt
-                )).ToList();
+            listOfUserCategory = categories;
 
-            listOfUserCategory = response;
-
-            return Ok(response);
+            return Ok(categories);
         }
 
         [HttpGet("getownedgames")]
@@ -66,16 +47,9 @@ namespace Slush.Controllers
         {
             var games = await _ownedGameDao.GetAllOwnedGames();
 
-            var response = games.Select(g => new OwnedGame(
-                id: g.id,
-                ownedGameId: g.ownedGameId,
-                userId: g.userId,
-                createdAt: g.createdAt
-                )).ToList();
+            listOwnedGame = games;
 
-            listOwnedGame = response;
-
-            return Ok(response);
+            return Ok(games);
         }
 
         [HttpGet("{id}")]
@@ -83,17 +57,9 @@ namespace Slush.Controllers
         {
             var categories = await _userCategoryDao.GetAllCategoriesByUser(id);
 
-            var response = categories.Select(u => new UserCategory(
-                id: u.id,
-                userId: u.userId,
-                ownedGameId: u.ownedGameId,
-                categoryId: u.categoryId,
-                createdAt: u.createdAt
-                )).ToList();
+            listOfUserCategory = categories;
 
-            listOfUserCategory = response;
-
-            return Ok(response);
+            return Ok(categories);
         }
 
         [HttpPost("category")]
@@ -105,9 +71,9 @@ namespace Slush.Controllers
                 model.image,
                 DateTime.Now);
 
-            var response = await _dataContext.dbCategoryByUserForGames.AddAsync(result);
+            await _categoryByUserForGameDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpPost("usercategory")]
@@ -120,16 +86,15 @@ namespace Slush.Controllers
                 model.categoryId,
                 DateTime.Now);
 
-            var response = await _dataContext.dbUserCategories.AddAsync(result);
+            await _userCategoryDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpPut("updateusercategories/{id}")]
         public async Task<ActionResult> UpdateUserCategories(Guid id, [FromBody] UserCategoryModel model)
         {
-            var result = new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt);
-            await _userCategoryDao.UpdateUserCategory(result);
+            await _userCategoryDao.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
 
             return NoContent();
         }
@@ -137,8 +102,7 @@ namespace Slush.Controllers
         [HttpPut("updatecategories/{id}")]
         public async Task<ActionResult> UpdateCategories(Guid id, [FromBody] CategoryByUserForGame model)
         {
-            var result = new CategoryByUserForGame(id, model.name, model.image, model.createdAt);
-            await _categoryByUserForGameDao.UpdateCategoryByUserForGame(result);
+            await _categoryByUserForGameDao.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));
 
             return NoContent();
         }

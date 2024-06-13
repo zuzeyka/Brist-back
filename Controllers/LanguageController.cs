@@ -1,7 +1,5 @@
-﻿using FullStackBrist.Server.Models.Group;
-using FullStackBrist.Server.Models.Language;
+﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupDao;
 using Slush.DAO.LanguageDao;
 using Slush.Data;
 using Slush.Data.Entity;
@@ -12,12 +10,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class LanguageController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly LanguageDao _languageDao;
 
-        public LanguageController(DataContext dataContext, LanguageDao languageDao)
+        public LanguageController(LanguageDao languageDao)
         {
-            _dataContext = dataContext;
             _languageDao = languageDao;
         }
 
@@ -26,11 +22,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _languages = await _languageDao.GetAllLanguages();
 
-            var response = _languages.Select(l => new Language(id: l.id,
-                                                               name: l.name,
-                                                               createdAt: l.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_languages);
         }
 
         [HttpPost]
@@ -40,9 +32,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.name,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbLanguages.AddAsync(result);
+            await _languageDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -67,8 +59,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLanguage(Guid id, [FromBody] LanguageModel language)
         {
-            var result = new Language(id, language.name, language.createdAt);
-            await _languageDao.UpdateLanguage(result);
+            await _languageDao.UpdateLanguage(new Language(id, language.name, language.createdAt));
             return NoContent();
         }
     }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -11,12 +9,10 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly SettingsDao _settingsDao;
 
-        public SettingsController(DataContext dataContext, SettingsDao settingsDao)
+        public SettingsController(SettingsDao settingsDao)
         {
-            _dataContext = dataContext;
             _settingsDao = settingsDao;
         }
 
@@ -24,19 +20,8 @@ namespace Slush.Controllers
         public async Task<ActionResult<List<SettingsDao>>> GetAll()
         {
             var settings = await _settingsDao.GetAll();
-            var response = settings.Select(s => new Settings(
-                id: s.id,
-                attachedUserId: s.attachedUserId,
-                bigSaleNotification: s.bigSaleNotification,
-                saleFromWishlistNotification: s.saleFromWishlistNotification,
-                newCommentNotification: s.newCommentNotification,
-                friendRequestNotification: s.friendRequestNotification,
-                approvedFriendRequest: s.approvedFriendRequest,
-                declinedFriendRequest: s.declinedFriendRequest,
-                createdAt: s.createdAt
-                )).ToList();
 
-            return Ok(response);
+            return Ok(settings);
         }
 
         [HttpGet]
@@ -93,7 +78,8 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] SettingsModel model)
         {
-            var settings = new Settings(id,
+
+            await _settingsDao.UpdateSettings(new Settings(id,
                 model.attachedUserId,
                 model.bigSaleNotification,
                model.saleFromWishlistNotification,
@@ -101,9 +87,7 @@ namespace Slush.Controllers
                model.friendRequestNotification,
                model.approvedFriendRequestNotification,
                model.declinedFriendRequestNotification,
-               DateTime.Now);
-
-            await _settingsDao.UpdateSettings(settings);
+               DateTime.Now));
 
             return NoContent();
         }

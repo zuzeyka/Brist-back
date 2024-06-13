@@ -1,9 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.RequirementsDao;
-using Slush.Data;
 using Slush.Data.Entity;
-using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -11,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MinimalSystemRequirementsController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly MinimalSystemRequirementDao _minimalSystemRequirementDao;
 
-        public MinimalSystemRequirementsController(DataContext dataContext, MinimalSystemRequirementDao minimalSystemRequirementDao)
+        public MinimalSystemRequirementsController(MinimalSystemRequirementDao minimalSystemRequirementDao)
         {
-            _dataContext = dataContext;
             _minimalSystemRequirementDao = minimalSystemRequirementDao;
         }
 
@@ -25,15 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var requirements = await _minimalSystemRequirementDao.GetAllMinimalSystemRequirements();
 
-            var response = requirements.Select(r => new MinimalSystemRequirement(id: r.id,
-                                                                                 gameId: r.gameId,
-                                                                                 oS: r.OS,
-                                                                                 processor: r.processor,
-                                                                                 rAM: r.RAM,
-                                                                                 video: r.video,
-                                                                                 freeDiskSpace: r.freeDiskSpace,
-                                                                                 createdAt: r.createdAt)).ToList();
-            return Ok(response);
+            return Ok(requirements);
         }
 
         [HttpPost]
@@ -48,8 +36,8 @@ namespace FullStackBrist.Server.Controllers
                 model.freeDiskSpace,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbMinimalSystemRequirements.AddAsync(result);
-            return Ok(response);
+            await _minimalSystemRequirementDao.Add(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -74,8 +62,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMinimalSystemRequirement(Guid id, [FromBody] MinimalSystemRequirementModel requirement)
         {
-            var result = new MinimalSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt);
-            await _minimalSystemRequirementDao.UpdateMinimalSystemRequirement(result);
+            await _minimalSystemRequirementDao.UpdateMinimalSystemRequirement(new MinimalSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));
             return NoContent();
         }
     }

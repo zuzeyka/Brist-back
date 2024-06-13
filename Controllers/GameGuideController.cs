@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -10,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameGuideController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameGuideDao _gameGuideDao;
 
-        public GameGuideController(DataContext dataContext, GameGuideDao gameGuideDao)
+        public GameGuideController(GameGuideDao gameGuideDao)
         {
-            _dataContext = dataContext;
             _gameGuideDao = gameGuideDao;
         }
 
@@ -24,17 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _gameGuides = await _gameGuideDao.GetAllGameGuides();
 
-            var response = _gameGuides.Select(g => new GameGuide(id: g.id,
-                                                                 title: g.title,
-                                                                 description: g.description,
-                                                                 likesCount: g.likesCount,
-                                                                 gameId: g.gameId,
-                                                                 authorId: g.authorId,
-                                                                 gameGroupId: g.gameGroupId,
-                                                                 content: g.content,
-                                                                 createdAt: g.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_gameGuides);
         }
 
 
@@ -51,9 +38,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.content,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGameGuides.AddAsync(result);
+            await _gameGuideDao.Add(result );
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -78,8 +65,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGuideModel game)
         {
-            var result = new GameGuide(id, game.title, game.description, game.likesCount,  game.gameId, game.authorId, game.gameGroupId, game.content, game.createdAt);
-            await _gameGuideDao.UpdateGameGuide(result);
+            await _gameGuideDao.UpdateGameGuide(new GameGuide(id, game.title, game.description, game.likesCount, game.gameId, game.authorId, game.gameGroupId, game.content, game.createdAt));
             return NoContent();
         }
     }

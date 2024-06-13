@@ -1,10 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
-using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
-using Slush.Entity.Store.Product;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -12,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameTopicController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameTopicDao _gameTopicDao;
 
-        public GameTopicController(DataContext dataContext, GameTopicDao gameTopicDao)
+        public GameTopicController(GameTopicDao gameTopicDao)
         {
-            _dataContext = dataContext;
             _gameTopicDao = gameTopicDao;
         }
 
@@ -26,12 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var gameTopics = await _gameTopicDao.GetAllGameTopics();
 
-            var response = gameTopics.Select(g => new GameTopic(id: g.id,
-                                                                attachedId: g.attachedId,
-                                                                name: g.name,
-                                                                description: g.description,
-                                                                createdAt: g.createdAt)).ToList();
-            return Ok(response);
+            return Ok(gameTopics);
         }
 
 
@@ -44,9 +34,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.description,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGameTopics.AddAsync(result);
+            await _gameTopicDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
 
@@ -72,8 +62,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameTopicModel game)
         {
-            var result = new GameTopic(id, game.attachedId, game.name, game.description, game.createdAt);
-            await _gameTopicDao.UpdateGameTopic(result);
+            await _gameTopicDao.UpdateGameTopic(new GameTopic(id, game.attachedId, game.name, game.description, game.createdAt));
             return NoContent();
         }
     }

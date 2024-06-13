@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
-using Slush.Data;
-using FullStackBrist.Server.Models.Creators;
-using Slush.Entity.Store.Product.Creators;
 using FullStackBrist.Server.Models.Categories;
 
 namespace FullStackBrist.Server.Controllers
@@ -12,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesByAuthorController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly CategoriesByAuthorDao _categoriesByAuthorDao;
 
-        public CategoriesByAuthorController(DataContext dataContext, CategoriesByAuthorDao categoriesByAuthorDao)
+        public CategoriesByAuthorController(CategoriesByAuthorDao categoriesByAuthorDao)
         {
-            _dataContext = dataContext;
             _categoriesByAuthorDao = categoriesByAuthorDao;
         }
 
@@ -26,14 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _categoriesByAuthor = await _categoriesByAuthorDao.GetAllCategoriesByAuthor();
 
-            var response = _categoriesByAuthor.Select(c => new CategoryByAuthor(id: c.id,
-                                                                                authorId: c.authorId,
-                                                                                name: c.name,
-                                                                                description: c.description,
-                                                                                image: c.image,
-                                                                                createdAt: c.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_categoriesByAuthor);
         }
 
         [HttpPost]
@@ -45,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.description,
                                         model.image,
                                         DateTime.Now);
-            var response = await _dataContext.dbCategoriesByAuthors.AddAsync(result);
+            await _categoriesByAuthorDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -72,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model)
         {
-            var result = new CategoryByAuthor(id, model.authorId, model.name, model.description, model.image, DateTime.Now);
-            await _categoriesByAuthorDao.UpdateCategoriesByAuthor(result);
+            await _categoriesByAuthorDao.UpdateCategoriesByAuthor(new CategoryByAuthor(id, model.authorId, model.name, model.description, model.image, DateTime.Now));
             return NoContent();
         }
     }

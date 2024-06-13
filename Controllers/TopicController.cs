@@ -1,12 +1,7 @@
-﻿using FullStackBrist.Server.Models.Creators;
-using FullStackBrist.Server.Models.Group;
-using FullStackBrist.Server.Models.Profile;
+﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsDao;
 using Slush.DAO.GroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community;
-using Slush.Data.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -14,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class TopicController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly TopicDao _topicDao;
 
-        public TopicController(DataContext dataContext, TopicDao topicDao)
+        public TopicController(TopicDao topicDao)
         {
-            _dataContext = dataContext;
             _topicDao = topicDao;
         }
 
@@ -28,14 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var topics = await _topicDao.GetAllTopics();
 
-            var response = topics.Select(t => new Topic(id: t.id,
-                                                        attachedId: t.attachedId,
-                                                        name: t.name,
-                                                        description: t.description,
-                                                        authorId: t.authorId,
-                                                        createdAt: t.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(topics);
         }
 
 
@@ -49,9 +35,9 @@ namespace FullStackBrist.Server.Controllers
                 model.authorId,
                 DateTime.Now);
 
-            var response = await _dataContext.dbTopics.AddAsync(result);
+            await _topicDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -76,8 +62,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTopic(Guid id, [FromBody] TopicModel topic)
         {
-            var result = new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt);
-            await _topicDao.UpdateTopic(result);
+            await _topicDao.UpdateTopic(new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt));
             return NoContent();
         }
     }

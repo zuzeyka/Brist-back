@@ -1,12 +1,7 @@
-﻿using FullStackBrist.Server.Models.GameGroup;
-using FullStackBrist.Server.Models.Group;
+﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupDao;
 using Slush.DAO.GroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community;
-using Slush.Data.Entity.Community.GameGroup;
-using System.Linq;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -14,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupCommentController : Controller
     {       
-        private readonly DataContext _dataContext;
         private readonly GroupCommentDao _groupCommentDao;
 
-        public GroupCommentController(DataContext dataContext, GroupCommentDao groupCommentDao)
+        public GroupCommentController(GroupCommentDao groupCommentDao)
         {
-            _dataContext = dataContext;
             _groupCommentDao = groupCommentDao;
         }
 
@@ -28,12 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _groupComments = await _groupCommentDao.GetAllGroupComments();
 
-            var response = _groupComments.Select(g => new GroupComment(id: g.id,
-                                                                       groupId: g.groupId,
-                                                                       content: g.content,
-                                                                       userId: g.userId,
-                                                                       createdAt: g.createdAt)).ToList();
-            return Ok(response);
+            return Ok(_groupComments);
         }
 
         [HttpPost]
@@ -45,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.userId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGroupComments.AddAsync(result);
+            await _groupCommentDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -72,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGroupComment(Guid id, [FromBody] GroupCommentModel group)
         {
-            var result = new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt);
-            await _groupCommentDao.UpdateGroupComment(result);
+            await _groupCommentDao.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
             return NoContent();
         }
     }

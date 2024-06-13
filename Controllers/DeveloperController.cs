@@ -1,10 +1,6 @@
-﻿using FullStackBrist.Server.Models.Categories;
-using FullStackBrist.Server.Models.Creators;
+﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesDao;
 using Slush.DAO.CreatorsDao;
-using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Entity.Store.Product.Creators;
 
 namespace FullStackBrist.Server.Controllers
@@ -13,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DeveloperController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly DeveloperDao _developerDao;
 
-        public DeveloperController(DataContext dataContext, DeveloperDao developerDao)
+        public DeveloperController(DeveloperDao developerDao)
         {
-            _dataContext = dataContext;
             _developerDao = developerDao;
         }
 
@@ -27,16 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _developers = await _developerDao.GetAllDevelopersDao();
 
-            var response = _developers.Select(d => new Developer(id: d.id,
-                                                                 subscribersCount: d.subscribersCount,
-                                                                 name: d.name,
-                                                                 description: d.description,
-                                                                 avatar: d.avatar,
-                                                                 backgroundImage: d.backgroundImage,
-                                                                 urlForNewsPage: d.urlForNewsPage,
-                                                                 createdAt: d.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_developers);
         }
 
         [HttpPost]
@@ -50,9 +35,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.backgroundImage,
                                         null,
                                         DateTime.Now);
-            var response = await _dataContext.dbDevelopers.AddAsync(result);
+            await _developerDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -77,8 +62,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDeveloper(Guid id, [FromBody] DeveloperModel model)
         {
-            var result = new Developer(id, model.subscribersCount, model.name, model.description, model.avatar, model.backgroundImage, model.urlForNewsPage, model.createdAt);
-            await _developerDao.UpdateDeveloper(result);
+            await _developerDao.UpdateDeveloper(new Developer(id, model.subscribersCount, model.name, model.description, model.avatar, model.backgroundImage, model.urlForNewsPage, model.createdAt));
             return NoContent();
         }
     }

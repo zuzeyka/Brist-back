@@ -22,7 +22,7 @@ namespace Slush.DAO.ProfileDao
                     id = c.id,
                     name = c.name,
                     image = c.image,
-                    createdAt = c.createdAt,
+                    createdAt = c.createdAt
                 }).ToListAsync();
         }
 

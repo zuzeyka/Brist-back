@@ -1,11 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopDao;
 using Slush.DAO.ProfileDao;
 using Slush.Data;
 using Slush.Entity.Profile;
-using Slush.Entity.Store.Product;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -13,12 +10,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class FriendsController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly FriendsDao _friendsDao;
 
-        public FriendsController(DataContext dataContext, FriendsDao friendsDao)
+        public FriendsController(FriendsDao friendsDao)
         {
-            _dataContext = dataContext;
             _friendsDao = friendsDao;
         }
 
@@ -27,12 +22,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _friends = await _friendsDao.GetAllFriends();
 
-            var response = _friends.Select(f => new Friends(id: f.id,
-                                                            userId:       f.userId,
-                                                            friendId:       f.friendId,
-                                                            createdAt:       f.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_friends);
         }
 
         [HttpPost]
@@ -43,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.friendId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbFriends.AddAsync(result);
+           await _friendsDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
 
@@ -71,8 +61,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateFriends(Guid id, [FromBody] FriendsModel model)
         {
-            var result = new Friends(id, model.userId, model.friendId, model.createdAt);
-            await _friendsDao.UpdateFriends(result);
+            await _friendsDao.UpdateFriends(new Friends(id, model.userId, model.friendId, model.createdAt));
             return NoContent();
         }
     }

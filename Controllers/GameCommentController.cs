@@ -1,13 +1,7 @@
-﻿using FullStackBrist.Server.Models.Creators;
-using FullStackBrist.Server.Models.GameGroup;
-using FullStackBrist.Server.Models.Profile;
+﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsDao;
 using Slush.DAO.GameGroupDao;
-using Slush.Data;
 using Slush.Data.Entity.Community.GameGroup;
-using Slush.Entity.Profile;
-using Slush.Entity.Store.Product.Creators;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -15,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameCommentController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameCommentDao _gameCommentDao;
 
-        public GameCommentController(DataContext dataContext, GameCommentDao gameGroupDao)
+        public GameCommentController(GameCommentDao gameGroupDao)
         {
-            _dataContext = dataContext;
             _gameCommentDao = gameGroupDao;
         }
 
@@ -29,13 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _gameComment = await _gameCommentDao.GetAllGameComments();
 
-            var response = _gameComment.Select(g => new GameComment(id: g.id,
-                                                                    gamePostId: g.gamePostId,
-                                                                    authorId: g.authorId,
-                                                                    content: g.content,
-                                                                    createdAt: g.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_gameComment);
         }
 
         [HttpPost]
@@ -47,8 +33,8 @@ namespace FullStackBrist.Server.Controllers
                                             model.authorId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbGameComments.AddAsync(result);
-            return Ok(response);
+            await _gameCommentDao.Add(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -73,8 +59,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameComment(Guid id, [FromBody] GameCommentModel game)
         {
-            var gameRes = new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt);
-            await _gameCommentDao.UpdateGameComment(gameRes);
+            await _gameCommentDao.UpdateGameComment(new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt));
             return NoContent();
         }
     }

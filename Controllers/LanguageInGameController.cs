@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.LanguageDao;
-using Slush.Data;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -10,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class LanguageInGameController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly LanguageInGameDao _languageInGameDao;
 
-        public LanguageInGameController(DataContext dataContext, LanguageInGameDao languageInGameDao)
+        public LanguageInGameController(LanguageInGameDao languageInGameDao)
         {
-            _dataContext = dataContext;
             _languageInGameDao = languageInGameDao;
         }
 
@@ -24,11 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _languages = await _languageInGameDao.GetAllLanguageInGames();
 
-            var response = _languages.Select(l => new LanguageInGame(id: l.id,
-                                                                     gameId: l.gameId,
-                                                                     languageId: l.languageId,
-                                                                     createdAt: l.createdAt)).ToList();
-            return Ok(response);
+            return Ok(_languages);
         }
 
 
@@ -40,9 +33,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.languageId,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbLanguagesInGame.AddAsync(result);
+            await _languageInGameDao.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -67,8 +60,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLanguageInGame(Guid id, [FromBody] LanguageInGameModel language)
         {
-            var result = new LanguageInGame(id, language.gameId, language.languageId, language.createdAt);
-            await _languageInGameDao.UpdateLanguageInGame(result);
+            await _languageInGameDao.UpdateLanguageInGame(new LanguageInGame(id, language.gameId, language.languageId, language.createdAt));
             return NoContent();
         }
     }

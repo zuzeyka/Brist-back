@@ -1,13 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
-using FullStackBrist.Server.Models.Profile;
-using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GroupDao;
-using Slush.DAO.RequirementsDao;
-using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
-using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -15,12 +9,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PostController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly PostDao _postDao;
 
-        public PostController(DataContext dataContext, PostDao postDao)
+        public PostController(PostDao postDao)
         {
-            _dataContext = dataContext;
             _postDao = postDao;
         }
 
@@ -29,16 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var _posts = await _postDao.GetAllPosts();
 
-            var response = _posts.Select(p => new Post(id: p.id,
-                                                       title: p.title,
-                                                       description: p.description,
-                                                       likesCount: p.likesCount,
-                                                       discussionId: p.discussionId,
-                                                       authorId: p.authorId,
-                                                       content: p.content,
-                                                       createdAt: p.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_posts);
         }
 
 
@@ -54,8 +37,8 @@ namespace FullStackBrist.Server.Controllers
                model.content,
                                             DateTime.Now
                                             );
-            var response = await _dataContext.dbPosts.AddAsync(result);
-            return Ok(response);
+            await _postDao.Add(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -80,8 +63,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post)
         {
-            var result = new Post(id, post.title, post.description, post.likesCount,  post.discussionId,  post.authorId, post.content, post.createdAt);
-            await _postDao.UpdatePost(result);
+            await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.createdAt));
             return NoContent();
         }
     }

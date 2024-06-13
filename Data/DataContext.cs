@@ -39,6 +39,8 @@ namespace Slush.Data
         public DbSet<UserCategory>             dbUserCategories            { get; set; }
         public DbSet<Settings>                 dbSettings                  { get; set; }
         public DbSet<WalletTransactions>       dbWalletTransactions        { get; set; }
+        public DbSet<Achievement>              dbAchievements              { get; set; }
+        public DbSet<AchievementByUser>        dbAchievementByUser         { get; set; }
         #endregion
         #region Categories
         public DbSet<Categories>               dbCategories                { get; set; }
@@ -407,6 +409,18 @@ namespace Slush.Data
                 .WithMany()
                 .HasForeignKey(g => g.transactionObj)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AchievementByUser>()
+                .HasOne<Achievement>()
+                .WithMany()
+                .HasForeignKey(a => a.achievementId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AchievementByUser>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(u => u.userId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<List<object>>().HasNoKey();
         }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -10,12 +9,10 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class WalletTransactionController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly WalletTransactionsDao _walletTransactionsDao;
 
-        public WalletTransactionController(DataContext dataContext, WalletTransactionsDao walletTransactionsDao)
+        public WalletTransactionController(WalletTransactionsDao walletTransactionsDao)
         {
-            _dataContext = dataContext;
             _walletTransactionsDao = walletTransactionsDao;
         }
 
@@ -24,14 +21,7 @@ namespace Slush.Controllers
         {
             var walletTransactions = await _walletTransactionsDao.GetAll();
 
-            var response = walletTransactions.Select(w => new WalletTransactions(
-                id: w.id,
-                userId:  w.userId,
-                transactionObj: w.transactionObj,
-                currency:  w.currency,
-                createdAt: w.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(walletTransactions);
         }
 
         [HttpGet]
@@ -86,13 +76,11 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] WalletTransactions model)
         {
-            var transaction = new WalletTransactions(id,
+            await _walletTransactionsDao.UpdateWalletTransactions(new WalletTransactions(id,
                 model.userId,
                 model.transactionObj,
                 model.currency,
-                DateTime.Now);
-
-            await _walletTransactionsDao.UpdateWalletTransactions(transaction);
+                DateTime.Now));
 
             return NoContent();
         }

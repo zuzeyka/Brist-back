@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameInShopDao;
-using Slush.Data;
 using Slush.Entity.Store.Product;
 using Slush.Models.ShopContent;
 
@@ -10,12 +9,10 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class GameBundleController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly GameBundleDao _gameBundleDao;
 
-        public GameBundleController(DataContext dataContext, GameBundleDao gameBundleDao)
+        public GameBundleController(GameBundleDao gameBundleDao)
         {
-            _dataContext = dataContext;
             _gameBundleDao = gameBundleDao;
         }
 
@@ -24,14 +21,7 @@ namespace Slush.Controllers
         {
             var _bundles = await _gameBundleDao.GetAll();
 
-            var response = _bundles.Select(b => new GameBundle(id: b.id,
-                name: b.name,
-                description: b.description,
-                price: b.price,
-                discount: b.discount,
-                createdAt: b.createdAt)).ToList();
-
-            return Ok(response);
+            return Ok(_bundles);
         }
 
         [HttpPost]
@@ -70,8 +60,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameBundle(Guid id, [FromBody] GameBundleModel model)
         {
-            var result = new GameBundle(id, model.name, model.description, model.price, model.discount, DateTime.Now);
-            await _gameBundleDao.UpdateGameBundle(result);
+            await _gameBundleDao.UpdateGameBundle(new GameBundle(id, model.name, model.description, model.price, model.discount, DateTime.Now));
             return NoContent();
         }
     }
