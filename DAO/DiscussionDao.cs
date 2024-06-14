@@ -78,5 +78,29 @@ namespace Slush.DAO
                 return null;
             }
         }
+
+        public async Task<List<Discussion?>> GetByAttachedId(Guid id)
+        {
+            var response = await _context.dbDiscussions
+                .Where(x => x.attachedId == id)
+                .Select(x => new Discussion
+                {
+                    id = x.id,
+                    authorId = x.authorId,
+                    attachedId = x.attachedId,
+                    content = x.content,
+                    likesCount = x.likesCount,
+                    createdAt = x.createdAt
+                }).ToListAsync();
+
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

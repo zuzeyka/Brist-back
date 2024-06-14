@@ -6,7 +6,7 @@ using Slush.Models;
 namespace Slush.Controllers
 {
     [ApiController]
-    [Route("api/{controller}")]
+    [Route("api/[controller]")]
     public class DiscussionController : Controller
     {
         private readonly DiscussionDao _discussionDao;
@@ -44,7 +44,20 @@ namespace Slush.Controllers
         {
             var response = await _discussionDao.GetById(id);
 
-            if (response != null)
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("byattachedid/{id}")]
+        public async Task<ActionResult<List<Discussion>>> GetDiscussionByAttachedId(Guid id)
+        {
+            var response = await _discussionDao.GetByAttachedId(id);
+
+            if (response == null)
             {
                 return NotFound();
             }

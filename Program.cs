@@ -94,6 +94,9 @@ builder.Services.AddTransient<WalletTransactionsDao>();
 builder.Services.AddTransient<AchievementByUserDao>();
 builder.Services.AddTransient<AchievementDao>();
 
+builder.Services.AddTransient<GameBundleCollectionDao>();
+builder.Services.AddTransient<GameBundleDao>();
+
 
 builder.Services.AddCors(options =>
 {

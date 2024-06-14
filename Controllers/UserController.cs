@@ -101,6 +101,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getbyuid/{id}")]
+        public async Task<ActionResult<User>> GetUserByUid(Guid id)
+        {
+            var response = await _userDao.GetByUserId(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
@@ -111,7 +123,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
         {
-            await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.createdAt));
+            await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.amountOfMoney, user.createdAt));
             return NoContent();
         }
     }

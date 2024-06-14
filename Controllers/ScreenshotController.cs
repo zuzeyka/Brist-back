@@ -54,6 +54,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<Screenshot>>> GetScreenshotByGame(Guid id)
+        {
+            var response = await _screenshotDao.GetByGameId(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteScreenshot(Guid id)
         {

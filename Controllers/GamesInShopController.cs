@@ -21,7 +21,7 @@ namespace FullStackBrist.Server.Controllers
         {
             var games = await _gameInShopDao.GetAll();
         
-            return Ok(_gameInShopDao);
+            return Ok(games);
         }
 
         [HttpPost]
@@ -31,7 +31,9 @@ namespace FullStackBrist.Server.Controllers
                                             model.name,
                                             model.price,
                                             model.discount,
+                                            model.discountFinish,
                                             model.previeImage,
+                                            model.description,
                                             model.dateOfRelease,
                                             model.developerId,
                                             model.publisherId,
@@ -66,7 +68,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game)
         {
-            await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.previeImage, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
+            await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
             return NoContent();
         }
     }

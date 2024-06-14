@@ -50,6 +50,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<CategoryForGame>>> GetCategoryForGameByGameId(Guid id)
+        {
+            var response = await _categoryForGameDao.GetByGameId(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategoryForGame(Guid id)
         {

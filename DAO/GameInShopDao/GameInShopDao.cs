@@ -26,7 +26,9 @@ namespace Slush.DAO.GameInShopDao
                                             name = g.name,
                                             price = g.price,
                                             discount = g.discount,
+                                            discountFinish = g.discountFinish,
                                             previeImage = g.previeImage,
+                                            description = g.description,
                                             dateOfRelease = g.dateOfRelease,
                                             developerId = g.developerId,
                                             publisherId = g.publisherId,
@@ -44,7 +46,9 @@ namespace Slush.DAO.GameInShopDao
                 existing.name = shop.name;
                 existing.price = shop.price;
                 existing.discount = shop.discount;
+                existing.discountFinish = shop.discountFinish;
                 existing.previeImage = shop.previeImage;
+                existing.description = shop.description;
 
                 await _context.SaveChangesAsync();
             }
@@ -66,7 +70,9 @@ namespace Slush.DAO.GameInShopDao
                             name = g.name,
                             price = g.price,
                             discount = g.discount,
+                            discountFinish = g.discountFinish,
                             previeImage = g.previeImage,
+                            description = g.description,
                             dateOfRelease = g.dateOfRelease,
                             developerId = g.developerId,
                             publisherId = g.publisherId,
@@ -93,7 +99,9 @@ namespace Slush.DAO.GameInShopDao
                        name = g.name,
                        price = g.price,
                        discount = g.discount,
+                       discountFinish = g.discountFinish,
                        previeImage = g.previeImage,
+                       description = g.description,
                        dateOfRelease = g.dateOfRelease,
                        developerId = g.developerId,
                        publisherId = g.publisherId,

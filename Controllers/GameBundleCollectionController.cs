@@ -29,6 +29,7 @@ namespace Slush.Controllers
         {
             var result = new GameBundleCollection(Guid.NewGuid(),
                 model.gameId,
+                model.dlcId,
                 model.bundleId,
                 DateTime.Now);
 
@@ -50,6 +51,19 @@ namespace Slush.Controllers
             return Ok(response);
         }
 
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<GameBundleCollection>>> GetCollectionByGameId(Guid id)
+        {
+            var response = await _dao.GetByGameId(id);
+
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -60,7 +74,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] GameBundleCollectionModel model)
         {
-            await _dao.UpdateGameBundleCollection(new GameBundleCollection(id, model.gameId, model.bundleId, DateTime.Now));
+            await _dao.UpdateGameBundleCollection(new GameBundleCollection(id, model.gameId, model.dlcId, model.bundleId, DateTime.Now));
 
             return NoContent();
         }

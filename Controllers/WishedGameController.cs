@@ -51,6 +51,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("byuid/{id}/bygameid/{gameid}")]
+        public async Task<ActionResult<User>> GetWishedGameByUser(Guid id, Guid gameid)
+        {
+            var response = await _wishedGameDao.GetByUserAndGameId(id, gameid);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteWishedGame(Guid id)
         {

@@ -54,7 +54,25 @@ namespace Slush.DAO.CategoriesDao
 
         public async Task<Categories?> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbCategories.FirstOrDefault(c => c.id == id));
+            var response = await _context.dbCategories
+                .Where(x => x.id == id)
+                .Where(a => a.deleteAt == null)
+                .Select(c => new Categories
+                {
+                    id = c.id,
+                    name = c.name,
+                    description = c.description,
+                    createdAt = c.createdAt
+                }).FirstOrDefaultAsync();
+
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

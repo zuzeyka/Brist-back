@@ -73,5 +73,27 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+
+        public async Task<WishedGame?> GetByUserAndGameId(Guid id, Guid gameId)
+        {
+            var response = await _context.dbWishedGames
+                .Where(x => x.userId == id)
+                .Where(x => x.ownedGameId == gameId)
+                .Select(s => new WishedGame
+                {
+                    id = s.id,
+                    ownedGameId = s.ownedGameId,
+                    userId = s.userId,
+                    createdAt = s.createdAt
+                }).FirstOrDefaultAsync();
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

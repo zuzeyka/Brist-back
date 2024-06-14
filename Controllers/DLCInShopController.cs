@@ -32,7 +32,9 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.price,
                                         model.discount,
+                                        model.discountFinish,
                                         model.previeImage,
+                                        model.description,
                                         model.dateOfRelease,
                                         model.developerId,
                                         model.publisherId,
@@ -56,6 +58,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<DLCInShop>>> GetDLCInShopByGameId(Guid id)
+        {
+            var response = await _dLCInShopDao.GetByGameId(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDLCInShop(Guid id)
         {
@@ -66,7 +80,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model)
         {
-            await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.previeImage, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
+            await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
             return NoContent();
         }
     }

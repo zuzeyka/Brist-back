@@ -4,6 +4,7 @@ using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
+using System.Collections.Immutable;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -75,6 +76,30 @@ namespace Slush.DAO.ProfileDao
                     screenshotUrl = s.screenshotUrl,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<List<Screenshot?>> GetByGameId(Guid id)
+        {
+            var response = await _context.dbScreenshots
+                .Where(x => x.gameId == id)
+                .Select(s => new Screenshot
+                {
+                    id = s.id,
+                    title = s.title,
+                    description = s.description,
+                    likesCount = s.likesCount,
+                    gameId = s.gameId,
+                    authorId = s.authorId,
+                    screenshotUrl = s.screenshotUrl,
+                    createdAt = s.createdAt
+                }).ToListAsync();
             if (response != null)
             {
                 return response;

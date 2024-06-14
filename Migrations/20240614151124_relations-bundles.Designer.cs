@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Slush.Data;
 
@@ -11,9 +12,11 @@ using Slush.Data;
 namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240614151124_relations-bundles")]
+    partial class relationsbundles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -646,9 +649,6 @@ namespace Slush.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("image")
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
@@ -1296,17 +1296,12 @@ namespace Slush.Migrations
                     b.Property<DateTime?>("deletedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("dlcId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("gameId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("id");
 
                     b.HasIndex("bundleId");
-
-                    b.HasIndex("dlcId");
 
                     b.HasIndex("gameId");
 
@@ -1778,7 +1773,7 @@ namespace Slush.Migrations
 
                     b.HasOne("Slush.Entity.Store.Product.DLCInShop", null)
                         .WithMany()
-                        .HasForeignKey("dlcId")
+                        .HasForeignKey("gameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

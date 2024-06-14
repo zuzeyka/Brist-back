@@ -25,7 +25,10 @@ namespace Slush.DAO.ProfileDao
                 passwordSalt = u.passwordSalt,
                 email = u.email,
                 phone = u.phone,
+                description = u.description,
+                image = u.image,
                 verified = u.verified,
+                amountOfMoney = u.amountOfMoney,
                 createdAt = u.createdAt}).ToListAsync();
         }
         public async Task UpdateUser(User user)
@@ -37,7 +40,10 @@ namespace Slush.DAO.ProfileDao
                 existing.passwordSalt = user.passwordSalt;
                 existing.email = user.email;
                 existing.phone = user.phone;
+                existing.description = user.description;
+                existing.image = user.image;
                 existing.verified = user.verified;
+                existing.amountOfMoney = user.amountOfMoney;
 
                 await _context.SaveChangesAsync();
             }
@@ -70,7 +76,10 @@ namespace Slush.DAO.ProfileDao
                     passwordSalt = u.passwordSalt,
                     email = u.email,
                     phone = u.phone,
+                    description = u.description,
+                    image = u.image,
                     verified = u.verified,
+                    amountOfMoney = u.amountOfMoney,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -93,7 +102,30 @@ namespace Slush.DAO.ProfileDao
                     passwordSalt = u.passwordSalt,
                     email = u.email,
                     phone = u.phone,
+                    description = u.description,
+                    image = u.image,
                     verified = u.verified,
+                    amountOfMoney = u.amountOfMoney,
+                    createdAt = u.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<User?> GetByUserId(Guid id)
+        {
+            var response = await _context.dbUsers
+                .Where(x => x.id == id)
+                .Select(u => new User
+                {
+                    id = u.id,
+                    name = u.name,
+                    image = u.image,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)

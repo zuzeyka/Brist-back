@@ -377,13 +377,19 @@ namespace Slush.Data
             modelBuilder.Entity<GameBundleCollection>()
                 .HasOne<GameInShop>()
                 .WithMany()
-                .HasForeignKey(g => g.id)
+                .HasForeignKey(d => d.gameId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<GameBundleCollection>()
                 .HasOne<DLCInShop>()
                 .WithMany()
-                .HasForeignKey(d => d.id)
+                .HasForeignKey(d => d.dlcId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GameBundleCollection>()
+                .HasOne<GameBundle>()
+                .WithMany()
+                .HasForeignKey(d => d.bundleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Settings>()

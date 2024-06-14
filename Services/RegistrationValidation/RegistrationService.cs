@@ -28,6 +28,7 @@ namespace Slush.Services.RegistrationValidation
                 model.phone,
                 model.description,
                 false,
+                0,
                 DateTime.Now
                 ));
         }

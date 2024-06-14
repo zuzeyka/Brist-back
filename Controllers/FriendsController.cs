@@ -51,6 +51,18 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getbyuserid/{id}")]
+        public async Task<ActionResult<List<Friends>>> GetFriendsByUserId(Guid id)
+        {
+            var response = await _friendsDao.GetByUserId(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteFriends(Guid id)
         {

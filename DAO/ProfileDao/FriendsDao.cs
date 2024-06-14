@@ -75,5 +75,26 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+        public async Task<List<Friends?>> GetByUserId(Guid id)
+        {
+            var response = await _context.dbFriends
+                .Where(x => x.userId == id)
+                .Where(a => a.deleteAt == null)
+                .Select(f => new Friends
+                {
+                    id = f.id,
+                    userId = f.userId,
+                    friendId = f.friendId,
+                    createdAt = f.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -27,7 +27,9 @@ namespace Slush.DAO.GameInShopDao
                 name = d.name,
                 price = d.price,
                 discount = d.discount,
+                discountFinish = d.discountFinish,
                 previeImage = d.previeImage,
+                description = d.description,
                 dateOfRelease = d.dateOfRelease,
                 developerId = d.developerId,
                 publisherId = d.publisherId,
@@ -41,7 +43,9 @@ namespace Slush.DAO.GameInShopDao
                 existing.name = dlc.name;
                 existing.price = dlc.price;
                 existing.discount = dlc.discount;
+                existing.discountFinish = dlc.discountFinish;
                 existing.previeImage = dlc.previeImage;
+                existing.description = dlc.description;
 
                 await _context.SaveChangesAsync();
             }
@@ -74,12 +78,43 @@ namespace Slush.DAO.GameInShopDao
                     name = d.name,
                     price = d.price,
                     discount = d.discount,
+                    discountFinish = d.discountFinish,
                     previeImage = d.previeImage,
+                    description = d.description,
                     dateOfRelease = d.dateOfRelease,
                     developerId = d.developerId,
                     publisherId = d.publisherId,
                     createdAt = d.createdAt
                 }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<DLCInShop?>> GetByGameId(Guid id)
+        {
+            var response =  await _context.dbDLCsInShop
+                .Where(x => x.gameId == id)
+                .Select(d => new DLCInShop
+                {
+                    id = d.id,
+                    gameId = d.gameId,
+                    name = d.name,
+                    price = d.price,
+                    discount = d.discount,
+                    discountFinish = d.discountFinish,
+                    previeImage = d.previeImage,
+                    description = d.description,
+                    dateOfRelease = d.dateOfRelease,
+                    developerId = d.developerId,
+                    publisherId = d.publisherId,
+                    createdAt = d.createdAt
+                }).ToListAsync();
             if (response != null)
             {
                 return response;

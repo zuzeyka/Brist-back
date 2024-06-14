@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Data.Entity;
-using Slush.Data.Entity.Community.GameGroup;
 using Slush.Entity.Profile;
 
 namespace Slush.DAO.ProfileDao
@@ -56,6 +55,28 @@ namespace Slush.DAO.ProfileDao
         {
             var response = await _context.dbOwnedGames
                 .Where(x => x.id == id)
+                .Select(o => new OwnedGame
+                {
+                    id = o.id,
+                    ownedGameId = o.ownedGameId,
+                    userId = o.userId,
+                    createdAt = o.createdAt
+                }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<OwnedGame?> GetByGameId(Guid id, Guid uid)
+        {
+            var response = await _context.dbOwnedGames
+                .Where(x => x.ownedGameId == id)
+                .Where(x => x.userId == uid)
                 .Select(o => new OwnedGame
                 {
                     id = o.id,

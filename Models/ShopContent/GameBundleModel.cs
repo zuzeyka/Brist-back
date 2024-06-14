@@ -6,6 +6,7 @@
         public String description { get; set; } = null!;
         public float price { get; set; }
         public float discount { get; set; }
+        public DateTime? discountFinish { get; set; }
         public DateTime? createdAt { get; set; }
     }
 }

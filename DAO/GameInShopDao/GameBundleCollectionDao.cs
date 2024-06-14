@@ -21,6 +21,7 @@ namespace Slush.DAO.GameInShopDao
                 {
                     id = g.id,
                     gameId = g.gameId,
+                    dlcId = g.dlcId,
                     bundleId = g.bundleId
                 }).ToListAsync();
         }
@@ -31,6 +32,7 @@ namespace Slush.DAO.GameInShopDao
             if (existing != null)
             {
                 existing.gameId = gameBundleCollection.gameId;
+                existing.dlcId = gameBundleCollection.dlcId;
                 existing.bundleId = gameBundleCollection.bundleId;
 
                 await _context.SaveChangesAsync();
@@ -61,9 +63,34 @@ namespace Slush.DAO.GameInShopDao
                 {
                     id = g.id,
                     gameId = g.gameId,
+                    dlcId = g.dlcId,
                     bundleId = g.bundleId,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
+
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<GameBundleCollection?>> GetByGameId(Guid id)
+        {
+            var response = await _context.dbGameBundleCollections
+                .Where(x => x.gameId == id)
+                .Where(d => d.deletedAt == null)
+                .Select(g => new GameBundleCollection
+                {
+                    id = g.id,
+                    gameId = g.gameId,
+                    dlcId = g.dlcId,
+                    bundleId = g.bundleId,
+                    createdAt = g.createdAt
+                }).ToListAsync();
 
             if (response != null)
             {
