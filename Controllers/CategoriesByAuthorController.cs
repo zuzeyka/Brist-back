@@ -2,6 +2,9 @@
 using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
+using Slush.Services.Minio;
+using MySqlX.XDevAPI.Common;
+using System.Security.Policy;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +13,12 @@ namespace FullStackBrist.Server.Controllers
     public class CategoriesByAuthorController : Controller
     {
         private readonly CategoriesByAuthorDao _categoriesByAuthorDao;
+        private readonly MinioService _minioService;
 
-        public CategoriesByAuthorController(CategoriesByAuthorDao categoriesByAuthorDao)
+        public CategoriesByAuthorController(CategoriesByAuthorDao categoriesByAuthorDao, MinioService minioService)
         {
             _categoriesByAuthorDao = categoriesByAuthorDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -25,17 +30,39 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model)
+        public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model, IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is empty");
+            }
+
             var result = new CategoryByAuthor(Guid.NewGuid(),
                                         model.authorId,
                                         model.name,
                                         model.description,
                                         model.image,
                                         DateTime.Now);
-            await _categoriesByAuthorDao.Add(result);
 
-            return Ok(result);
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                    var url = _minioService.GetUrlToFile(imageUrl);
+
+                    result.image = url.ToString();
+
+                    await _categoriesByAuthorDao.Add(result);
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                }
+            }
         }
 
         [HttpGet("{id}")]
@@ -58,10 +85,30 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model)
+        public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model, IFormFile file)
         {
-            await _categoriesByAuthorDao.UpdateCategoriesByAuthor(new CategoryByAuthor(id, model.authorId, model.name, model.description, model.image, DateTime.Now));
-            return NoContent();
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = _minioService.GetUrlToFile(imageUrl);
+
+                        model.image = url.ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _categoriesByAuthorDao.UpdateCategoriesByAuthor(new CategoryByAuthor(id, model.authorId, model.name, model.description, model.image, DateTime.Now));
+
+            return Ok(result);
         }
     }
 }

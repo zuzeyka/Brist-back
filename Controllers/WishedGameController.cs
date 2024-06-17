@@ -73,8 +73,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateWishedGame(Guid id, [FromBody] WishedGameModel game)
         {
-            await _wishedGameDao.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));
-            return NoContent();
+            var result = await _wishedGameDao.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));
+            return Ok(result);
         }
     }
 }

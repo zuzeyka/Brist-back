@@ -13,6 +13,8 @@ using Slush.DAO;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
+using Minio;
+using Slush.Services.Minio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +28,21 @@ builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection(nameof(J
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddSingleton<IMinioClient>(sp =>
+{
+    return new MinioClient()
+        .WithEndpoint("172.16.10.22:9000")
+        .WithCredentials("iLuBz5sTXKUSVwQkvigf", "SjlfQa6pJkEIvtcxCcSpa9l30Vq82G8uInJ6m0vT")
+        .WithSSL(false)
+        .Build();
+});
+
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<RegistrationService>();
 builder.Services.AddScoped<HashPasswordService>();
+builder.Services.AddScoped<MinioService>();
 builder.Services.AddScoped<JWTService>();
 
 builder.Services.AddSwaggerGen(c =>
@@ -120,7 +133,6 @@ app.UseCookiePolicy(new CookiePolicyOptions
 });
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {

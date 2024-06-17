@@ -58,8 +58,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGroupModel game)
         {
-            await _gameGroupDao.UpdateGameGroup(new GameGroup(id, game.gameId, game.createdAt));
-            return NoContent();
+            var result = await _gameGroupDao.UpdateGameGroup(new GameGroup(id, game.gameId, game.createdAt));
+            return Ok(result);
         }
     }
 }

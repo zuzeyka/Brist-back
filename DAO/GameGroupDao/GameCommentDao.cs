@@ -24,7 +24,7 @@ namespace Slush.DAO.GameGroupDao
                 content = g.content,
                 createdAt = g.createdAt}).ToListAsync();
         }
-        public async Task UpdateGameComment(GameComment comment)
+        public async Task<GameComment> UpdateGameComment(GameComment comment)
         {
             var existing = await _context.dbGameComments.FindAsync(comment.id);
             if (existing != null)
@@ -34,6 +34,8 @@ namespace Slush.DAO.GameGroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
         public async Task Add(GameComment comment)
         {

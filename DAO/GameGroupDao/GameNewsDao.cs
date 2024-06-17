@@ -28,7 +28,7 @@ namespace Slush.DAO.GameGroupDao
                 createdAt = g.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateGameNews(GameNews news)
+        public async Task<GameNews> UpdateGameNews(GameNews news)
         {
             var existing = await _context.dbGameNews.FindAsync(news.id);
             if (existing != null)
@@ -42,6 +42,8 @@ namespace Slush.DAO.GameGroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(GameNews news)

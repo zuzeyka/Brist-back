@@ -28,7 +28,7 @@ namespace Slush.DAO.GameGroupDao
                 content = g.content,
                 createdAt = g.createdAt}).ToListAsync();
         }
-        public async Task UpdateGamePosts(GamePosts post)
+        public async Task<GamePosts> UpdateGamePosts(GamePosts post)
         {
             var existing = await _context.dbGamePosts.FindAsync(post.id);
             if (existing != null)
@@ -41,6 +41,8 @@ namespace Slush.DAO.GameGroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(GamePosts posts)

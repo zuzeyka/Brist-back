@@ -79,7 +79,7 @@ namespace Slush.Controllers
         public async Task<ActionResult> Update(Guid id, [FromBody] SettingsModel model)
         {
 
-            await _settingsDao.UpdateSettings(new Settings(id,
+            var result = await _settingsDao.UpdateSettings(new Settings(id,
                 model.attachedUserId,
                 model.bigSaleNotification,
                model.saleFromWishlistNotification,
@@ -89,7 +89,7 @@ namespace Slush.Controllers
                model.declinedFriendRequestNotification,
                DateTime.Now));
 
-            return NoContent();
+            return Ok(result);
         }
     }
 }

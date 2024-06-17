@@ -76,13 +76,13 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] WalletTransactions model)
         {
-            await _walletTransactionsDao.UpdateWalletTransactions(new WalletTransactions(id,
+            var result = await _walletTransactionsDao.UpdateWalletTransactions(new WalletTransactions(id,
                 model.userId,
                 model.transactionObj,
                 model.currency,
                 DateTime.Now));
 
-            return NoContent();
+            return Ok(result);
         }
     }
 }

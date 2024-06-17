@@ -31,7 +31,7 @@ namespace Slush.DAO.GroupDao
 
 
         }
-        public async Task UpdatePost(Post post)
+        public async Task<Post> UpdatePost(Post post)
         {
             var existing = await _context.dbPosts.FindAsync(post.id);
             if (existing != null)
@@ -42,6 +42,8 @@ namespace Slush.DAO.GroupDao
                 existing.content = post.content;
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Post post)

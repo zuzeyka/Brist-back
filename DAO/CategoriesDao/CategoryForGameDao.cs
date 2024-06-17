@@ -24,7 +24,7 @@ namespace Slush.DAO.CategoriesDao
                                                                                             createdAt = c.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateCategoryForGame(CategoryForGame category)
+        public async Task<CategoryForGame> UpdateCategoryForGame(CategoryForGame category)
         {
             var existing = await _context.dbCategoriesForGame.FindAsync(category.id);
             if (existing != null)
@@ -34,6 +34,8 @@ namespace Slush.DAO.CategoriesDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(CategoryForGame category)

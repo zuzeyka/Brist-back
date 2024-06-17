@@ -27,7 +27,7 @@ namespace Slush.DAO.CategoriesDao
             }).ToListAsync();
         }
 
-        public async Task UpdateCategoriesByAuthor(CategoryByAuthor category)
+        public async Task<CategoryByAuthor> UpdateCategoriesByAuthor(CategoryByAuthor category)
         {
             var existing = await _context.dbCategoriesByAuthors.FindAsync(category.id);
             if(existing != null)
@@ -38,6 +38,8 @@ namespace Slush.DAO.CategoriesDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(CategoryByAuthor category)

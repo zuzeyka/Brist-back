@@ -23,7 +23,7 @@ namespace Slush.DAO.GameGroupDao
                 createdAt = g.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateGameGroup(GameGroup group)
+        public async Task<GameGroup> UpdateGameGroup(GameGroup group)
         {
             var existing = await _context.dbGameGroups.FindAsync(group.id);
             if (existing != null)
@@ -32,6 +32,8 @@ namespace Slush.DAO.GameGroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(GameGroup group)

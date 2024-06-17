@@ -26,7 +26,7 @@ namespace Slush.DAO.ProfileDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateCategoryByUserForGame(CategoryByUserForGame categoryByUserForGame)
+        public async Task<CategoryByUserForGame> UpdateCategoryByUserForGame(CategoryByUserForGame categoryByUserForGame)
         {
             var existing = await _context.dbCategoryByUserForGames.FindAsync(categoryByUserForGame.id);
 
@@ -37,6 +37,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(CategoryByUserForGame newCategoryByUserForGame)

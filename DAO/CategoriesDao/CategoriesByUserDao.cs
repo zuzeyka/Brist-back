@@ -27,7 +27,7 @@ namespace Slush.DAO.CategoriesDao
 
         }
 
-        public async Task UpdateCategoriesByUser(CategoryByUser category)
+        public async Task<CategoryByUser> UpdateCategoriesByUser(CategoryByUser category)
         {
             var existing = await _context.dbCategoriesByUsers.FindAsync(category.id);
             if (existing != null)
@@ -37,6 +37,8 @@ namespace Slush.DAO.CategoriesDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(CategoryByUser category)

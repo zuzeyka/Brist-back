@@ -32,7 +32,7 @@ namespace Slush.DAO.CreatorsDao
 
         }
 
-        public async Task UpdateDeveloper(Developer developer)
+        public async Task<Developer> UpdateDeveloper(Developer developer)
         {
             var existing = await _context.dbDevelopers.FindAsync(developer.id);
             if (existing != null)
@@ -46,6 +46,8 @@ namespace Slush.DAO.CreatorsDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Developer developer)

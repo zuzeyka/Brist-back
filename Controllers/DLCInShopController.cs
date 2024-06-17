@@ -1,7 +1,10 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 using Slush.DAO.GameInShopDao;
 using Slush.Entity.Store.Product;
+using Slush.Services.Minio;
+using System.Security.Policy;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +13,12 @@ namespace FullStackBrist.Server.Controllers
     public class DLCInShopController : Controller
     {
         private readonly DLCInShopDao _dLCInShopDao;
+        private readonly MinioService _minioService;
 
-        public DLCInShopController(DLCInShopDao dLCInShopDao)
+        public DLCInShopController(DLCInShopDao dLCInShopDao, MinioService minioService)
         {
             _dLCInShopDao = dLCInShopDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -25,8 +30,13 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DLCInShop>> CreateDLCInShop([FromBody] DLCInShopModel model)
+        public async Task<ActionResult<DLCInShop>> CreateDLCInShop([FromBody] DLCInShopModel model, IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is empty");
+            }
+
             var result = new DLCInShop(Guid.NewGuid(),
                                         model.gameId,
                                         model.name,
@@ -40,9 +50,26 @@ namespace FullStackBrist.Server.Controllers
                                         model.publisherId,
                                         DateTime.Now
                                             );
-            await _dLCInShopDao.Add( result );
 
-            return Ok(result);
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                    var url = await _minioService.GetUrlToFile(imageUrl);
+
+                    result.previeImage = url;
+
+                    await _dLCInShopDao.Add(result);
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                }
+            }
         }
 
 
@@ -78,10 +105,30 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model)
+        public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model, IFormFile file)
         {
-            await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
-            return NoContent();
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        var result = await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, url, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
+                        return Ok(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                    }
+                }
+            }
+
+            var res = await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
+            return Ok(res);
         }
     }
 }

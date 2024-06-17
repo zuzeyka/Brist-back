@@ -24,7 +24,7 @@ namespace Slush.DAO.ProfileDao
                 userId = o.userId,
                 createdAt = o.createdAt}).ToListAsync();
         }
-        public async Task UpdateOwnedGame(OwnedGame ownedGame)
+        public async Task<OwnedGame> UpdateOwnedGame(OwnedGame ownedGame)
         {
             var existing = await _context.dbOwnedGames.FindAsync(ownedGame.id);
             if (existing != null)
@@ -33,6 +33,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(OwnedGame game)

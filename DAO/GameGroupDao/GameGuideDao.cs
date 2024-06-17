@@ -30,7 +30,7 @@ namespace Slush.DAO.GameGroupDao
 
         }
 
-        public async Task UpdateGameGuide(GameGuide guide)
+        public async Task<GameGuide> UpdateGameGuide(GameGuide guide)
         {
             var existing = await _context.dbGameGuides.FindAsync(guide.id);
             if (existing != null)
@@ -45,6 +45,8 @@ namespace Slush.DAO.GameGroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(GameGuide guide)

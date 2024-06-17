@@ -6,6 +6,7 @@ using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
 using Slush.Services.JWT;
+using Slush.Services.Minio;
 using Slush.Services.RegistrationValidation;
 
 namespace FullStackBrist.Server.Controllers
@@ -18,15 +19,17 @@ namespace FullStackBrist.Server.Controllers
         private readonly RegistrationService _registrationService;
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
+        private readonly MinioService _minioService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger)
+        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService)
         {
             _userDao = userDao;
             _registrationService = registrationService;
             _passwordService = passwordService;
             _jwtService = jwtService;
             _logger = logger;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -40,9 +43,10 @@ namespace FullStackBrist.Server.Controllers
         #region Registration
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser([FromBody] UserModel model)
+        public async Task<ActionResult<User>> CreateUser([FromBody] UserModel model, IFormFile file)
         {
-            await _registrationService.Registration(model);
+
+            await _registrationService.Registration(model, file);
 
             return Ok();
         }
@@ -121,10 +125,29 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
+        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
         {
-            await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.verified, user.amountOfMoney, user.createdAt));
-            return NoContent();
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        user.image = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation(ex.Message);
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.image, user.verified, user.amountOfMoney, user.createdAt));
+            return Ok(result);
         }
     }
 }

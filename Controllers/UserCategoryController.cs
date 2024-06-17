@@ -94,17 +94,17 @@ namespace Slush.Controllers
         [HttpPut("updateusercategories/{id}")]
         public async Task<ActionResult> UpdateUserCategories(Guid id, [FromBody] UserCategoryModel model)
         {
-            await _userCategoryDao.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
+            var result = await _userCategoryDao.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpPut("updatecategories/{id}")]
         public async Task<ActionResult> UpdateCategories(Guid id, [FromBody] CategoryByUserForGame model)
         {
-            await _categoryByUserForGameDao.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));
+            var result = await _categoryByUserForGameDao.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpDelete("deletecategories/{id}")]

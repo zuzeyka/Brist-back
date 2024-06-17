@@ -30,7 +30,7 @@ namespace Slush.DAO.ProfileDao
                 createdAt = v.createdAt}).ToListAsync();
 
         }
-        public async Task UpdateVideo(Video video)
+        public async Task<Video> UpdateVideo(Video video)
         {
             var existing = await _context.dbVideos.FindAsync(video.id);
             if (existing != null)
@@ -41,6 +41,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Video video)

@@ -26,7 +26,7 @@ namespace Slush.DAO.LanguageDao
                 createdAt = l.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateLanguage(Language language)
+        public async Task<Language> UpdateLanguage(Language language)
         {
             var existing = await _context.dbLanguages.FindAsync(language.id);
             if (existing != null)
@@ -35,6 +35,8 @@ namespace Slush.DAO.LanguageDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Language language)

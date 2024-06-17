@@ -31,7 +31,7 @@ namespace Slush.DAO.ProfileDao
                 amountOfMoney = u.amountOfMoney,
                 createdAt = u.createdAt}).ToListAsync();
         }
-        public async Task UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
             var existing = await _context.dbUsers.FindAsync(user.id);
             if (existing != null)
@@ -47,6 +47,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(User user)

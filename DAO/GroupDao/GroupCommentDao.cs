@@ -32,7 +32,7 @@ namespace Slush.DAO.GroupDao
 
 
         }
-        public async Task UpdateGroupComment(GroupComment comment)
+        public async Task<GroupComment> UpdateGroupComment(GroupComment comment)
         {
             var existing = await _context.dbGroupComments.FindAsync(comment.id);
             if (existing != null)
@@ -41,6 +41,8 @@ namespace Slush.DAO.GroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
         public async Task Add(GroupComment comment)
         {

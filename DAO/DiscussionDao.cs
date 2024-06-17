@@ -27,7 +27,7 @@ namespace Slush.DAO
                 }).ToListAsync();
         }
 
-        public async Task UpdateDiscussion(Discussion discussion)
+        public async Task<Discussion> UpdateDiscussion(Discussion discussion)
         {
             var existing = await _context.dbDiscussions.FindAsync(discussion.id);
             if(existing != null)
@@ -37,6 +37,8 @@ namespace Slush.DAO
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Discussion discussion)

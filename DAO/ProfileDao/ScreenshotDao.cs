@@ -32,7 +32,7 @@ namespace Slush.DAO.ProfileDao
                 createdAt = s.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateScreenshot(Screenshot screenshot)
+        public async Task<Screenshot> UpdateScreenshot(Screenshot screenshot)
         {
             var existing = await _context.dbScreenshots.FindAsync(screenshot.id);
             if (existing != null)
@@ -43,6 +43,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Screenshot screenshot)

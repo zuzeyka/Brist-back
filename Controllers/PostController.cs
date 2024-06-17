@@ -63,8 +63,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post)
         {
-            await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.createdAt));
-            return NoContent();
+            var result = await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.createdAt));
+            return Ok(result);
         }
     }
 }

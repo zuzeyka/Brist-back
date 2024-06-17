@@ -35,7 +35,7 @@ namespace Slush.DAO.GameInShopDao
                 publisherId = d.publisherId,
                 createdAt = d.createdAt}).ToListAsync();
         }
-        public async Task UpdateDLCInShop(DLCInShop dlc)
+        public async Task<DLCInShop> UpdateDLCInShop(DLCInShop dlc)
         {
             var existing = await _context.dbDLCsInShop.FindAsync(dlc.id);
             if (existing != null)
@@ -49,6 +49,8 @@ namespace Slush.DAO.GameInShopDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(DLCInShop dlc)

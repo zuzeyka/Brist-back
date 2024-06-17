@@ -25,20 +25,24 @@ namespace Slush.DAO.GroupDao
                 attachedId = g.attachedId,
                 name = g.name,
                 description = g.description,
+                imageUrl = g.imageUrl,
                 createdAt = g.createdAt
             }).ToListAsync();
 
         }
-        public async Task UpdateGroup(Group group)
+        public async Task<Group> UpdateGroup(Group group)
         {
             var existing = await _context.dbGroups.FindAsync(group.id);
             if (existing != null)
             {
                 existing.name = group.name;
                 existing.description = group.description;
+                existing.imageUrl = group.imageUrl;
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Group group)
@@ -67,6 +71,7 @@ namespace Slush.DAO.GroupDao
                     attachedId = g.attachedId,
                     name = g.name,
                     description = g.description,
+                    imageUrl = g.imageUrl,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)

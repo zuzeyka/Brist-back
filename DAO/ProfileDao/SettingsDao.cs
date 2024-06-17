@@ -31,7 +31,7 @@ namespace Slush.DAO.ProfileDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateSettings(Settings newSettings)
+        public async Task<Settings> UpdateSettings(Settings newSettings)
         {
             var existing = await _context.dbSettings.FindAsync(newSettings.id);
             if(existing != null)
@@ -45,6 +45,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task DeleteSettings(Guid id)

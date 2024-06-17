@@ -28,7 +28,7 @@ namespace Slush.DAO.ProfileDao
 
         }
 
-        public async Task UpdateFriends(Friends friends)
+        public async Task<Friends> UpdateFriends(Friends friends)
         {
             var existing = await _context.dbFriends.FindAsync(friends.id);
             if (existing != null)
@@ -37,6 +37,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Friends friend)

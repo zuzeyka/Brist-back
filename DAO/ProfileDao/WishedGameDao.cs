@@ -26,7 +26,7 @@ namespace Slush.DAO.ProfileDao
                 createdAt = s.createdAt}).ToListAsync();
         }
 
-        public async Task UpdateWishedGame(WishedGame wishedGame)
+        public async Task<WishedGame> UpdateWishedGame(WishedGame wishedGame)
         {
             var existing = await _context.dbWishedGames.FindAsync(wishedGame.id);
             if (existing != null)
@@ -35,6 +35,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(WishedGame game)

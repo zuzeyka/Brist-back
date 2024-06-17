@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 using Slush.DAO.ProfileDao;
 using Slush.Entity.Profile;
+using Slush.Services.Minio;
+using System.Security.Policy;
 
 namespace Slush.Controllers
 {
@@ -9,10 +12,12 @@ namespace Slush.Controllers
     public class AchievementController : Controller
     {
         private readonly AchievementDao _achievementDao;
+        private readonly MinioService _minioService;
 
-        public AchievementController( AchievementDao achievementDao)
+        public AchievementController(AchievementDao achievementDao, MinioService minioService)
         {
             _achievementDao = achievementDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -24,17 +29,38 @@ namespace Slush.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Achievement>> CreateAchievement([FromBody] Achievement achievement)
+        public async Task<ActionResult<Achievement>> CreateAchievement([FromBody] Achievement achievement, IFormFile file)
         {
-            var result = new Achievement(Guid.NewGuid(), 
-                achievement.urlForImage,
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is empty");
+            }
+
+            var result = new Achievement(Guid.NewGuid(),
+                "",
                 achievement.description,
                 achievement.amountOfExperience,
                 DateTime.Now);
 
-            await _achievementDao.Add(result);
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
 
-            return Ok(result);
+                    var url = _minioService.GetUrlToFile(imageUrl);
+
+                    result.urlForImage = url.ToString();
+
+                    await _achievementDao.Add(result);
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                }
+            }
         }
 
         [HttpDelete("{id}")]
@@ -45,12 +71,32 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] Achievement achievement)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] Achievement achievement, IFormFile file)
         {
-            await _achievementDao.UpdateAchievement(new Achievement(id, achievement.urlForImage, achievement.description, achievement.amountOfExperience, achievement.createdAt));
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", achievement.id, file.FileName, stream);
 
-            return NoContent();
+                        var url = _minioService.GetUrlToFile(imageUrl);
+
+                        var res = await _achievementDao.UpdateAchievement(new Achievement(id, url.ToString(), achievement.description, achievement.amountOfExperience, achievement.createdAt));
+
+                        return Ok(res);
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                    }
+                }
+            }
+            var result = await _achievementDao.UpdateAchievement(new Achievement(id, achievement.urlForImage, achievement.description, achievement.amountOfExperience, achievement.createdAt));
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

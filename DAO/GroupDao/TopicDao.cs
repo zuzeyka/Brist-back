@@ -27,7 +27,7 @@ namespace Slush.DAO.GroupDao
                 authorId = t.authorId,
                 createdAt = t.createdAt}).ToListAsync();
         }
-        public async Task UpdateTopic(Topic topic)
+        public async Task<Topic> UpdateTopic(Topic topic)
         {
             var existing = await _context.dbTopics.FindAsync(topic.id);
             if (existing != null)
@@ -37,6 +37,8 @@ namespace Slush.DAO.GroupDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Topic topic)

@@ -60,8 +60,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLanguageInGame(Guid id, [FromBody] LanguageInGameModel language)
         {
-            await _languageInGameDao.UpdateLanguageInGame(new LanguageInGame(id, language.gameId, language.languageId, language.createdAt));
-            return NoContent();
+            var result = await _languageInGameDao.UpdateLanguageInGame(new LanguageInGame(id, language.gameId, language.languageId, language.createdAt));
+            return Ok(result);
         }
     }
 }

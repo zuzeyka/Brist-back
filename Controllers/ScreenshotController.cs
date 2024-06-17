@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data.Entity.Profile;
+using Slush.Services.Minio;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class ScreenshotController : Controller
     {
         private readonly ScreenshotDao _screenshotDao;
+        private readonly MinioService _minioService;
 
-        public ScreenshotController(ScreenshotDao screenshotDao)
+        public ScreenshotController(ScreenshotDao screenshotDao, MinioService minioService)
         {
             _screenshotDao = screenshotDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model)
+        public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model, IFormFile file)
         {
             var result = new Screenshot(Guid.NewGuid(),
                 model.title,
@@ -36,6 +39,25 @@ namespace FullStackBrist.Server.Controllers
                 model.authorId,
                 model.screenshotUrl,
                 DateTime.Now);
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        result.screenshotUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
 
             await _screenshotDao.Add(result);
 
@@ -74,10 +96,29 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot)
+        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile file)
         {
-            await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt));
-            return NoContent();
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        screenshot.screenshotUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt));
+            return Ok(result);
         }
     }
 }

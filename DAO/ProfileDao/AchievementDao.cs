@@ -27,7 +27,7 @@ namespace Slush.DAO.ProfileDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateAchievement(Achievement achievement)
+        public async Task<Achievement> UpdateAchievement(Achievement achievement)
         {
             var existing = await _dataContext.dbAchievements.FindAsync(achievement.id);
 
@@ -39,6 +39,7 @@ namespace Slush.DAO.ProfileDao
 
                 await _dataContext.SaveChangesAsync();
             }
+            return existing;
         }
 
         public async Task Add(Achievement achievement)

@@ -29,7 +29,7 @@ namespace Slush.DAO.ChatDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateMessage(Message message)
+        public async Task<Message> UpdateMessage(Message message)
         {
             var existing = await _context.dbMessages.FindAsync(message.id);
             if (existing != null)
@@ -40,6 +40,8 @@ namespace Slush.DAO.ChatDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Message message)

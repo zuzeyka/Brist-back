@@ -41,7 +41,7 @@ namespace Slush.DAO.ProfileDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateUserCategory(UserCategory userCategory)
+        public async Task<UserCategory> UpdateUserCategory(UserCategory userCategory)
         {
             var existing = await _context.dbUserCategories.FindAsync(userCategory.id);
 
@@ -53,6 +53,8 @@ namespace Slush.DAO.ProfileDao
                 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(UserCategory userCategory)

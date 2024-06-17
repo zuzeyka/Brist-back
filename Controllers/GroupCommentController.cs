@@ -60,8 +60,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGroupComment(Guid id, [FromBody] GroupCommentModel group)
         {
-            await _groupCommentDao.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
-            return NoContent();
+            var result = await _groupCommentDao.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
+            return Ok(result);
         }
     }
 }

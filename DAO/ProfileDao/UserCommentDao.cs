@@ -27,7 +27,7 @@ namespace Slush.DAO.ProfileDao
                 content = s.content,
                 createdAt = s.createdAt}).ToListAsync();
         }
-        public async Task UpdateUserComment(UserComment category)
+        public async Task<UserComment> UpdateUserComment(UserComment category)
         {
             var existing = await _context.dbUserComments.FindAsync(category.id);
             if (existing != null)
@@ -38,6 +38,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(UserComment comment)

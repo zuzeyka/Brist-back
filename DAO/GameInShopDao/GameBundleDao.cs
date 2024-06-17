@@ -28,7 +28,7 @@ namespace Slush.DAO.GameInShopDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateGameBundle(GameBundle gameBundle)
+        public async Task<GameBundle> UpdateGameBundle(GameBundle gameBundle)
         {
             var existing = await _context.dbGameBundles.FindAsync(gameBundle.id);
             if (existing != null)
@@ -40,6 +40,8 @@ namespace Slush.DAO.GameInShopDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task DeleteGameBundle(Guid id)

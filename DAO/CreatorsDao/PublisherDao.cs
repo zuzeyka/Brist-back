@@ -29,7 +29,7 @@ namespace Slush.DAO.CreatorsDao
                 createdAt = p.createdAt }).ToListAsync();
         }
 
-        public async Task UpdatePublisher(Publisher publisher)
+        public async Task<Publisher> UpdatePublisher(Publisher publisher)
         {
             var existing = await _context.dbPublishers.FindAsync(publisher.id);
             if (existing != null)
@@ -43,6 +43,8 @@ namespace Slush.DAO.CreatorsDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(Publisher publisher)

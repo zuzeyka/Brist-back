@@ -67,8 +67,8 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game)
         {
-            await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.gameTopicId, game.authorId, game.content, game.createdAt));
-            return NoContent();
+            var result = await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.gameTopicId, game.authorId, game.content, game.createdAt));
+            return Ok(result);
         }
     }
 }

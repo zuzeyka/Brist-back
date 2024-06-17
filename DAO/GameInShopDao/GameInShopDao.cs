@@ -38,7 +38,7 @@ namespace Slush.DAO.GameInShopDao
                                         .ToListAsync();
         }
 
-        public async Task UpdateGameInShop(GameInShop shop)
+        public async Task<GameInShop> UpdateGameInShop(GameInShop shop)
         {
             var existing = await _context.dbGamesInShops.FindAsync(shop.id);
             if (existing != null)
@@ -52,6 +52,8 @@ namespace Slush.DAO.GameInShopDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task Add(GameInShop game)

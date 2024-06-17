@@ -61,8 +61,8 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameBundle(Guid id, [FromBody] GameBundleModel model)
         {
-            await _gameBundleDao.UpdateGameBundle(new GameBundle(id, model.name, model.description, model.price, model.discount, model.discountFinish, DateTime.Now));
-            return NoContent();
+            var result = await _gameBundleDao.UpdateGameBundle(new GameBundle(id, model.name, model.description, model.price, model.discount, model.discountFinish, DateTime.Now));
+            return Ok(result);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Slush.DAO.ProfileDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateWalletTransactions(WalletTransactions transaction)
+        public async Task<WalletTransactions> UpdateWalletTransactions(WalletTransactions transaction)
         {
             var existing = await _context.dbWalletTransactions.FindAsync(transaction.id);
             if(existing != null)
@@ -37,6 +37,8 @@ namespace Slush.DAO.ProfileDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task DeleteWalletTransaction(Guid id)

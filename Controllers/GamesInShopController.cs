@@ -1,7 +1,9 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 using Slush.DAO.GameInShopDao;
 using Slush.Entity.Store.Product;
+using Slush.Services.Minio;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +12,12 @@ namespace FullStackBrist.Server.Controllers
     public class GamesInShopController : Controller
     {
         private readonly GameInShopDao _gameInShopDao;
+        private readonly MinioService _minioService;
 
-        public GamesInShopController(GameInShopDao gameInShopDao)
+        public GamesInShopController(GameInShopDao gameInShopDao, MinioService minioService)
         {
             _gameInShopDao = gameInShopDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -25,8 +29,12 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model)
+        public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model, IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is empty");
+            }
             var result = new GameInShop(Guid.NewGuid(),
                                             model.name,
                                             model.price,
@@ -40,9 +48,26 @@ namespace FullStackBrist.Server.Controllers
                                             model.urlForContent,
                                             DateTime.Now
                                             );
-            await _gameInShopDao.Add(result);
 
-            return Ok(result);
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                    var url = await _minioService.GetUrlToFile(imageUrl);
+
+                    result.previeImage = url;
+
+                    await _gameInShopDao.Add(result);
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                }
+            }
         }
 
 
@@ -66,10 +91,32 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game)
+        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game, IFormFile file)
         {
-            await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
-            return NoContent();
+            if(file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        game.previeImage = url;
+
+                        var res = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
+
+                        return Ok(res);
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
+            return Ok(result);
         }
     }
 }

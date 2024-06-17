@@ -26,7 +26,7 @@ namespace Slush.DAO.ChatDao
                 }).ToListAsync();
         }
 
-        public async Task UpdateChat(Chat chat)
+        public async Task<Chat> UpdateChat(Chat chat)
         {
             var existing = await _context.dbChats.FindAsync(chat.id);
             if(existing != null)
@@ -36,6 +36,8 @@ namespace Slush.DAO.ChatDao
 
                 await _context.SaveChangesAsync();
             }
+
+            return existing;
         }
 
         public async Task AddChat(Chat chat) 
