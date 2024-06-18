@@ -31,6 +31,7 @@ namespace Slush.Services.RegistrationValidation
                 model.image,
                 false,
                 0,
+                0,
                 DateTime.Now
                 );
             if (file != null || file.Length != 0)
@@ -52,11 +53,6 @@ namespace Slush.Services.RegistrationValidation
                 }
             }
             await _userDao.Add(result);
-        }
-
-        public async Task<String> Login(UserModel model)
-        {
-            return "";
         }
     }
 }

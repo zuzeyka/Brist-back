@@ -30,10 +30,6 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<DLCInShop>> CreateDLCInShop([FromBody] DLCInShopModel model, IFormFile file)
         {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("File is empty");
-            }
 
             var result = new DLCInShop(Guid.NewGuid(),
                                         model.gameId,
@@ -49,25 +45,29 @@ namespace FullStackBrist.Server.Controllers
                                         DateTime.Now
                                             );
 
-            using (var stream = file.OpenReadStream())
+            if (file != null || file.Length != 0)
             {
-                try
+
+                using (var stream = file.OpenReadStream())
                 {
-                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _minioService.GetUrlToFile(imageUrl);
 
-                    result.previeImage = url;
+                        result.previeImage = url;
 
-                    await _dLCInShopDao.Add(result);
-
-                    return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload image: {ex.Message}");
+                    }
                 }
             }
+            await _dLCInShopDao.Add(result);
+
+            return Ok(result);
         }
 
 

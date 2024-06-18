@@ -28,6 +28,7 @@ namespace Slush.DAO.ProfileDao
                 image = u.image,
                 verified = u.verified,
                 amountOfMoney = u.amountOfMoney,
+                amountOfXp = u.amountOfXp,
                 createdAt = u.createdAt}).ToListAsync();
         }
         public async Task<User> UpdateUser(User user)
@@ -42,6 +43,7 @@ namespace Slush.DAO.ProfileDao
                 existing.image = user.image;
                 existing.verified = user.verified;
                 existing.amountOfMoney = user.amountOfMoney;
+                existing.amountOfXp = user.amountOfXp;
 
                 await _context.SaveChangesAsync();
             }
@@ -79,6 +81,7 @@ namespace Slush.DAO.ProfileDao
                     image = u.image,
                     verified = u.verified,
                     amountOfMoney = u.amountOfMoney,
+                    amountOfXp = u.amountOfXp,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -104,6 +107,7 @@ namespace Slush.DAO.ProfileDao
                     image = u.image,
                     verified = u.verified,
                     amountOfMoney = u.amountOfMoney,
+                    amountOfXp = u.amountOfXp,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -124,6 +128,7 @@ namespace Slush.DAO.ProfileDao
                     id = u.id,
                     name = u.name,
                     image = u.image,
+                    amountOfXp = u.amountOfXp,
                     createdAt = u.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)

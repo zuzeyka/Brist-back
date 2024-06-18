@@ -165,7 +165,7 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.createdAt));
+            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
             return Ok(result);
         }
     }

@@ -30,10 +30,6 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model, IFormFile file)
         {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("File is empty");
-            }
             var result = new GameInShop(Guid.NewGuid(),
                                             model.name,
                                             model.price,
@@ -48,25 +44,27 @@ namespace FullStackBrist.Server.Controllers
                                             DateTime.Now
                                             );
 
-            using (var stream = file.OpenReadStream())
+            if (file != null || file.Length != 0)
             {
-                try
+                using (var stream = file.OpenReadStream())
                 {
-                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _minioService.GetUrlToFile(imageUrl);
 
-                    result.previeImage = url;
-
-                    await _gameInShopDao.Add(result);
-
-                    return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                        result.previeImage = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
                 }
             }
+            await _gameInShopDao.Add(result);
+
+            return Ok(result);
         }
 
 
