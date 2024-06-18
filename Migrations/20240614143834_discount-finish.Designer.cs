@@ -1367,7 +1367,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1376,13 +1376,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Categories", null)
                         .WithMany()
                         .HasForeignKey("categoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1391,13 +1391,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GamePosts", null)
                         .WithMany()
                         .HasForeignKey("gamePostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1415,7 +1415,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
@@ -1436,7 +1436,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
@@ -1448,7 +1448,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1457,19 +1457,19 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GameTopic", null)
                         .WithMany()
                         .HasForeignKey("gameTopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1478,7 +1478,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Community.GameGroup.GameGroup", null)
                         .WithMany()
                         .HasForeignKey("attachedId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1487,7 +1487,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("attachedId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1496,13 +1496,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Community.Group", null)
                         .WithMany()
                         .HasForeignKey("groupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1511,13 +1511,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Community.Topic", null)
                         .WithMany()
                         .HasForeignKey("discussionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1526,13 +1526,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Community.Group", null)
                         .WithMany()
                         .HasForeignKey("attachedId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1541,13 +1541,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Language", null)
                         .WithMany()
                         .HasForeignKey("languageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1556,13 +1556,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1571,13 +1571,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1586,13 +1586,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1646,13 +1646,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("friendId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1661,13 +1661,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("ownedGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1676,7 +1676,7 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("attachedUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1685,19 +1685,19 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Profile.CategoryByUserForGame", null)
                         .WithMany()
                         .HasForeignKey("categoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Profile.OwnedGame", null)
                         .WithMany()
                         .HasForeignKey("ownedGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1706,19 +1706,19 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.DLCInShop", null)
                         .WithMany()
                         .HasForeignKey("transactionObj")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("transactionObj")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1727,13 +1727,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("ownedGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1742,19 +1742,19 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.Creators.Developer", null)
                         .WithMany()
                         .HasForeignKey("developerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("gameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.Creators.Publisher", null)
                         .WithMany()
                         .HasForeignKey("publisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1763,13 +1763,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.DLCInShop", null)
                         .WithMany()
                         .HasForeignKey("id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.GameInShop", null)
                         .WithMany()
                         .HasForeignKey("id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1778,13 +1778,13 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Entity.Store.Product.Creators.Developer", null)
                         .WithMany()
                         .HasForeignKey("developerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Slush.Entity.Store.Product.Creators.Publisher", null)
                         .WithMany()
                         .HasForeignKey("publisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

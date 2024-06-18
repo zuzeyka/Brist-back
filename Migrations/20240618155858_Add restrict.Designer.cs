@@ -12,8 +12,8 @@ using Slush.Data;
 namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240618155624_Remove phone")]
-    partial class Removephone
+    [Migration("20240618155858_Add restrict")]
+    partial class Addrestrict
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
