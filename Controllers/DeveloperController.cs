@@ -1,6 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using MySqlX.XDevAPI.Common;
 using Slush.DAO.CreatorsDao;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;

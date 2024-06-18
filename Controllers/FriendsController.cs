@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers

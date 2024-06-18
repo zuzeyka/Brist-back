@@ -1,124 +1,51 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using FullStackBrist.Server.Services.Random;
 
 namespace FullStackBrist.Server.Services.Email
 {
-    public class EmailService : IEmailService
+    public class EmailService
     {
         private readonly IConfiguration _configuration;
+        private readonly RandomService _randomService;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IConfiguration configuration, RandomService randomService)
         {
             _configuration = configuration;
+            _randomService = randomService;
         }
 
-        public bool SendMessage(String message, object model)
+        public async Task<String> SendEmail(String post)
         {
-            String? template = null;
-            String[] filenames = new String[]
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Slush", _configuration["EmailSettings:FromEmail"]));
+            message.To.Add(new MailboxAddress("", post));
+            message.Subject = "Slush";
+
+            String code = _randomService.RandomString(6);
+
+            var bodyBuilder = new BodyBuilder
             {
-                message,
-                message + ".html",
-                "Services/Email/" + message,
-                "Services/Email/" + message + ".html"
+                HtmlBody = $"<h1>Slush verification email</h1><p>Greetings, {post}, you need verificate your account by this code:<b>{code}</b></p>"
             };
+            message.Body = bodyBuilder.ToMessageBody();
 
-            foreach (String filename in filenames)
+            using (var client = new SmtpClient())
             {
-                if(File.Exists(filename))
+                try
                 {
-                    template = File.ReadAllText(filename);
-                    break;
+                    await client.ConnectAsync(_configuration["EmailSettings:SmtpServer"], int.Parse(_configuration["EmailSettings:SmtpPort"]), SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(_configuration["EmailSettings:Username"], _configuration["EmailSettings:Password"]);
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+
+                    return code;
                 }
-            }
-
-            if (template == null)
-            {
-                throw new ArgumentException($"Template '{message}' is not found");
-            }
-
-            String? host = _configuration["Smtp:Gmail:Host"];
-            if(host == null)
-            {
-                throw new MissingFieldException($"Missing Smtp:Gmail:Host");
-            }
-
-            String? mailbox = _configuration["Smtp:Gmail:Email"];
-            if(mailbox == null)
-            {
-                throw new MissingFieldException($"Missing Smtp:Gmail:Email");
-            }
-
-            String? password = _configuration["Smtp:Gmail:Password"];
-            if(password == null)
-            {
-                throw new MissingFieldException($"Missing Smtp:Gmail:Password");
-            }
-
-            int port;
-            try
-            {
-                port = Convert.ToInt32(_configuration["Smtp:Gmail:Port"]);
-            }
-            catch
-            {
-                throw new MissingFieldException("Missing Smtp:Gmail:Port");
-            }
-
-            bool ssl;
-            try
-            {
-                ssl = Convert.ToBoolean(_configuration["Smtp:Gmail:Ssl"]);
-            }
-            catch 
-            {
-                throw new MissingFieldException("Smtp:Gmail:Ssl");
-            }
-
-            String? userMail = null;
-            foreach (var prop in model.GetType().GetProperties())
-            {
-                if(prop.Name == "Email")
+                catch (Exception ex)
                 {
-                    userMail = prop.GetValue(model)?.ToString();
+                    return ex.Message.ToString();
                 }
-                String placeholder = $"{{{{{prop.Name}}}}}";
-                if (template.Contains(placeholder))
-                {
-                    template = template.Replace(placeholder, prop.GetValue(model)?.ToString() ?? "");
-                }
-            }
-
-            if(userMail == null)
-            {
-                throw new ArgumentException("No 'Email' property in model");
-            }
-
-            using SmtpClient _smtpClient = new(host, port)
-
-            {
-                EnableSsl = ssl,
-                Credentials = new NetworkCredential(userMail, password)
-            };
-
-            MailMessage mailMessage = new()
-            {
-                From = new MailAddress(mailbox),
-                Subject = "Brist",
-                Body = template,
-                IsBodyHtml = true
-            };
-
-            mailMessage.To.Add(userMail);
-
-            try
-            {
-                _smtpClient.Send(mailMessage);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Exception: ", ex);
             }
         }
     }

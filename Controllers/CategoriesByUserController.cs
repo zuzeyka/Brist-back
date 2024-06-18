@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.CategoriesDao;
-using Slush.Data;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers

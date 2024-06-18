@@ -11,13 +11,12 @@ namespace Slush.Data.Entity.Profile
         {
         }
 
-        public User(Guid id, String? name, String? passwordSalt, String? email, String? phone, String? descripton, String? image, bool verified, float amountOfMoney, DateTime? createdAt)
+        public User(Guid id, String? name, String? passwordSalt, String? email, String? descripton, String? image, bool verified, float amountOfMoney, DateTime? createdAt)
         {
             this.id = id;
             this.name = name;
             this.passwordSalt = passwordSalt;
             this.email = email;
-            this.phone = phone;
             this.description = descripton;
             this.image = image;
             this.verified = verified;
@@ -31,7 +30,6 @@ namespace Slush.Data.Entity.Profile
         public String? name { get;set; }
         public String? passwordSalt { get;set; }
         public String? email { get;set; }
-        public String? phone { get;set; }
         public String? description { get; set; }
         public String? image { get; set; }
         public bool verified { get; set; }

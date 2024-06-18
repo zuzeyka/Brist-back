@@ -15,6 +15,8 @@ using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
 using Minio;
 using Slush.Services.Minio;
+using FullStackBrist.Server.Services.Email;
+using FullStackBrist.Server.Services.Random;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,8 +44,10 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<RegistrationService>();
 builder.Services.AddScoped<HashPasswordService>();
+builder.Services.AddScoped<RandomService>();
 builder.Services.AddScoped<MinioService>();
 builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddSwaggerGen(c =>
 {

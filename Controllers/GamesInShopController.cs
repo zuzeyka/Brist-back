@@ -1,6 +1,5 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
-using MySqlX.XDevAPI.Common;
 using Slush.DAO.GameInShopDao;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;

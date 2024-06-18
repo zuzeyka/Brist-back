@@ -3,8 +3,6 @@ using Slush.DAO.CategoriesDao;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
 using Slush.Services.Minio;
-using MySqlX.XDevAPI.Common;
-using System.Security.Policy;
 
 namespace FullStackBrist.Server.Controllers
 {

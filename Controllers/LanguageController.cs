@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.LanguageDao;
-using Slush.Data;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers

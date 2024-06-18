@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
+using FullStackBrist.Server.Services.Email;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
-using Slush.Data;
 using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
@@ -20,9 +20,10 @@ namespace FullStackBrist.Server.Controllers
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
         private readonly MinioService _minioService;
+        private readonly EmailService _emailService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService)
+        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
         {
             _userDao = userDao;
             _registrationService = registrationService;
@@ -30,6 +31,7 @@ namespace FullStackBrist.Server.Controllers
             _jwtService = jwtService;
             _logger = logger;
             _minioService = minioService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -43,12 +45,14 @@ namespace FullStackBrist.Server.Controllers
         #region Registration
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser([FromBody] UserModel model, IFormFile file)
+        public async Task<ActionResult<String>> CreateUser([FromBody] UserModel model, IFormFile file)
         {
 
             await _registrationService.Registration(model, file);
 
-            return Ok();
+            var code = await _emailService.SendEmail(model.email);
+
+            return code;
         }
         #endregion
         #region Login
@@ -146,7 +150,7 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.phone, user.description, user.image, user.verified, user.amountOfMoney, user.createdAt));
+            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.createdAt));
             return Ok(result);
         }
     }

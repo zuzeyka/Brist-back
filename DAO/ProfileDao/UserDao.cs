@@ -24,7 +24,6 @@ namespace Slush.DAO.ProfileDao
                 name = u.name,
                 passwordSalt = u.passwordSalt,
                 email = u.email,
-                phone = u.phone,
                 description = u.description,
                 image = u.image,
                 verified = u.verified,
@@ -39,7 +38,6 @@ namespace Slush.DAO.ProfileDao
                 existing.name = user.name;
                 existing.passwordSalt = user.passwordSalt;
                 existing.email = user.email;
-                existing.phone = user.phone;
                 existing.description = user.description;
                 existing.image = user.image;
                 existing.verified = user.verified;
@@ -77,7 +75,6 @@ namespace Slush.DAO.ProfileDao
                     name = u.name,
                     passwordSalt = u.passwordSalt,
                     email = u.email,
-                    phone = u.phone,
                     description = u.description,
                     image = u.image,
                     verified = u.verified,
@@ -103,7 +100,6 @@ namespace Slush.DAO.ProfileDao
                     name = u.name,
                     passwordSalt = u.passwordSalt,
                     email = u.email,
-                    phone = u.phone,
                     description = u.description,
                     image = u.image,
                     verified = u.verified,

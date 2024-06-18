@@ -27,7 +27,6 @@ namespace Slush.Services.RegistrationValidation
                 model.name,
                 hashedPassword,
                 model.email,
-                model.phone,
                 model.description,
                 model.image,
                 false,
