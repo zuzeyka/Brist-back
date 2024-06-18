@@ -54,6 +54,21 @@ namespace FullStackBrist.Server.Controllers
 
             return code;
         }
+
+        [HttpPost("resend")]
+        public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
+        {
+            var user = await _userDao.GetByEmail(model.email);
+            if (user != null) 
+            {
+                var code = await _emailService.SendEmail(model.email);
+
+                return code;
+            }
+
+            return "User is null";
+        }
+
         #endregion
         #region Login
 
