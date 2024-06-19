@@ -128,5 +128,13 @@ namespace FullStackBrist.Server.Controllers
             var res = await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
             return Ok(res);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<DLCInShop>>> GetAllDlcByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _dLCInShopDao.GetDlcsByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

@@ -145,5 +145,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _developerDao.UpdateDeveloper(new Developer(id, model.subscribersCount, model.name, model.description, model.avatar, model.backgroundImage, model.urlForNewsPage, model.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Developer>>> GetAllDevelopersByIds(List<Guid> guidList)
+        {
+            var result = await _developerDao.GetByIds(guidList);
+
+            return Ok(result);
+        }
     }
 }

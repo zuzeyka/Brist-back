@@ -74,5 +74,35 @@ namespace Slush.DAO.LanguageDao
                 return null;
             }
         }
+
+        public async Task<List<Language?>> GetByIds(List<Guid> id)
+        {
+            List<Language> response = new List<Language> ();
+
+            foreach(var item in id)
+            {
+                var result = await _context.dbLanguages
+                .Where(x => x.id == item)
+                .Select(l => new Language
+                {
+                    id = l.id,
+                    name = l.name,
+                    createdAt = l.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

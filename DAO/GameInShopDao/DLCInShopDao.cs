@@ -126,5 +126,44 @@ namespace Slush.DAO.GameInShopDao
                 return null;
             }
         }
+
+        public async Task<List<DLCInShop>> GetDlcsByIds(List<Guid> id)
+        {
+            List<DLCInShop> response = new List<DLCInShop> ();
+
+            foreach (var dlc in id)
+            {
+                var result = await _context.dbDLCsInShop
+                .Where(x => x.id == dlc)
+                .Select(d => new DLCInShop
+                {
+                    id = d.id,
+                    gameId = d.gameId,
+                    name = d.name,
+                    price = d.price,
+                    discount = d.discount,
+                    discountFinish = d.discountFinish,
+                    previeImage = d.previeImage,
+                    description = d.description,
+                    dateOfRelease = d.dateOfRelease,
+                    developerId = d.developerId,
+                    publisherId = d.publisherId,
+                    createdAt = d.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

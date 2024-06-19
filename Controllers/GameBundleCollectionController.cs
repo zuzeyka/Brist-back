@@ -78,5 +78,13 @@ namespace Slush.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GameBundleCollection>>> GetAllBundleCollectionsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _dao.GetByGameIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

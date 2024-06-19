@@ -61,5 +61,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _categoriesByUserDao.UpdateCategoriesByUser(new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<CategoryByUser>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _categoriesByUserDao.GetAllById(guidList);
+
+            return Ok(response);
+        }
     }
 }

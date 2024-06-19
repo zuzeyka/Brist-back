@@ -116,5 +116,41 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+
+        public async Task<List<Settings?>> GetByIds(List<Guid> ids)
+        {
+            List<Settings> response = new List<Settings> ();
+
+            foreach(var id in ids)
+            {
+                var result = await _context.dbSettings
+                    .Where(x => x.attachedUserId == id)
+                    .Select(s => new Settings
+                    {
+                        id = s.id,
+                        bigSaleNotification = s.bigSaleNotification,
+                        saleFromWishlistNotification = s.saleFromWishlistNotification,
+                        newCommentNotification = s.newCommentNotification,
+                        friendRequestNotification = s.friendRequestNotification,
+                        approvedFriendRequest = s.approvedFriendRequest,
+                        declinedFriendRequest = s.declinedFriendRequest,
+                        createdAt = s.createdAt
+                    })
+                    .FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

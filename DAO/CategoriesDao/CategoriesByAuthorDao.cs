@@ -57,10 +57,42 @@ namespace Slush.DAO.CategoriesDao
                 await _context.SaveChangesAsync();
             }
         }
-
+        
         public async Task<CategoryByAuthor?> GetById(Guid id)
         {
             return await Task.FromResult(_context.dbCategoriesByAuthors.FirstOrDefault(c => c.id == id));
+        }
+        public async Task<List<CategoryByAuthor>> GetAllCategoriesByIds(List<Guid> guidList)
+        {
+            List<CategoryByAuthor> response = new List<CategoryByAuthor>();
+            foreach (var category in guidList)
+            {
+                var result = await _context.dbCategoriesByAuthors
+                .Where(c => c.deleteAt == null)
+                .Where(c => c.id == category)
+                .Select(c => new CategoryByAuthor
+                {
+                    id = c.id,
+                    name = c.name,
+                    description = c.description,
+                    image = c.image,
+                    createdAt = c.createdAt
+                }).FirstOrDefaultAsync();
+
+                if (result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

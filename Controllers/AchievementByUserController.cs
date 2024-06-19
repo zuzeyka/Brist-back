@@ -54,7 +54,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("byuserid/{id}")]
-        public async Task<ActionResult<AchievementByUser>> GetAchievementByUserId(Guid id)
+        public async Task<ActionResult<List<AchievementByUser>>> GetAchievementByUserId(Guid id)
         {
             var response = await _achievementByUserDao.GetByUserId(id);
             if (response == null)
@@ -72,6 +72,14 @@ namespace Slush.Controllers
             {
                 return NotFound();
             }
+            return Ok(response);
+        }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<AchievementByUser>>> GetAllAchievementsByUserIds([FromBody] List<Guid> guidList)
+        {
+            var response = _achievementByUserDao.GetByIds(guidList);
+
             return Ok(response);
         }
     }

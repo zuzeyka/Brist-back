@@ -108,5 +108,12 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Video>>> GetAllVideosByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _videoDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

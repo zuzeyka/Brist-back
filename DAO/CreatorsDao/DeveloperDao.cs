@@ -90,5 +90,40 @@ namespace Slush.DAO.CreatorsDao
                 return null;
             }
         }
+
+        public async Task<List<Developer>> GetByIds(List<Guid> ids)
+        {
+            List<Developer> response = new List<Developer>();
+
+            foreach (var id in ids)
+            {
+                var result = await _context.dbDevelopers
+                .Where(x => x.id == id)
+                .Select(d => new Developer
+                {
+                    id = d.id,
+                    subscribersCount = d.subscribersCount,
+                    name = d.name,
+                    description = d.description,
+                    avatar = d.avatar,
+                    backgroundImage = d.backgroundImage,
+                    urlForNewsPage = d.urlForNewsPage,
+                    createdAt = d.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

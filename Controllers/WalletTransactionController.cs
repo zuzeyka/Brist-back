@@ -84,5 +84,13 @@ namespace Slush.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<WalletTransactions>>> GetAllWalletTransactionsByIds([FromBody] List<Guid> ids)
+        {
+            var response = await _walletTransactionsDao.GetByIds(ids);
+
+            return Ok(response);
+        }
     }
 }

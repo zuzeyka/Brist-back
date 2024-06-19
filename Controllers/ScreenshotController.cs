@@ -120,5 +120,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Screenshot>>> GetAllScreenshotsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _screenshotDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

@@ -97,5 +97,37 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+
+        public async Task<List<UserCategory?>> GetByIds(List<Guid> ids)
+        {
+            List<UserCategory> response = new List<UserCategory> ();
+
+            foreach(var id in ids)
+            {
+                var result = await _context.dbUserCategories
+                    .Where(c => c.id == id)
+                    .Select(c => new UserCategory
+                    {
+                        id = c.id,
+                        userId = c.id,
+                        ownedGameId = c.ownedGameId,
+                        categoryId = c.categoryId,
+                        createdAt = c.createdAt
+                    }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

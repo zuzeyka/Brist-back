@@ -75,5 +75,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _categoryForGameDao.UpdateCategoryForGame(new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<CategoryForGame>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _categoryForGameDao.GetByGameIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

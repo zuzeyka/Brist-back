@@ -73,7 +73,39 @@ namespace Slush.DAO.ProfileDao
                     createdAt = x.createdAt
                 }).FirstOrDefaultAsync();
 
-            if(response != null)
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<List<Achievement?>> GetByAllIds(List<Guid> id)
+        {
+            List<Achievement> response = new List<Achievement>();
+
+            foreach(var i in id)
+            {
+                var res = await _dataContext.dbAchievements
+                    .Where(x => x.id == i)
+                    .Select(x => new Achievement
+                    {
+                        id = x.id,
+                        urlForImage = x.urlForImage,
+                        description = x.description,
+                        amountOfExperience = x.amountOfExperience,
+                        createdAt = x.createdAt
+                    }).FirstOrDefaultAsync();
+
+                if (res != null)
+                {
+                    response.Add(res);
+                }
+            }
+
+            if (response != null)
             {
                 return response;
             }

@@ -103,5 +103,39 @@ namespace Slush.DAO.GameInShopDao
                 return null;
             }
         }
+
+        public async Task<List<GameBundleCollection?>> GetByGameIds(List<Guid> id)
+        {
+            List<GameBundleCollection> response = new List<GameBundleCollection> ();
+
+            foreach(var i in id)
+            {
+                var result = await _context.dbGameBundleCollections
+                .Where(x => x.id == i)
+                .Where(d => d.deletedAt == null)
+                .Select(g => new GameBundleCollection
+                {
+                    id = g.id,
+                    gameId = g.gameId,
+                    dlcId = g.dlcId,
+                    bundleId = g.bundleId,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

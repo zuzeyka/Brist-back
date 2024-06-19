@@ -97,5 +97,36 @@ namespace Slush.DAO.CategoriesDao
                 return null;
             }
         }
+
+        public async Task<List<CategoryForGame?>> GetByGameIds(List<Guid> id)
+        {
+            List<CategoryForGame> response = new List<CategoryForGame> ();
+
+            foreach (var item in id)
+            {
+                var result = await _context.dbCategoriesForGame
+                .Where(c => c.id == item)
+                .Select(c => new CategoryForGame
+                {
+                    id = c.id,
+                    gameId = c.gameId,
+                    categoryId = c.categoryId,
+                    createdAt = c.createdAt
+                }).FirstOrDefaultAsync();
+
+                if (result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

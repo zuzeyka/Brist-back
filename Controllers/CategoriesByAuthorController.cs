@@ -108,5 +108,13 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<CategoryByAuthor>>> GetAllCategoriesByIds([FromBody] List<Guid> guidlist)
+        {
+            var response = await _categoriesByAuthorDao.GetAllCategoriesByIds(guidlist);
+
+            return Ok(response);
+        }
     }
 }

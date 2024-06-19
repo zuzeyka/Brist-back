@@ -29,7 +29,7 @@ namespace Slush.DAO.ChatDao
         public async Task<Chat> UpdateChat(Chat chat)
         {
             var existing = await _context.dbChats.FindAsync(chat.id);
-            if(existing != null)
+            if (existing != null)
             {
                 existing.firstUser = chat.firstUser;
                 existing.secondUser = chat.secondUser;
@@ -40,7 +40,7 @@ namespace Slush.DAO.ChatDao
             return existing;
         }
 
-        public async Task AddChat(Chat chat) 
+        public async Task AddChat(Chat chat)
         {
             await _context.dbChats.AddAsync(chat);
             _context.SaveChanges();
@@ -58,7 +58,7 @@ namespace Slush.DAO.ChatDao
 
         public async Task<Chat?> GetById(Guid id)
         {
-            var response =  await _context.dbChats
+            var response = await _context.dbChats
                .Where(c => c.id == id)
                .Select(c => new Chat
                {
@@ -68,7 +68,39 @@ namespace Slush.DAO.ChatDao
                    createdAt = c.createdAt
                }).FirstOrDefaultAsync();
 
-            if(response != null)
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Chat?>> GetByIds(List<Guid> ids)
+        {
+            List<Chat> response = new List<Chat>();
+
+            foreach (var id in ids)
+            {
+                var result = await _context.dbChats
+               .Where(c => c.id == id)
+               .Select(c => new Chat
+               {
+                   id = c.id,
+                   firstUser = c.firstUser,
+                   secondUser = c.secondUser,
+                   createdAt = c.createdAt
+               }).FirstOrDefaultAsync();
+
+                if (result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
+            if (response != null)
             {
                 return response;
             }

@@ -81,5 +81,37 @@ namespace Slush.DAO.GroupDao
                 return null;
             }
         }
+
+        public async Task<List<GroupComment?>> GetByIds(List<Guid> id)
+        {
+            List<GroupComment> response = new List<GroupComment> ();
+
+            foreach(var item in id)
+            {
+                var result = await _context.dbGroupComments
+                .Where(x => x.id == item)
+                .Select(g => new GroupComment
+                {
+                    id = g.id,
+                    groupId = g.groupId,
+                    content = g.content,
+                    userId = g.userId,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

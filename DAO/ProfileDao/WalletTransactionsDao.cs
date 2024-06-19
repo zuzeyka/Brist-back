@@ -98,5 +98,36 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+
+        public async Task<List<WalletTransactions?>> GetByIds(List<Guid> ids)
+        {
+            List<WalletTransactions> response = new List<WalletTransactions> ();
+
+            foreach (var id in ids)
+            {
+                var result = await _context.dbWalletTransactions
+                    .Where(x => x.id == id)
+                    .Select(w => new WalletTransactions
+                    {
+                        id = w.id,
+                        userId = w.userId,
+                        transactionObj = w.transactionObj,
+                        currency = w.currency
+                    }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

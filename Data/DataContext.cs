@@ -34,6 +34,7 @@ namespace Slush.Data
         public DbSet<User>                     dbUsers                     { get; set; }
         public DbSet<UserComment>              dbUserComments              { get; set; }
         public DbSet<OwnedGame>                dbOwnedGames                { get; set; }
+        public DbSet<OwnedDlc>                 dbOwnedDlcs                { get; set; }
         public DbSet<WishedGame>               dbWishedGames               { get; set; }
         public DbSet<CategoryByUserForGame>    dbCategoryByUserForGames    { get; set; }
         public DbSet<UserCategory>             dbUserCategories            { get; set; }
@@ -243,6 +244,18 @@ namespace Slush.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OwnedGame>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(g => g.userId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OwnedDlc>()
+                .HasOne<DLCInShop>()
+                .WithMany()
+                .HasForeignKey(g => g.ownedDlcId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OwnedDlc>()
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(g => g.userId)

@@ -64,5 +64,13 @@ namespace Slush.Controllers
             var result = await _gameBundleDao.UpdateGameBundle(new GameBundle(id, model.name, model.description, model.price, model.discount, model.discountFinish, DateTime.Now));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GameBundle>>> GetAllGameBundlesByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _gameBundleDao.GetByBundleIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

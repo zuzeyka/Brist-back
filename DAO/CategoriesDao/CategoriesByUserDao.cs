@@ -61,5 +61,37 @@ namespace Slush.DAO.CategoriesDao
         {
             return await Task.FromResult(_context.dbCategoriesByUsers.FirstOrDefault(c => c.id == id));
         }
+
+        public async Task<List<CategoryByUser?>> GetAllById(List<Guid> ids)
+        {
+            List<CategoryByUser> response = new List<CategoryByUser>();
+
+            foreach(var item in ids)
+            {
+                var result = await _context.dbCategoriesByUsers
+                .Where(c => c.deleteAt == null)
+                .Select(c => new CategoryByUser
+                {
+                    id = c.id,
+                    name = c.name,
+                    description = c.description,
+                    createdAt = c.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

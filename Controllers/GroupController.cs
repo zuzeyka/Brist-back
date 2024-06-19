@@ -110,5 +110,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _groupDao.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.imageUrl, group.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Group>>> GetAllGroupsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _groupDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

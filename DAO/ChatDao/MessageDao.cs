@@ -81,5 +81,37 @@ namespace Slush.DAO.ChatDao
                 return null;
             }
         }
+
+        public async Task<List<Message?>> GetByIds(List<Guid> id)
+        {
+            List<Message> response = new List<Message> ();
+
+            foreach(var i in id)
+            {
+                var result = await _context.dbMessages
+                .Where(m => m.id == i)
+                .Select(m => new Message
+                {
+                    id = m.id,
+                    chatId = m.chatId,
+                    content = m.content,
+                    senderId = m.senderId,
+                    createdAt = m.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

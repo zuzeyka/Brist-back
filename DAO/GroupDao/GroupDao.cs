@@ -83,5 +83,38 @@ namespace Slush.DAO.GroupDao
                 return null;
             }
         }
+
+        public async Task<List<Group?>> GetByIds(List<Guid> id)
+        {
+            List<Group> response = new List<Group> ();
+
+            foreach(var item in id)
+            {
+                var result = await _context.dbGroups
+                .Where(x => x.id == item)
+                .Select(g => new Group
+                {
+                    id = g.id,
+                    attachedId = g.attachedId,
+                    name = g.name,
+                    description = g.description,
+                    imageUrl = g.imageUrl,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result); 
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

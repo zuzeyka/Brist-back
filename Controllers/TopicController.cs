@@ -65,5 +65,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _topicDao.UpdateTopic(new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Topic>>> GetAllTopicsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _topicDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

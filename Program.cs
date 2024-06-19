@@ -88,6 +88,7 @@ builder.Services.AddTransient<LanguageInGameDao>();
 
 builder.Services.AddTransient<FriendsDao>();
 builder.Services.AddTransient<OwnedGameDao>();
+builder.Services.AddTransient<OwnedDlcDao>();
 builder.Services.AddTransient<ScreenshotDao>();
 builder.Services.AddTransient<UserCommentDao>();
 builder.Services.AddTransient<UserDao>();

@@ -54,5 +54,13 @@ namespace FullStackBrist.Server.Controllers
             await _categoriesDao.DeleteCategories(id);
             return NoContent();
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Categories>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
+        {
+            var result = await _categoriesDao.GetByIds(guidList);
+
+            return Ok(result);
+        }
     }
 }

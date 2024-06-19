@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MySqlX.XDevAPI.Common;
 using Slush.DAO.ProfileDao;
 using Slush.Entity.Profile;
 using Slush.Services.Minio;
-using System.Security.Policy;
 
 namespace Slush.Controllers
 {
@@ -108,6 +106,13 @@ namespace Slush.Controllers
                 return NotFound();
             }
 
+            return Ok(response);
+        }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Achievement>>> GetAllAchievementById([FromBody] List<Guid> guidList)
+        {
+            var response = await _achievementDao.GetByAllIds(guidList);
             return Ok(response);
         }
     }

@@ -75,5 +75,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _friendsDao.UpdateFriends(new Friends(id, model.userId, model.friendId, model.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Friends>>> GetAllFriendsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _friendsDao.GetByUserIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

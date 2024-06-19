@@ -120,5 +120,21 @@ namespace Slush.Controllers
             await _userCategoryDao.Delete(id);
             return NoContent();
         }
+
+        [HttpPost("usercategories/getall")]
+        public async Task<ActionResult<List<UserCategory>>> GetAllUserCategoriesByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _userCategoryDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<CategoryByUserForGame>>> GetAllCategoryByUserForGameByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _categoryByUserForGameDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

@@ -63,5 +63,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _groupCommentDao.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GroupComment>>> GetAllGroupCommentsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _groupCommentDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

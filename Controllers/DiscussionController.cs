@@ -78,5 +78,13 @@ namespace Slush.Controllers
             var result = await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Discussion>>> GetAllDiscussionsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _discussionDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

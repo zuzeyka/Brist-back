@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
 using Slush.Data.Entity.Community.GameGroup;
+using System.Runtime.CompilerServices;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -67,6 +68,14 @@ namespace FullStackBrist.Server.Controllers
         {
             var result = await _gameGuideDao.UpdateGameGuide(new GameGuide(id, game.title, game.description, game.likesCount, game.gameId, game.authorId, game.gameGroupId, game.content, game.createdAt));
             return Ok(result);
+        }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GameGuide>>> GetAllGameGuidesByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _gameGuideDao.GetByIds(guidList);
+
+            return Ok(response);
         }
     }
 }

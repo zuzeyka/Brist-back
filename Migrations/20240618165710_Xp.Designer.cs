@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Slush.Data;
 
@@ -11,9 +12,11 @@ using Slush.Data;
 namespace Slush.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240618165710_Xp")]
+    partial class Xp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -968,33 +971,6 @@ namespace Slush.Migrations
                     b.ToTable("dbFriends");
                 });
 
-            modelBuilder.Entity("Slush.Entity.Profile.OwnedDlc", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime?>("createdAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("deleteAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("ownedDlcId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("userId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ownedDlcId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("dbOwnedDlcs");
-                });
-
             modelBuilder.Entity("Slush.Entity.Profile.OwnedGame", b =>
                 {
                     b.Property<Guid>("id")
@@ -1686,21 +1662,6 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("friendId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Slush.Data.Entity.Profile.User", null)
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Slush.Entity.Profile.OwnedDlc", b =>
-                {
-                    b.HasOne("Slush.Entity.Store.Product.DLCInShop", null)
-                        .WithMany()
-                        .HasForeignKey("ownedDlcId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

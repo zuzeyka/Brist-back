@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 using Slush.Data;
 using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
@@ -77,6 +78,41 @@ namespace Slush.DAO.GroupDao
                     content = p.content,
                     createdAt = p.createdAt
                 }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Post?>> GetByIds(List<Guid> ids)
+        {
+            List<Post> response = new List<Post> ();
+
+            foreach(var id in ids)
+            {
+                var result = await _context.dbPosts
+                .Where(x => x.id == id)
+                .Select(p => new Post
+                {
+                    id = p.id,
+                    title = p.title,
+                    description = p.description,
+                    likesCount = p.likesCount,
+                    discussionId = p.discussionId,
+                    authorId = p.authorId,
+                    content = p.content,
+                    createdAt = p.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
             if (response != null)
             {
                 return response;

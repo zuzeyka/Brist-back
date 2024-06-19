@@ -146,5 +146,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _publisherDao.UpdatePublisher(new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Publisher>>> GetAllPublishersByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _publisherDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

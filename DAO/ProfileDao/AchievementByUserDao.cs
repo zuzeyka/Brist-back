@@ -65,7 +65,7 @@ namespace Slush.DAO.ProfileDao
         public async Task<AchievementByUser?> GetById(Guid id)
         {
             var response = await _context.dbAchievementByUser
-                .Where(x => x.id == id)
+                .Where(x => x.userId == id)
                 .Select(x => new AchievementByUser { 
                     id = x.id,
                     userId = x.userId,
@@ -78,7 +78,7 @@ namespace Slush.DAO.ProfileDao
             else { return null; }
         }
 
-        public async Task<AchievementByUser?> GetByUserId(Guid id)
+        public async Task<List<AchievementByUser?>> GetByUserId(Guid id)
         {
             var response = await _context.dbAchievementByUser
                 .Where(x => x.userId == id)
@@ -89,7 +89,37 @@ namespace Slush.DAO.ProfileDao
                     achievementId = x.achievementId,
                     awardTime = x.awardTime,
                     createdAt = x.createdAt
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else { return null; }
+        }
+
+        public async Task<List<AchievementByUser?>> GetByIds(List<Guid> guidList)
+        {
+            List<AchievementByUser> response = new List<AchievementByUser> ();
+
+            foreach(var item in guidList)
+            {
+                var result = await _context.dbAchievementByUser
+                    .Where(x => x.id == item)
+                    .Select(x => new AchievementByUser
+                    {
+                        id = x.id,
+                        userId = x.userId,
+                        achievementId = x.achievementId,
+                        awardTime = x.awardTime,
+                        createdAt = x.createdAt
+                    }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
             if (response != null)
             {
                 return response;

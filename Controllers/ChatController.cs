@@ -59,5 +59,13 @@ namespace Slush.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<Chat>>> GetAllChatsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _chatDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

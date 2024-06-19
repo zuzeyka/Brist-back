@@ -69,5 +69,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _gameNewsDao.UpdateGameNews(new GameNews(id, game.title, game.description, game.likesCount, game.gameId, game.gameGroupId, game.authorId, game.content, game.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GameNews>>> GetAllGameNewsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _gameNewsDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

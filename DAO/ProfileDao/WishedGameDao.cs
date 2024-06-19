@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Data.Entity;
 using Slush.Data.Entity.Community.GameGroup;
@@ -88,6 +89,38 @@ namespace Slush.DAO.ProfileDao
                     userId = s.userId,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
+            if(response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<WishedGame?>> GetIds(List<Guid> ids)
+        {
+            List<WishedGame> response = new List<WishedGame>();
+
+            foreach (var id in ids)
+            {
+                var result = await _context.dbWishedGames
+                    .Where(x => x.id == id)
+                    .Select(s => new WishedGame
+                    {
+                        id = s.id,
+                        ownedGameId = s.ownedGameId,
+                        userId = s.userId,
+                        createdAt = s.createdAt
+                    }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+
             if(response != null)
             {
                 return response;

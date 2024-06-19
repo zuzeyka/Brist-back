@@ -111,5 +111,40 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+
+        public async Task<List<Screenshot?>> GetByIds(List<Guid> ids)
+        {
+            List<Screenshot> response = new List<Screenshot>();
+
+            foreach(var id in ids)
+            {
+                var result = await _context.dbScreenshots
+                .Where(x => x.gameId == id)
+                .Select(s => new Screenshot
+                {
+                    id = s.id,
+                    title = s.title,
+                    description = s.description,
+                    likesCount = s.likesCount,
+                    gameId = s.gameId,
+                    authorId = s.authorId,
+                    screenshotUrl = s.screenshotUrl,
+                    createdAt = s.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

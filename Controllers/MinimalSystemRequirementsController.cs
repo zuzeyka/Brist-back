@@ -65,5 +65,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _minimalSystemRequirementDao.UpdateMinimalSystemRequirement(new MinimalSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<MinimalSystemRequirement>>> GetMinimalSystemRequirementByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _minimalSystemRequirementDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

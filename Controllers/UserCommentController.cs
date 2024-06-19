@@ -63,5 +63,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _userCommentDao.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<UserComment>>> GetAllUserCommentsByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _userCommentDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

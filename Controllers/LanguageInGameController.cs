@@ -63,5 +63,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _languageInGameDao.UpdateLanguageInGame(new LanguageInGame(id, language.gameId, language.languageId, language.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<LanguageInGame>>> GetAllLanguagesInGameByIds([FromBody] List<Guid> guidList)
+        {
+            var response = await _languageInGameDao.GetByIds(guidList);
+
+            return Ok(response);
+        }
     }
 }

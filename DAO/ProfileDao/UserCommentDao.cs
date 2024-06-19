@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity;
+using System.Diagnostics;
 
 namespace Slush.DAO.ProfileDao
 {
@@ -70,6 +71,38 @@ namespace Slush.DAO.ProfileDao
                     content = s.content,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<UserComment?>> GetByIds(List<Guid> ids)
+        {
+            List<UserComment> response = new List<UserComment> ();
+
+            foreach(var id in ids)
+            {
+                var result = await _context.dbUserComments
+                    .Where(x => x.id == id)
+                    .Select(s => new UserComment
+                    {
+                        id = s.id,
+                        userId = s.userId,
+                        authorId = s.authorId,
+                        content = s.content,
+                        createdAt = s.createdAt
+                    }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
             if (response != null)
             {
                 return response;

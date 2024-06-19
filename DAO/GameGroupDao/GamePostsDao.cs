@@ -85,5 +85,40 @@ namespace Slush.DAO.GameGroupDao
                 return null;
             }
         }
+
+        public async Task<List<GamePosts?>> GetByIds(List<Guid> id)
+        {
+            List<GamePosts> response = new List<GamePosts> ();
+
+            foreach(var i in id)
+            {
+                var result = await _context.dbGamePosts
+                .Where(x => x.id == i)
+                .Select(g => new GamePosts
+                {
+                    id = g.id,
+                    title = g.title,
+                    description = g.description,
+                    likesCount = g.likesCount,
+                    gameId = g.gameId,
+                    authorId = g.authorId,
+                    content = g.content,
+                    createdAt = g.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

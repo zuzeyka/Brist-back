@@ -115,5 +115,13 @@ namespace FullStackBrist.Server.Controllers
             var result = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
             return Ok(result);
         }
+
+        [HttpPost("getall")]
+        public async Task<ActionResult<List<GameInShop>>> GetAllGamesInShopByIds([FromBody] List<Guid> ids)
+        {
+            var response = await _gameInShopDao.GetByIds(ids);
+
+            return Ok(response);
+        }
     }
 }
