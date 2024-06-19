@@ -23,6 +23,7 @@ namespace Slush.DAO
                     attachedId = g.attachedId,
                     content = g.content,
                     likesCount = g.likesCount,
+                    rate = g.rate,
                     createdAt = g.createdAt
                 }).ToListAsync();
         }
@@ -34,6 +35,7 @@ namespace Slush.DAO
             {
                 existing.content = discussion.content;
                 existing.likesCount = discussion.likesCount;
+                existing.rate = discussion.rate;
 
                 await _context.SaveChangesAsync();
             }
@@ -68,6 +70,7 @@ namespace Slush.DAO
                     attachedId = x.attachedId,
                     content = x.content,
                     likesCount = x.likesCount,
+                    rate = x.rate,
                     createdAt = x.createdAt
                 }).FirstOrDefaultAsync();
 
@@ -92,6 +95,7 @@ namespace Slush.DAO
                     attachedId = x.attachedId,
                     content = x.content,
                     likesCount = x.likesCount,
+                    rate = x.rate,
                     createdAt = x.createdAt
                 }).ToListAsync();
 
@@ -120,6 +124,7 @@ namespace Slush.DAO
                     attachedId = x.attachedId,
                     content = x.content,
                     likesCount = x.likesCount,
+                    rate = x.rate,
                     createdAt = x.createdAt
                 }).FirstOrDefaultAsync();
 

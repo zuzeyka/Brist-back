@@ -32,6 +32,7 @@ namespace Slush.Controllers
                 model.attachedId,
                 model.content,
                 model.likesCount,
+                model.rate,
                 DateTime.Now);
 
             var response = _discussionDao.UpdateDiscussion(result);
@@ -75,7 +76,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDiscussion(Guid id, [FromBody] DiscussionModel model)
         {
-            var result = await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.createdAt));
+            var result = await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
             return Ok(result);
         }
 

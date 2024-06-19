@@ -6,6 +6,7 @@
         public Guid attachedId { get; set; }
         public String? content { get; set; }
         public int likesCount { get; set; }
+        public int rate { get; set; }
         public DateTime? createdAt { get; set; }
     }
 }
