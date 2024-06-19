@@ -67,6 +67,14 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("byname/{name}")]
+        public async Task<ActionResult<GameInShop>> GetByName(String name)
+        {
+            var response = await _gameInShopDao.GetGameInShopByName(name);
+
+            return Ok(response);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GameInShop>> GetGameInShop(Guid id)

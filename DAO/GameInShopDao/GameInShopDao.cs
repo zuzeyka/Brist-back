@@ -56,10 +56,49 @@ namespace Slush.DAO.GameInShopDao
             return existing;
         }
 
-        public async Task Add(GameInShop game)
+        public async Task<String> Add(GameInShop game)
         {
+            var result = GetGameInShopByName(game.name);
+
+            if (result != null)
+            {
+                return "Game is already exist";
+            }
+
             await _context.dbGamesInShops.AddAsync(game);
             _context.SaveChanges();
+
+            return "Game added";
+        }
+
+        public async Task<GameInShop> GetGameInShopByName(String name)
+        {
+            var response = await _context.dbGamesInShops
+                   .Where(x => x.name == name)
+                   .Select(g => new GameInShop
+                   {
+                       id = Guid.Parse(g.id.ToString()),
+                       name = g.name,
+                       price = g.price,
+                       discount = g.discount,
+                       discountFinish = g.discountFinish,
+                       previeImage = g.previeImage,
+                       description = g.description,
+                       dateOfRelease = g.dateOfRelease,
+                       developerId = g.developerId,
+                       publisherId = g.publisherId,
+                       urlForContent = g.urlForContent,
+                       createdAt = g.createdAt
+                   })
+                   .FirstOrDefaultAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task DeleteGameInShop(Guid id)
