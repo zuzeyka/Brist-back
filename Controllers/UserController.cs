@@ -111,6 +111,8 @@ namespace FullStackBrist.Server.Controllers
                 res = token,
             };
 
+            _logger.LogWarning("Login token: {1}", result);
+
             return Ok(result);
         }
 

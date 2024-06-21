@@ -122,5 +122,37 @@ namespace Slush.DAO.RequirementsDao
                 return null;
             }
         }
+
+        public async Task<List<MaximumSystemRequirement?>> GetByGameName(Guid id)
+        {
+            List<MaximumSystemRequirement> response = new List<MaximumSystemRequirement> ();
+
+                var result = await _context.dbMaximumSystemRequirements
+                .Where(x => x.gameId == id)
+                .Select(r => new MaximumSystemRequirement
+                {
+                    id = r.id,
+                    gameId = r.gameId,
+                    OS = r.OS,
+                    processor = r.processor,
+                    RAM = r.RAM,
+                    video = r.video,
+                    freeDiskSpace = r.freeDiskSpace,
+                    createdAt = r.createdAt
+                }).FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    response.Add(result);
+                }
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
