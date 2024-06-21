@@ -45,14 +45,33 @@ namespace FullStackBrist.Server.Controllers
         #region Registration
 
         [HttpPost]
-        public async Task<ActionResult<String>> CreateUser([FromBody] UserModel model, IFormFile file)
+        public async Task<ActionResult> CreateUser([FromBody] UserModel model)
         {
 
-            await _registrationService.Registration(model, file);
+            var res = await _registrationService.Registration(model);
 
             var code = await _emailService.SendEmail(model.email);
 
-            return code;
+            var token = _jwtService.GenerateToken(res);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                IsEssential = true,
+            };
+            cookieOptions.Expires = DateTime.UtcNow.AddHours(1);
+            Response.Cookies.Append("somedonuts", token, cookieOptions);
+
+            _logger.LogWarning("TOken: {1}", token);
+
+            var result = new
+            {
+                res = token,
+            };
+
+            return Ok(result);
         }
 
         [HttpPost("resend")]

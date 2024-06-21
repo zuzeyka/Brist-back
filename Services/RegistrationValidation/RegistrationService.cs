@@ -19,7 +19,7 @@ namespace Slush.Services.RegistrationValidation
             _minioService = minioService;
         }
 
-        public async Task Registration(UserModel model, IFormFile file)
+        public async Task<User> Registration(UserModel model)
         {
             var hashedPassword = _passwordService.Generate(model.passwordSalt);
             var result = new User(
@@ -34,25 +34,9 @@ namespace Slush.Services.RegistrationValidation
                 0,
                 DateTime.Now
                 );
-            if (file != null || file.Length != 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    try
-                    {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
-
-                        var url = await _minioService.GetUrlToFile(imageUrl);
-
-                        result.image = url;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message);
-                    }
-                }
-            }
             await _userDao.Add(result);
+
+            return result;
         }
     }
 }
