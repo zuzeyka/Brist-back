@@ -108,6 +108,32 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("byuserid/{id}")]
+        public async Task<ActionResult<List<Video>>> GetByUserId(Guid id)
+        {
+            var response = await _videoDao.GetByUId(id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<Video>>> GetByGameId(Guid id)
+        {
+            var response = await _videoDao.GetByGameId(id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost("getall")]
         public async Task<ActionResult<List<Video>>> GetAllVideosByIds([FromBody] List<Guid> guidList)
         {

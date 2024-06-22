@@ -86,6 +86,56 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
+        public async Task<List<Video?>> GetByUId(Guid id)
+        {
+            var response = await _context.dbVideos
+                .Where(x => x.authorId == id)
+                .Select(v => new Video
+                {
+                    id = v.id,
+                    title = v.title,
+                    description = v.description,
+                    likesCount = v.likesCount,
+                    gameId = v.gameId,
+                    authorId = v.authorId,
+                    videoUrl = v.videoUrl,
+                    createdAt = v.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Video?>> GetByGameId(Guid id)
+        {
+            var response = await _context.dbVideos
+                .Where(x => x.gameId == id)
+                .Select(v => new Video
+                {
+                    id = v.id,
+                    title = v.title,
+                    description = v.description,
+                    likesCount = v.likesCount,
+                    gameId = v.gameId,
+                    authorId = v.authorId,
+                    videoUrl = v.videoUrl,
+                    createdAt = v.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<List<Video?>> GetByIds(List<Guid> ids)
         {
             List<Video> response = new List<Video> ();

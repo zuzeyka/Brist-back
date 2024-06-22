@@ -112,6 +112,31 @@ namespace Slush.DAO.ProfileDao
             }
         }
 
+        public async Task<List<Screenshot?>> GetByUserId(Guid id)
+        {
+            var response = await _context.dbScreenshots
+                .Where(x => x.authorId == id)
+                .Select(s => new Screenshot
+                {
+                    id = s.id,
+                    title = s.title,
+                    description = s.description,
+                    likesCount = s.likesCount,
+                    gameId = s.gameId,
+                    authorId = s.authorId,
+                    screenshotUrl = s.screenshotUrl,
+                    createdAt = s.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<List<Screenshot?>> GetByIds(List<Guid> ids)
         {
             List<Screenshot> response = new List<Screenshot>();

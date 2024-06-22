@@ -67,6 +67,20 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("byattachedid/{id}")]
+        public async Task<ActionResult<List<Post>>> GetByAttachedId(Guid id)
+        {
+            var response = await _postDao.GetByAttachedId(id);
+
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+
         [HttpPost("getall")]
         public async Task<ActionResult<List<Post>>> GetAllPostsByIds([FromBody] List<Guid> guidList)
         {

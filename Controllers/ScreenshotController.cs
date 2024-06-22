@@ -121,6 +121,19 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("byuserid/{id}")]
+        public async Task<ActionResult<List<Screenshot>>> GetByUserId(Guid id)
+        {
+            var response = await _screenshotDao.GetByUserId(id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost("getall")]
         public async Task<ActionResult<List<Screenshot>>> GetAllScreenshotsByIds([FromBody] List<Guid> guidList)
         {

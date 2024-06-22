@@ -53,7 +53,7 @@ namespace Slush.Controllers
             return Ok(result);
         }
 
-        [HttpGet("byuserid")]
+        [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<OwnedDlc>>> GetOwnedDlcByUserId(Guid id)
         {
             var response = await _dao.GetByUserId(id);
@@ -66,7 +66,7 @@ namespace Slush.Controllers
             return Ok(response);
         }
 
-        [HttpGet("byid")]
+        [HttpGet("byid/{id}")]
         public async Task<ActionResult<OwnedDlc>> GetOwnedDlcById(Guid id)
         {
             var response = await _dao.GetById(id);

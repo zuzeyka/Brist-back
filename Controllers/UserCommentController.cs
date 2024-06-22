@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data.Entity.Profile;
+using System.Net.WebSockets;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -62,6 +63,19 @@ namespace FullStackBrist.Server.Controllers
         {
             var result = await _userCommentDao.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));
             return Ok(result);
+        }
+
+        [HttpGet("byuserid/{id}")]
+        public async Task<ActionResult<List<UserComment>>> GetAllUserCommentsById(Guid id)
+        {
+            var response = await _userCommentDao.GetByUId(id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
         }
 
         [HttpPost("getall")]

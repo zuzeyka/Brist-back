@@ -88,6 +88,31 @@ namespace Slush.DAO.GroupDao
             }
         }
 
+        public async Task<List<Post?>> GetByAttachedId(Guid id)
+        {
+            var response = await _context.dbPosts
+                .Where(x => x.discussionId == id)
+                .Select(p => new Post
+                {
+                    id = p.id,
+                    title = p.title,
+                    description = p.description,
+                    likesCount = p.likesCount,
+                    discussionId = p.discussionId,
+                    authorId = p.authorId,
+                    content = p.content,
+                    createdAt = p.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<List<Post?>> GetByIds(List<Guid> ids)
         {
             List<Post> response = new List<Post> ();

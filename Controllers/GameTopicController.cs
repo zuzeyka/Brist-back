@@ -66,6 +66,19 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("bygameid/{id}")]
+        public async Task<ActionResult<List<GameTopic>>> GetByGameId(Guid id)
+        {
+            var response = await _gameTopicDao.GetByGameId(id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameTopic>>> GetAllGameNewsByIds([FromBody] List<Guid> guidList)
         {
