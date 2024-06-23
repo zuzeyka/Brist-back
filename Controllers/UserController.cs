@@ -52,6 +52,11 @@ namespace FullStackBrist.Server.Controllers
 
             var res = await _registrationService.Registration(model);
 
+            if(res == null)
+            {
+                return BadRequest("User already exist");
+            }
+
             var code = await _emailService.SendEmail(model.email);
 
             var token = _jwtService.GenerateToken(res);
@@ -66,16 +71,16 @@ namespace FullStackBrist.Server.Controllers
             cookieOptions.Expires = DateTime.UtcNow.AddHours(1);
             Response.Cookies.Append("somedonuts", token, cookieOptions);
 
-            _logger.LogWarning("TOken: {1}", token);
-
             var result = new
             {
-                res = token,
+                resToken = token,
+                user = res
             };
 
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("resend")]
         public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
         {
@@ -92,7 +97,6 @@ namespace FullStackBrist.Server.Controllers
 
         #endregion
         #region Login
-
         [HttpPost("validatelogin")]
         public async Task<IActionResult> LoginByModel([FromBody] LoginValidationModel model)
         {
@@ -135,7 +139,7 @@ namespace FullStackBrist.Server.Controllers
             return token;
         }
         #endregion
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
@@ -147,7 +151,7 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
-
+        [Authorize]
         [HttpGet("getbyuid/{id}")]
         public async Task<ActionResult<User>> GetUserByUid(Guid id)
         {
@@ -159,14 +163,14 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
             await _userDao.DeleteUser(id);
             return NoContent();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
         {
@@ -192,7 +196,7 @@ namespace FullStackBrist.Server.Controllers
             var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
             return Ok(result);
         }
-
+        [Authorize]
         [HttpPost("getall")]
         public async Task<ActionResult<List<User>>> GetAllUsersByIds([FromBody] List<Guid> guidList)
         {

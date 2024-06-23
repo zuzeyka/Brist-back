@@ -22,21 +22,29 @@ namespace Slush.Services.RegistrationValidation
         public async Task<User> Registration(UserModel model)
         {
             var hashedPassword = _passwordService.Generate(model.passwordSalt);
-            var result = new User(
-                Guid.NewGuid(),
-                model.name,
-                hashedPassword,
-                model.email,
-                model.description,
-                model.image,
-                false,
-                0,
-                0,
-                DateTime.Now
-                );
-            await _userDao.Add(result);
 
-            return result;
+            var user = await _userDao.GetByEmail(model.name);
+
+            if(user == null)
+            {
+                var result = new User(
+                    Guid.NewGuid(),
+                    model.name,
+                    hashedPassword,
+                    model.email,
+                    model.description,
+                    model.image,
+                    false,
+                    0,
+                    0,
+                    DateTime.Now
+                    );
+                await _userDao.Add(result);
+
+                return result;
+            }
+
+            return null;
         }
     }
 }
