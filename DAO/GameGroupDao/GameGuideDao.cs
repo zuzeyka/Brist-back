@@ -26,6 +26,7 @@ namespace Slush.DAO.GameGroupDao
                 authorId = g.authorId,
                 gameGroupId = g.gameGroupId,
                 content = g.content, 
+                contentUrl = g.contentUrl, 
                 createdAt = g.createdAt }).ToListAsync();
 
         }
@@ -42,6 +43,7 @@ namespace Slush.DAO.GameGroupDao
                 existing.authorId = guide.authorId;
                 existing.gameGroupId = guide.gameGroupId;
                 existing.content = guide.content;
+                existing.contentUrl = guide.contentUrl;
 
                 await _context.SaveChangesAsync();
             }
@@ -79,6 +81,7 @@ namespace Slush.DAO.GameGroupDao
                     authorId = g.authorId,
                     gameGroupId = g.gameGroupId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -105,6 +108,7 @@ namespace Slush.DAO.GameGroupDao
                     authorId = g.authorId,
                     gameGroupId = g.gameGroupId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -135,6 +139,7 @@ namespace Slush.DAO.GameGroupDao
                     authorId = g.authorId,
                     gameGroupId = g.gameGroupId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
 

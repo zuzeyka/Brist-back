@@ -26,6 +26,7 @@ namespace Slush.DAO.GameGroupDao
                 gameId = g.gameId,
                 authorId = g.authorId,
                 content = g.content,
+                contentUrl = g.contentUrl,
                 createdAt = g.createdAt}).ToListAsync();
         }
         public async Task<GamePosts> UpdateGamePosts(GamePosts post)
@@ -38,6 +39,8 @@ namespace Slush.DAO.GameGroupDao
                 existing.likesCount = post.likesCount;
                 existing.gameId = post.gameId;
                 existing.authorId = post.authorId;
+                existing.content = post.content;
+                existing.contentUrl = post.contentUrl;
 
                 await _context.SaveChangesAsync();
             }
@@ -74,6 +77,7 @@ namespace Slush.DAO.GameGroupDao
                     gameId = g.gameId,
                     authorId = g.authorId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -99,6 +103,7 @@ namespace Slush.DAO.GameGroupDao
                     gameId = g.gameId,
                     authorId = g.authorId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -128,6 +133,7 @@ namespace Slush.DAO.GameGroupDao
                     gameId = g.gameId,
                     authorId = g.authorId,
                     content = g.content,
+                    contentUrl = g.contentUrl,
                     createdAt = g.createdAt
                 }).FirstOrDefaultAsync();
 

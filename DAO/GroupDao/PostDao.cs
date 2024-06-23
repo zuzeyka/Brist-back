@@ -28,6 +28,7 @@ namespace Slush.DAO.GroupDao
                 discussionId = p.discussionId,
                 authorId = p.authorId,
                 content = p.content,
+                contentUrl = p.contentUrl,
                 createdAt = p.createdAt}).ToListAsync();
 
 
@@ -41,6 +42,7 @@ namespace Slush.DAO.GroupDao
                 existing.description = post.description;
                 existing.likesCount = post.likesCount;
                 existing.content = post.content;
+                existing.contentUrl = post.contentUrl;
                 await _context.SaveChangesAsync();
             }
 
@@ -76,6 +78,7 @@ namespace Slush.DAO.GroupDao
                     discussionId = p.discussionId,
                     authorId = p.authorId,
                     content = p.content,
+                    contentUrl = p.contentUrl,
                     createdAt = p.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -101,6 +104,7 @@ namespace Slush.DAO.GroupDao
                     discussionId = p.discussionId,
                     authorId = p.authorId,
                     content = p.content,
+                    contentUrl = p.contentUrl,
                     createdAt = p.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -130,6 +134,7 @@ namespace Slush.DAO.GroupDao
                     discussionId = p.discussionId,
                     authorId = p.authorId,
                     content = p.content,
+                    contentUrl = p.contentUrl,
                     createdAt = p.createdAt
                 }).FirstOrDefaultAsync();
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GroupDao;
 using Slush.Data.Entity.Community;
+using Slush.Services.Minio;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class PostController : Controller
     {
         private readonly PostDao _postDao;
+        private readonly MinioService _minioService;
 
-        public PostController(PostDao postDao)
+        public PostController(PostDao postDao, MinioService minioService)
         {
             _postDao = postDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Post>> CreatePost([FromBody] PostModel model)
+        public async Task<ActionResult<Post>> CreatePost([FromBody] PostModel model, IFormFile? file)
         {
             var result = new Post(Guid.NewGuid(),
                 model.title,
@@ -35,8 +38,30 @@ namespace FullStackBrist.Server.Controllers
                 model.discussionId,
                model.authorId,
                model.content,
+               model.contentUrl,
                                             DateTime.Now
                                             );
+
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        result.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
             await _postDao.Add(result);
             return Ok(result);
         }
@@ -61,9 +86,29 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post)
+        public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
         {
-            var result = await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.createdAt));
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        post.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.contentUrl, post.createdAt));
             return Ok(result);
         }
 

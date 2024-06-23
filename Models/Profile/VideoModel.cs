@@ -7,7 +7,7 @@
         public int likesCount { get; set; }
         public Guid gameId { get; set; }
         public Guid authorId { get; set; }
-        public String? videoUrl { get; set; }
+        public String? contentUrl { get; set; }
         public DateTime? createdAt { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Video>> CreateVideo([FromBody] VideoModel model, IFormFile file)
+        public async Task<ActionResult<Video>> CreateVideo([FromBody] VideoModel model, IFormFile? file)
         {
             var result = new Video(Guid.NewGuid(),
                 model.title,
@@ -37,7 +37,7 @@ namespace FullStackBrist.Server.Controllers
                 0,
                 model.gameId,
                 model.authorId,
-                model.videoUrl,
+                model.contentUrl,
                 DateTime.Now);
 
             if (file != null || file.Length != 0)
@@ -50,7 +50,7 @@ namespace FullStackBrist.Server.Controllers
 
                         var url = await _minioService.GetUrlToFile(imageUrl);
 
-                        result.videoUrl = url;
+                        result.contentUrl = url;
                     }
                     catch (Exception ex)
                     {
@@ -84,7 +84,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video, IFormFile file)
+        public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video, IFormFile? file)
         {
             if (file != null || file.Length != 0)
             {
@@ -96,7 +96,7 @@ namespace FullStackBrist.Server.Controllers
 
                         var url = await _minioService.GetUrlToFile(imageUrl);
 
-                        video.videoUrl = url;
+                        video.contentUrl = url;
                     }
                     catch (Exception ex)
                     {
@@ -104,7 +104,7 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _videoDao.UpdateVideo(new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.videoUrl, video.createdAt));
+            var result = await _videoDao.UpdateVideo(new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.contentUrl, video.createdAt));
             return Ok(result);
         }
 

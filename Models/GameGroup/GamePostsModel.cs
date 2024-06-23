@@ -9,6 +9,7 @@
         public Guid gameTopicId { get; set; }
         public Guid authorId { get; set; }
         public String? content { get; set; }
+        public String? contentUrl { get; set; }
         public DateTime? createdAt { get; set; }
     }
 }

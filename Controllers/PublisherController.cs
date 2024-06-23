@@ -27,7 +27,7 @@ namespace FullStackBrist.Server.Controllers
             return Ok(publishers);
         }
         [HttpPost]
-        public async Task<ActionResult<Publisher>> CreatePublisher([FromBody] PublisherModel model, IFormFile avatar, IFormFile background)
+        public async Task<ActionResult<Publisher>> CreatePublisher([FromBody] PublisherModel model, IFormFile? avatar, IFormFile? background)
         {
             var result = new Publisher(Guid.NewGuid(),
                 0,
@@ -102,7 +102,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePublisher(Guid id, [FromBody] PublisherModel publisher, IFormFile avatar, IFormFile background)
+        public async Task<ActionResult> UpdatePublisher(Guid id, [FromBody] PublisherModel publisher, IFormFile? avatar, IFormFile? background)
         {
             if (avatar != null || avatar.Length != 0)
             {

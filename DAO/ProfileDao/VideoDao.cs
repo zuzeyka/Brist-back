@@ -26,7 +26,7 @@ namespace Slush.DAO.ProfileDao
                 likesCount = v.likesCount,
                 gameId = v.gameId,
                 authorId = v.authorId,
-                videoUrl = v.videoUrl,
+                    contentUrl = v.contentUrl,
                 createdAt = v.createdAt}).ToListAsync();
 
         }
@@ -38,6 +38,7 @@ namespace Slush.DAO.ProfileDao
                 existing.title = video.title;
                 existing.description = video.description;
                 existing.likesCount = video.likesCount;
+                existing.contentUrl = video.contentUrl;
 
                 await _context.SaveChangesAsync();
             }
@@ -73,7 +74,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = v.likesCount,
                     gameId = v.gameId,
                     authorId = v.authorId,
-                    videoUrl = v.videoUrl,
+                    contentUrl = v.contentUrl,
                     createdAt = v.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -98,7 +99,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = v.likesCount,
                     gameId = v.gameId,
                     authorId = v.authorId,
-                    videoUrl = v.videoUrl,
+                    contentUrl = v.contentUrl,
                     createdAt = v.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -123,7 +124,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = v.likesCount,
                     gameId = v.gameId,
                     authorId = v.authorId,
-                    videoUrl = v.videoUrl,
+                    contentUrl = v.contentUrl,
                     createdAt = v.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -152,7 +153,7 @@ namespace Slush.DAO.ProfileDao
                         likesCount = v.likesCount,
                         gameId = v.gameId,
                         authorId = v.authorId,
-                        videoUrl = v.videoUrl,
+                        contentUrl = v.contentUrl,
                         createdAt = v.createdAt
                     }).FirstOrDefaultAsync();
 

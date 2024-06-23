@@ -8,7 +8,7 @@ namespace Slush.Data.Entity.Profile
         {
         }
 
-        public Screenshot(Guid id, String? title, String? description, int likesCount, Guid gameId, Guid authorId, String? screenshotUrl, DateTime? createdAt)
+        public Screenshot(Guid id, String? title, String? description, int likesCount, Guid gameId, Guid authorId, String? contentUrl, DateTime? createdAt)
         {
             this.id = id;
             this.title = title;
@@ -16,7 +16,7 @@ namespace Slush.Data.Entity.Profile
             this.likesCount = likesCount;
             this.gameId = gameId;
             this.authorId = authorId;
-            this.screenshotUrl = screenshotUrl;
+            this.contentUrl = contentUrl;
             this.createdAt = createdAt;
         }
 
@@ -26,7 +26,7 @@ namespace Slush.Data.Entity.Profile
         public int likesCount { get; set; }
         public Guid gameId { get; set; }
         public Guid authorId { get; set; }
-        public String? screenshotUrl { get; set; }
+        public String? contentUrl { get; set; }
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
     }

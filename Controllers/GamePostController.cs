@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Services.Minio;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GamePostController : Controller
     {
         private readonly GamePostsDao _gamePostsDao;
+        private readonly MinioService _minioService;
 
-        public GamePostController(GamePostsDao gamePostsDao)
+        public GamePostController(GamePostsDao gamePostsDao, MinioService minioService)
         {
             _gamePostsDao = gamePostsDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -27,7 +30,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GamePosts>> CreateGamePost([FromBody] GamePostsModel model)
+        public async Task<ActionResult<GamePosts>> CreateGamePost([FromBody] GamePostsModel model, IFormFile? file)
         {
             var result = new GamePosts(Guid.NewGuid(),
                                             model.title,
@@ -37,8 +40,28 @@ namespace FullStackBrist.Server.Controllers
                                             model.gameTopicId,
                                             model.authorId,
                                             model.content,
+                                            model.contentUrl,
                                             DateTime.Now
                                             );
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        result.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
 
             await _gamePostsDao.Add(result);
             return Ok(result);
@@ -80,9 +103,28 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game)
+        public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game, IFormFile? file)
         {
-            var result = await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.gameTopicId, game.authorId, game.content, game.createdAt));
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        game.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.gameTopicId, game.authorId, game.content, game.contentUrl, game.createdAt));
             return Ok(result);
         }
 

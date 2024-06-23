@@ -28,7 +28,7 @@ namespace Slush.DAO.ProfileDao
                 likesCount = s.likesCount,
                 gameId = s.gameId,
                 authorId = s.authorId,
-                screenshotUrl = s.screenshotUrl,
+                contentUrl = s.contentUrl,
                 createdAt = s.createdAt}).ToListAsync();
         }
 
@@ -40,6 +40,7 @@ namespace Slush.DAO.ProfileDao
                 existing.title = screenshot.title;
                 existing.description = screenshot.description;
                 existing.likesCount = screenshot.likesCount;
+                existing.contentUrl = screenshot.contentUrl;
 
                 await _context.SaveChangesAsync();
             }
@@ -75,7 +76,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = s.likesCount,
                     gameId = s.gameId,
                     authorId = s.authorId,
-                    screenshotUrl = s.screenshotUrl,
+                    contentUrl = s.contentUrl,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
             if (response != null)
@@ -99,7 +100,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = s.likesCount,
                     gameId = s.gameId,
                     authorId = s.authorId,
-                    screenshotUrl = s.screenshotUrl,
+                    contentUrl = s.contentUrl,
                     createdAt = s.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -124,7 +125,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = s.likesCount,
                     gameId = s.gameId,
                     authorId = s.authorId,
-                    screenshotUrl = s.screenshotUrl,
+                    contentUrl = s.contentUrl,
                     createdAt = s.createdAt
                 }).ToListAsync();
             if (response != null)
@@ -153,7 +154,7 @@ namespace Slush.DAO.ProfileDao
                     likesCount = s.likesCount,
                     gameId = s.gameId,
                     authorId = s.authorId,
-                    screenshotUrl = s.screenshotUrl,
+                    contentUrl = s.contentUrl,
                     createdAt = s.createdAt
                 }).FirstOrDefaultAsync();
 

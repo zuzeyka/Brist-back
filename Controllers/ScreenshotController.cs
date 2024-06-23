@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model, IFormFile file)
+        public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model, IFormFile? file)
         {
             var result = new Screenshot(Guid.NewGuid(),
                 model.title,
@@ -37,7 +37,7 @@ namespace FullStackBrist.Server.Controllers
                 0,
                 model.gameId,
                 model.authorId,
-                model.screenshotUrl,
+                model.contentUrl,
                 DateTime.Now);
 
             if (file != null || file.Length != 0)
@@ -50,7 +50,7 @@ namespace FullStackBrist.Server.Controllers
 
                         var url = await _minioService.GetUrlToFile(imageUrl);
 
-                        result.screenshotUrl = url;
+                        result.contentUrl = url;
                     }
                     catch (Exception ex)
                     {
@@ -96,7 +96,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile file)
+        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile? file)
         {
             if (file != null || file.Length != 0)
             {
@@ -108,7 +108,7 @@ namespace FullStackBrist.Server.Controllers
 
                         var url = await _minioService.GetUrlToFile(imageUrl);
 
-                        screenshot.screenshotUrl = url;
+                        screenshot.contentUrl = url;
                     }
                     catch (Exception ex)
                     {
@@ -117,7 +117,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.screenshotUrl, screenshot.createdAt));
+            var result = await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.contentUrl, screenshot.createdAt));
             return Ok(result);
         }
 

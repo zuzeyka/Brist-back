@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameGroupDao;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Services.Minio;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GameNewsController : Controller
     {
         private readonly GameNewsDao _gameNewsDao;
+        private readonly MinioService _minioService;
 
-        public GameNewsController(GameNewsDao gameNewsDao)
+        public GameNewsController(GameNewsDao gameNewsDao, MinioService minioService)
         {
             _gameNewsDao = gameNewsDao;
+            _minioService = minioService;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GameNews>> CreateNews([FromBody] GameNewsModel model)
+        public async Task<ActionResult<GameNews>> CreateNews([FromBody] GameNewsModel model, IFormFile? file)
         {
             var result = new GameNews(Guid.NewGuid(),
                 model.title,
@@ -36,8 +39,30 @@ namespace FullStackBrist.Server.Controllers
                 model.gameGroupId,
                 model.authorId,
                 model.content,
+                model.contentUrl,
                                             DateTime.Now
                                             );
+
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        result.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
             await _gameNewsDao.Add(result);
 
             return Ok(result);
@@ -64,9 +89,29 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameNewsModel game)
+        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameNewsModel game, IFormFile? file)
         {
-            var result = await _gameNewsDao.UpdateGameNews(new GameNews(id, game.title, game.description, game.likesCount, game.gameId, game.gameGroupId, game.authorId, game.content, game.createdAt));
+
+            if (file != null || file.Length != 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    try
+                    {
+                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+
+                        var url = await _minioService.GetUrlToFile(imageUrl);
+
+                        game.contentUrl = url;
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                    }
+                }
+            }
+
+            var result = await _gameNewsDao.UpdateGameNews(new GameNews(id, game.title, game.description, game.likesCount, game.gameId, game.gameGroupId, game.authorId, game.content, game.contentUrl, game.createdAt));
             return Ok(result);
         }
 
