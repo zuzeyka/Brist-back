@@ -1,5 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using FullStackBrist.Server.Services.Email;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.ProfileDao;
 using Slush.Data.Entity.Profile;
@@ -34,6 +35,7 @@ namespace FullStackBrist.Server.Controllers
             _emailService = emailService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<UserDao>>> GetAllUsers()
         {
@@ -110,6 +112,7 @@ namespace FullStackBrist.Server.Controllers
             {
                 res = token,
             };
+
 
             _logger.LogWarning("Login token: {1}", result);
 

@@ -1,4 +1,5 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GameInShopDao;
 using Slush.Entity.Store.Product;
@@ -18,7 +19,7 @@ namespace FullStackBrist.Server.Controllers
             _gameInShopDao = gameInShopDao;
             _minioService = minioService;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GameInShopDao>>> GetAllGames()
         {
@@ -26,7 +27,7 @@ namespace FullStackBrist.Server.Controllers
         
             return Ok(games);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model, IFormFile file)
         {
@@ -66,7 +67,7 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(result);
         }
-
+        [Authorize]
         [HttpGet("byname/{name}")]
         public async Task<ActionResult<GameInShop>> GetByName(String name)
         {
@@ -75,7 +76,7 @@ namespace FullStackBrist.Server.Controllers
             return Ok(response);
         }
 
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<GameInShop>> GetGameInShop(Guid id)
         {
@@ -87,14 +88,14 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGameInShop(Guid id)
         {
             await _gameInShopDao.DeleteGameInShop(id);
             return NoContent();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game, IFormFile file)
         {
@@ -123,7 +124,7 @@ namespace FullStackBrist.Server.Controllers
             var result = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
             return Ok(result);
         }
-
+        [Authorize]
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameInShop>>> GetAllGamesInShopByIds([FromBody] List<Guid> ids)
         {

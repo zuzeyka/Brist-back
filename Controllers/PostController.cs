@@ -1,4 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Group;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.DAO.GroupDao;
 using Slush.Data.Entity.Community;
@@ -85,6 +86,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
         {
