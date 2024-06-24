@@ -73,6 +73,27 @@ namespace Slush.DAO.ProfileDao
                 return null;
             }
         }
+        
+        public async Task<List<OwnedGame?>> GetByUId(Guid id)
+        {
+            var response = await _context.dbOwnedGames
+                .Where(x => x.id == id)
+                .Select(o => new OwnedGame
+                {
+                    id = o.id,
+                    ownedGameId = o.ownedGameId,
+                    userId = o.userId,
+                    createdAt = o.createdAt
+                }).ToListAsync();
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public async Task<OwnedGame?> GetByGameId(Guid id, Guid uid)
         {

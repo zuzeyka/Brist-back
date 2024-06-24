@@ -35,7 +35,6 @@ namespace FullStackBrist.Server.Controllers
             _emailService = emailService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<UserDao>>> GetAllUsers()
         {
@@ -80,7 +79,6 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
-        [Authorize]
         [HttpPost("resend")]
         public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
         {
@@ -139,7 +137,6 @@ namespace FullStackBrist.Server.Controllers
             return token;
         }
         #endregion
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
@@ -151,7 +148,6 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
-        [Authorize]
         [HttpGet("getbyuid/{id}")]
         public async Task<ActionResult<User>> GetUserByUid(Guid id)
         {
@@ -163,14 +159,12 @@ namespace FullStackBrist.Server.Controllers
 
             return Ok(response);
         }
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
             await _userDao.DeleteUser(id);
             return NoContent();
         }
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
         {
@@ -196,7 +190,6 @@ namespace FullStackBrist.Server.Controllers
             var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
             return Ok(result);
         }
-        [Authorize]
         [HttpPost("getall")]
         public async Task<ActionResult<List<User>>> GetAllUsersByIds([FromBody] List<Guid> guidList)
         {

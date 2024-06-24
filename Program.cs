@@ -60,6 +60,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddRazorPages();
 
+#region DAO
+
 builder.Services.AddTransient<CategoriesDAO>();
 builder.Services.AddTransient<CategoriesByAuthorDao>();
 builder.Services.AddTransient<CategoriesByUserDao>();
@@ -115,6 +117,7 @@ builder.Services.AddTransient<AchievementDao>();
 builder.Services.AddTransient<GameBundleCollectionDao>();
 builder.Services.AddTransient<GameBundleDao>();
 
+#endregion
 
 builder.Services.AddCors(options =>
 {

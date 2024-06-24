@@ -35,7 +35,6 @@ namespace FullStackBrist.Server.Controllers
                                             );
             await _ownedGameDao.Add(result);
             return Ok(result);
-
         }
 
         [HttpGet("{id}")]
@@ -43,6 +42,19 @@ namespace FullStackBrist.Server.Controllers
         {
             var response = await _ownedGameDao.GetById(id);
             if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("byuserid/{id}")]
+        public async Task<ActionResult<List<OwnedGame>>> GetByUserId(Guid id)
+        {
+            var response = await _ownedGameDao.GetByUId(id);
+
+            if(response == null)
             {
                 return NotFound();
             }
