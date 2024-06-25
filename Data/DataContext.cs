@@ -160,12 +160,6 @@ namespace Slush.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GamePosts>()
-                .HasOne<GameTopic>()
-                .WithMany()
-                .HasForeignKey(gp => gp.gameTopicId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<GamePosts>()
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(gp => gp.authorId)

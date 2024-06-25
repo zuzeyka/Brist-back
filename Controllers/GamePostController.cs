@@ -37,7 +37,6 @@ namespace FullStackBrist.Server.Controllers
                                             model.description,
                                             0,
                                             model.gameId,
-                                            model.gameTopicId,
                                             model.authorId,
                                             model.content,
                                             model.contentUrl,
@@ -124,7 +123,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.gameTopicId, game.authorId, game.content, game.contentUrl, game.createdAt));
+            var result = await _gamePostsDao.UpdateGamePosts(new GamePosts(id, game.title, game.description, game.likesCount, game.gameId, game.authorId, game.content, game.contentUrl, game.createdAt));
             return Ok(result);
         }
 
