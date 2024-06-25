@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupDao;
+using Slush.DAO.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private readonly GroupDao _groupDao;
+        private readonly GroupRepository _GroupRepository;
         private readonly MinioService _minioService;
 
-        public GroupController(GroupDao groupDao, MinioService minioService)
+        public GroupController(GroupRepository GroupRepository, MinioService minioService)
         {
-            _groupDao = groupDao;
+            _GroupRepository = GroupRepository;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GroupDao>>> GetAllGroups()
+        public async Task<ActionResult<List<GroupRepository>>> GetAllGroups()
         {
-            var _groups = await _groupDao.GetAllGroups();
+            var _groups = await _GroupRepository.GetAllGroups();
 
             return Ok(_groups);
         }
@@ -53,7 +53,7 @@ namespace FullStackBrist.Server.Controllers
 
                     result.imageUrl = url;
 
-                    await _groupDao.Add(result);
+                    await _GroupRepository.Add(result);
 
                     return Ok(result);
                 }
@@ -67,7 +67,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Group>> GetGroup(Guid id)
         {
-            var response = await _groupDao.GetById(id);
+            var response = await _GroupRepository.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGroup(Guid id)
         {
-            await _groupDao.DeleteGroup(id);
+            await _GroupRepository.DeleteGroup(id);
             return NoContent();
         }
 
@@ -98,7 +98,7 @@ namespace FullStackBrist.Server.Controllers
 
                         group.imageUrl = url;
 
-                        var res = await _groupDao.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.imageUrl, group.createdAt));
+                        var res = await _GroupRepository.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.imageUrl, group.createdAt));
                         return Ok(res);
                     }
                     catch (Exception ex)
@@ -107,14 +107,14 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _groupDao.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.imageUrl, group.createdAt));
+            var result = await _GroupRepository.UpdateGroup(new Group(id, group.attachedId, group.name, group.description, group.imageUrl, group.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Group>>> GetAllGroupsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _groupDao.GetByIds(guidList);
+            var response = await _GroupRepository.GetByIds(guidList);
 
             return Ok(response);
         }

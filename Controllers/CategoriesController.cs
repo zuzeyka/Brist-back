@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesDao;
+using Slush.DAO.CategoriesRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
-        private readonly CategoriesDAO _categoriesDao;
+        private readonly CategoriesRepository _CategoriesRepository;
 
-        public CategoriesController(CategoriesDAO categoriesDao)
+        public CategoriesController(CategoriesRepository CategoriesRepository)
         {
-            _categoriesDao = categoriesDao;
+            _CategoriesRepository = CategoriesRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriesDAO>>> GetAllCategories()
+        public async Task<ActionResult<List<CategoriesRepository>>> GetAllCategories()
         {
-            var categories = await _categoriesDao.GetAll();
+            var categories = await _CategoriesRepository.GetAll();
 
             return Ok(categories);
         }
@@ -31,7 +31,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            await _categoriesDao.Add(result);
+            await _CategoriesRepository.Add(result);
 
             return Ok(result);
         }
@@ -39,7 +39,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Categories>> GetCategory(Guid id)
         {
-            var response = await _categoriesDao.GetById(id);
+            var response = await _CategoriesRepository.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -51,14 +51,14 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategoryByAuthor(Guid id)
         {
-            await _categoriesDao.DeleteCategories(id);
+            await _CategoriesRepository.DeleteCategories(id);
             return NoContent();
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Categories>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
         {
-            var result = await _categoriesDao.GetByIds(guidList);
+            var result = await _CategoriesRepository.GetByIds(guidList);
 
             return Ok(result);
         }

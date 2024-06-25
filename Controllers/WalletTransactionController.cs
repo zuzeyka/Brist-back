@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class WalletTransactionController : Controller
     {
-        private readonly WalletTransactionsDao _walletTransactionsDao;
+        private readonly WalletTransactionsRepository _walletTransactionsDao;
 
-        public WalletTransactionController(WalletTransactionsDao walletTransactionsDao)
+        public WalletTransactionController(WalletTransactionsRepository walletTransactionsDao)
         {
             _walletTransactionsDao = walletTransactionsDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WalletTransactionsDao>>> GetAll()
+        public async Task<ActionResult<List<WalletTransactionsRepository>>> GetAll()
         {
             var walletTransactions = await _walletTransactionsDao.GetAll();
 

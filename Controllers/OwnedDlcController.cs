@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 using System.Reactive.Subjects;
 
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class OwnedDlcController : Controller
     {
-        private readonly OwnedDlcDao _dao;
+        private readonly OwnedDlcRepository _dao;
 
-        public OwnedDlcController(OwnedDlcDao dao)
+        public OwnedDlcController(OwnedDlcRepository dao)
         {
             _dao = dao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OwnedGameDao>>> GetAllOwnedDlcs()
+        public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedDlcs()
         {
             var dlcs = await _dao.GetAllDlcs();
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ChatDao;
+using Slush.DAO.ChatRepository;
 using Slush.Entity.Chat;
 using Slush.Models.Chat;
 
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-        private readonly MessageDao _messageDao;
+        private readonly MessageRepository _messageDao;
 
-        public MessageController(MessageDao messageDao)
+        public MessageController(MessageRepository messageDao)
         {
             _messageDao = messageDao;
         }
 
         [HttpGet("bychat/{id}")]
-        public async Task<ActionResult<List<MessageDao>>> GetAllMessages([FromBody] Chat chat)
+        public async Task<ActionResult<List<MessageRepository>>> GetAllMessages([FromBody] Chat chat)
         {
             var messages = await _messageDao.GetAllMessages(chat.id);
 

@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupDao;
+using Slush.DAO.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
 
@@ -11,17 +11,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PostController : Controller
     {
-        private readonly PostDao _postDao;
+        private readonly PostRepository _postDao;
         private readonly MinioService _minioService;
 
-        public PostController(PostDao postDao, MinioService minioService)
+        public PostController(PostRepository postDao, MinioService minioService)
         {
             _postDao = postDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PostDao>>> GetAllPosts()
+        public async Task<ActionResult<List<PostRepository>>> GetAllPosts()
         {
             var _posts = await _postDao.GetAllPosts();
 

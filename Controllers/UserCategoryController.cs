@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -9,21 +9,21 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class UserCategoryController : Controller
     {
-        private readonly CategoryByUserForGameDao _categoryByUserForGameDao;
-        private readonly UserCategoryDao _userCategoryDao;
-        private readonly OwnedGameDao _ownedGameDao;
+        private readonly CategoryByUserForGameRepository _categoryByUserForGameDao;
+        private readonly UserCategoryRepository _userCategoryDao;
+        private readonly OwnedGameRepository _ownedGameDao;
         private List<CategoryByUserForGame>? listOfCategoriesByUser { get; set; }
         private List<UserCategory>? listOfUserCategory { get; set; }
         private List<OwnedGame>? listOwnedGame { get; set; }
 
-        public UserCategoryController(CategoryByUserForGameDao categoryByUserForGameDao, UserCategoryDao userCategoryDao, OwnedGameDao ownedGameDao)
+        public UserCategoryController(CategoryByUserForGameRepository categoryByUserForGameDao, UserCategoryRepository userCategoryDao, OwnedGameRepository ownedGameDao)
         {
             _categoryByUserForGameDao = categoryByUserForGameDao;
             _userCategoryDao = userCategoryDao;
             _ownedGameDao = ownedGameDao;
         }
         [HttpGet("getcategories")]
-        public async Task<ActionResult<List<CategoryByUserForGameDao>>> GetAllCategories()
+        public async Task<ActionResult<List<CategoryByUserForGameRepository>>> GetAllCategories()
         {
             var categories = await _categoryByUserForGameDao.GetAllCategoryByUserForGames();
 
@@ -33,7 +33,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("getcategoriesbyuser")]
-        public async Task<ActionResult<List<UserCategoryDao>>> GetAllCategoriesByUser()
+        public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByUser()
         {
             var categories = await _userCategoryDao.GetAllUserCategories();
 
@@ -43,7 +43,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("getownedgames")]
-        public async Task<ActionResult<List<OwnedGameDao>>> GetAllOwnedGames()
+        public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedGames()
         {
             var games = await _ownedGameDao.GetAllOwnedGames();
 
@@ -53,7 +53,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<UserCategoryDao>>> GetAllCategoriesByGameId(Guid id)
+        public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
         {
             var categories = await _userCategoryDao.GetAllCategoriesByUser(id);
 

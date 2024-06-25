@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class VideoController : Controller
     {
-        private readonly VideoDao _videoDao;
+        private readonly VideoRepository _videoDao;
         private readonly MinioService _minioService;
 
-        public VideoController(VideoDao videoDao, MinioService minioService)
+        public VideoController(VideoRepository videoDao, MinioService minioService)
         {
             _videoDao = videoDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<VideoDao>>> GetAllVideos()
+        public async Task<ActionResult<List<VideoRepository>>> GetAllVideos()
         {
             var videos = await _videoDao.GetAllVideos();
 

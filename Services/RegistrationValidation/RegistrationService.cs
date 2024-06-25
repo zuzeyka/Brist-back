@@ -1,5 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Hash;
 using Slush.Services.Minio;
@@ -10,9 +10,9 @@ namespace Slush.Services.RegistrationValidation
     {
         private readonly HashPasswordService _passwordService;
         private readonly MinioService _minioService;
-        private readonly UserDao _userDao;
+        private readonly UserRepository _userDao;
 
-        public RegistrationService(HashPasswordService passwordService, UserDao userDao, MinioService minioService)
+        public RegistrationService(HashPasswordService passwordService, UserRepository userDao, MinioService minioService)
         {
             _passwordService = passwordService;
             _userDao = userDao;

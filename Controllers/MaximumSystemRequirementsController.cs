@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.RequirementsDao;
+using Slush.DAO.RequirementsRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MaximumSystemRequirementsController : Controller
     {
-        private readonly MaximumSystemRequirementDao _requirementDao;
+        private readonly MaximumSystemRequirementRepository _requirementDao;
 
-        public MaximumSystemRequirementsController(MaximumSystemRequirementDao requirementDao)
+        public MaximumSystemRequirementsController(MaximumSystemRequirementRepository requirementDao)
         {
             _requirementDao = requirementDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MaximumSystemRequirementDao>>> GetAllMaximumSystemRequirements()
+        public async Task<ActionResult<List<MaximumSystemRequirementRepository>>> GetAllMaximumSystemRequirements()
         {
             var requirements = await _requirementDao.GetAllMaximumSystemRequirements();
 

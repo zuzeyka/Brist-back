@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
 
@@ -10,15 +10,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class WishedGameController : Controller
     {
-        private readonly WishedGameDao _wishedGameDao;
+        private readonly WishedGameRepository _wishedGameDao;
 
-        public WishedGameController(WishedGameDao wishedGameDao)
+        public WishedGameController(WishedGameRepository wishedGameDao)
         {
             _wishedGameDao = wishedGameDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WishedGameDao>>> GetAllWishedGames()
+        public async Task<ActionResult<List<WishedGameRepository>>> GetAllWishedGames()
         {
             var wishedGames = await _wishedGameDao.GetAllWishedGames();
 

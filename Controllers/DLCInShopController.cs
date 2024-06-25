@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopDao;
+using Slush.DAO.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DLCInShopController : Controller
     {
-        private readonly DLCInShopDao _dLCInShopDao;
+        private readonly DLCInShopRepository _DLCInShopRepository;
         private readonly MinioService _minioService;
 
-        public DLCInShopController(DLCInShopDao dLCInShopDao, MinioService minioService)
+        public DLCInShopController(DLCInShopRepository DLCInShopRepository, MinioService minioService)
         {
-            _dLCInShopDao = dLCInShopDao;
+            _DLCInShopRepository = DLCInShopRepository;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DLCInShopDao>>> GetAllDlcs()
+        public async Task<ActionResult<List<DLCInShopRepository>>> GetAllDlcs()
         {
-            var dlcs = await _dLCInShopDao.GetAll();
+            var dlcs = await _DLCInShopRepository.GetAll();
 
             return Ok(dlcs);
         }
@@ -65,7 +65,7 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            await _dLCInShopDao.Add(result);
+            await _DLCInShopRepository.Add(result);
 
             return Ok(result);
         }
@@ -74,7 +74,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DLCInShop>> GetDLCInShop(Guid id)
         {
-            var response = await _dLCInShopDao.GetById(id);
+            var response = await _DLCInShopRepository.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<DLCInShop>>> GetDLCInShopByGameId(Guid id)
         {
-            var response = await _dLCInShopDao.GetByGameId(id);
+            var response = await _DLCInShopRepository.GetByGameId(id);
             if (response == null)
             {
                 return NotFound();
@@ -98,7 +98,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDLCInShop(Guid id)
         {
-            await _dLCInShopDao.DeleteDLCInShop(id);
+            await _DLCInShopRepository.DeleteDLCInShop(id);
             return NoContent();
         }
 
@@ -115,7 +115,7 @@ namespace FullStackBrist.Server.Controllers
 
                         var url = await _minioService.GetUrlToFile(imageUrl);
 
-                        var result = await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, url, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
+                        var result = await _DLCInShopRepository.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, url, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
                         return Ok(result);
                     }
                     catch (Exception ex)
@@ -125,14 +125,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var res = await _dLCInShopDao.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
+            var res = await _DLCInShopRepository.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, model.previeImage, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
             return Ok(res);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<DLCInShop>>> GetAllDlcByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _dLCInShopDao.GetDlcsByIds(guidList);
+            var response = await _DLCInShopRepository.GetDlcsByIds(guidList);
 
             return Ok(response);
         }

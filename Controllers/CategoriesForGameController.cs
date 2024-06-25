@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesDao;
+using Slush.DAO.CategoriesRepository;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
 
@@ -10,15 +10,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesForGameController : Controller
     {
-        private readonly CategoryForGameDao _categoryForGameDao;
+        private readonly CategoryForGameRepository _categoryForGameDao;
 
-        public CategoriesForGameController(CategoryForGameDao categoryForGameDao)
+        public CategoriesForGameController(CategoryForGameRepository categoryForGameDao)
         {
             _categoryForGameDao = categoryForGameDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryForGameDao>>> GetAllCategoriesForGame()
+        public async Task<ActionResult<List<CategoryForGameRepository>>> GetAllCategoriesForGame()
         {
             var categoriesForGame = await _categoryForGameDao.GetAll();
 

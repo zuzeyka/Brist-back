@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsDao;
+using Slush.DAO.CreatorsRepository;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DeveloperController : Controller
     {
-        private readonly DeveloperDao _developerDao;
+        private readonly DeveloperRepository _developerDao;
         private readonly MinioService _minioService;
 
-        public DeveloperController(DeveloperDao developerDao, MinioService minioService)
+        public DeveloperController(DeveloperRepository developerDao, MinioService minioService)
         {
             _developerDao = developerDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DeveloperDao>>> GetAllDevelopers()
+        public async Task<ActionResult<List<DeveloperRepository>>> GetAllDevelopers()
         {
             var _developers = await _developerDao.GetAllDevelopersDao();
 

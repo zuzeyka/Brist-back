@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.LanguageDao;
+using Slush.DAO.LanguageRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class LanguageController : Controller
     {
-        private readonly LanguageDao _languageDao;
+        private readonly LanguageRepository _LanguageRepository;
 
-        public LanguageController(LanguageDao languageDao)
+        public LanguageController(LanguageRepository LanguageRepository)
         {
-            _languageDao = languageDao;
+            _LanguageRepository = LanguageRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<LanguageDao>>> GetAllLanguages()
+        public async Task<ActionResult<List<LanguageRepository>>> GetAllLanguages()
         {
-            var _languages = await _languageDao.GetAllLanguages();
+            var _languages = await _LanguageRepository.GetAllLanguages();
 
             return Ok(_languages);
         }
@@ -31,7 +31,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.name,
                                             DateTime.Now
                                             );
-            await _languageDao.Add(result);
+            await _LanguageRepository.Add(result);
 
             return Ok(result);
         }
@@ -39,7 +39,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Language>> GetLanguage(Guid id)
         {
-            var response = await _languageDao.GetById(id);
+            var response = await _LanguageRepository.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -51,21 +51,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteLanguage(Guid id)
         {
-            await _languageDao.DeleteLanguage(id);
+            await _LanguageRepository.DeleteLanguage(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateLanguage(Guid id, [FromBody] LanguageModel language)
         {
-            var result = await _languageDao.UpdateLanguage(new Language(id, language.name, language.createdAt));
+            var result = await _LanguageRepository.UpdateLanguage(new Language(id, language.name, language.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Language>>> GetAllLanguagesByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _languageDao.GetByIds(guidList);
+            var response = await _LanguageRepository.GetByIds(guidList);
 
             return Ok(response);
         }

@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupDao;
+using Slush.DAO.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
@@ -12,17 +12,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameGuideController : Controller
     {
-        private readonly GameGuideDao _gameGuideDao;
+        private readonly GameGuideRepository _gameGuideDao;
         private readonly MinioService _minioService;
 
-        public GameGuideController(GameGuideDao gameGuideDao, MinioService minioService)
+        public GameGuideController(GameGuideRepository gameGuideDao, MinioService minioService)
         {
             _gameGuideDao = gameGuideDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameGuideDao>>> GetAllGameGuides()
+        public async Task<ActionResult<List<GameGuideRepository>>> GetAllGameGuides()
         {
             var _gameGuides = await _gameGuideDao.GetAllGameGuides();
 

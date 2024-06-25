@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesDao;
+using Slush.DAO.CategoriesRepository;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
 using Slush.Services.Minio;
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesByAuthorController : Controller
     {
-        private readonly CategoriesByAuthorDao _categoriesByAuthorDao;
+        private readonly CategoriesByAuthorRepository _categoriesByAuthorDao;
         private readonly MinioService _minioService;
 
-        public CategoriesByAuthorController(CategoriesByAuthorDao categoriesByAuthorDao, MinioService minioService)
+        public CategoriesByAuthorController(CategoriesByAuthorRepository categoriesByAuthorDao, MinioService minioService)
         {
             _categoriesByAuthorDao = categoriesByAuthorDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriesByAuthorDao>>> GetAllCategoriesByAuthor()
+        public async Task<ActionResult<List<CategoriesByAuthorRepository>>> GetAllCategoriesByAuthor()
         {
             var _categoriesByAuthor = await _categoriesByAuthorDao.GetAllCategoriesByAuthor();
 

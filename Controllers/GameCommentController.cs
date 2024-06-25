@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupDao;
+using Slush.DAO.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameCommentController : Controller
     {
-        private readonly GameCommentDao _gameCommentDao;
+        private readonly GameCommentRepository _gameCommentDao;
 
-        public GameCommentController(GameCommentDao gameGroupDao)
+        public GameCommentController(GameCommentRepository GameGroupRepository)
         {
-            _gameCommentDao = gameGroupDao;
+            _gameCommentDao = GameGroupRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameCommentDao>>> GetAllGameComments()
+        public async Task<ActionResult<List<GameCommentRepository>>> GetAllGameComments()
         {
             var _gameComment = await _gameCommentDao.GetAllGameComments();
 

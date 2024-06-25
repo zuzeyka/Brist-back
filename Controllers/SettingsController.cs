@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        private readonly SettingsDao _settingsDao;
+        private readonly SettingsRepository _settingsDao;
 
-        public SettingsController(SettingsDao settingsDao)
+        public SettingsController(SettingsRepository settingsDao)
         {
             _settingsDao = settingsDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<SettingsDao>>> GetAll()
+        public async Task<ActionResult<List<SettingsRepository>>> GetAll()
         {
             var settings = await _settingsDao.GetAll();
 

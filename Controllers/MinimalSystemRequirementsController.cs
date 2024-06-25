@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.RequirementsDao;
+using Slush.DAO.RequirementsRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MinimalSystemRequirementsController : Controller
     {
-        private readonly MinimalSystemRequirementDao _minimalSystemRequirementDao;
+        private readonly MinimalSystemRequirementRepository _minimalSystemRequirementDao;
 
-        public MinimalSystemRequirementsController(MinimalSystemRequirementDao minimalSystemRequirementDao)
+        public MinimalSystemRequirementsController(MinimalSystemRequirementRepository minimalSystemRequirementDao)
         {
             _minimalSystemRequirementDao = minimalSystemRequirementDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MinimalSystemRequirementDao>>> GetAllMinimalSystemRequirements()
+        public async Task<ActionResult<List<MinimalSystemRequirementRepository>>> GetAllMinimalSystemRequirements()
         {
             var requirements = await _minimalSystemRequirementDao.GetAllMinimalSystemRequirements();
 

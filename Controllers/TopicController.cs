@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupDao;
+using Slush.DAO.GroupRepository;
 using Slush.Data.Entity.Community;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class TopicController : Controller
     {
-        private readonly TopicDao _topicDao;
+        private readonly TopicRepository _topicDao;
 
-        public TopicController(TopicDao topicDao)
+        public TopicController(TopicRepository topicDao)
         {
             _topicDao = topicDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TopicDao>>> GetAllTopics()
+        public async Task<ActionResult<List<TopicRepository>>> GetAllTopics()
         {
             var topics = await _topicDao.GetAllTopics();
 

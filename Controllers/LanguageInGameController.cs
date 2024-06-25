@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.LanguageDao;
+using Slush.DAO.LanguageRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class LanguageInGameController : Controller
     {
-        private readonly LanguageInGameDao _languageInGameDao;
+        private readonly LanguageInGameRepository _languageInGameDao;
 
-        public LanguageInGameController(LanguageInGameDao languageInGameDao)
+        public LanguageInGameController(LanguageInGameRepository languageInGameDao)
         {
             _languageInGameDao = languageInGameDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<LanguageInGameDao>>> GetAllLanguagesInGame()
+        public async Task<ActionResult<List<LanguageInGameRepository>>> GetAllLanguagesInGame()
         {
             var _languages = await _languageInGameDao.GetAllLanguageInGames();
 

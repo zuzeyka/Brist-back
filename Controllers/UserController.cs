@@ -2,7 +2,7 @@
 using FullStackBrist.Server.Services.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
@@ -16,7 +16,7 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserDao _userDao;
+        private readonly UserRepository _userDao;
         private readonly RegistrationService _registrationService;
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
@@ -24,7 +24,7 @@ namespace FullStackBrist.Server.Controllers
         private readonly EmailService _emailService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserDao userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
+        public UserController(UserRepository userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
         {
             _userDao = userDao;
             _registrationService = registrationService;
@@ -36,7 +36,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDao>>> GetAllUsers()
+        public async Task<ActionResult<List<UserRepository>>> GetAllUsers()
         {
             var _users = await _userDao.GetAllUsers();
 

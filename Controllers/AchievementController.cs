@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Services.Minio;
 
@@ -9,17 +9,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class AchievementController : Controller
     {
-        private readonly AchievementDao _achievementDao;
+        private readonly AchievementRepository _achievementDao;
         private readonly MinioService _minioService;
 
-        public AchievementController(AchievementDao achievementDao, MinioService minioService)
+        public AchievementController(AchievementRepository achievementDao, MinioService minioService)
         {
             _achievementDao = achievementDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AchievementDao>>> GetAllAchievements()
+        public async Task<ActionResult<List<AchievementRepository>>> GetAllAchievements()
         {
             var achievements = await _achievementDao.GetAllAchievements();
 

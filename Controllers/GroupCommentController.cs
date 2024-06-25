@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupDao;
+using Slush.DAO.GroupRepository;
 using Slush.Data.Entity.Community;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupCommentController : Controller
     {       
-        private readonly GroupCommentDao _groupCommentDao;
+        private readonly GroupCommentRepository _groupCommentDao;
 
-        public GroupCommentController(GroupCommentDao groupCommentDao)
+        public GroupCommentController(GroupCommentRepository groupCommentDao)
         {
             _groupCommentDao = groupCommentDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GroupCommentDao>>> GetAllGroupComments()
+        public async Task<ActionResult<List<GroupComment>>> GetAllGroupComments()
         {
             var _groupComments = await _groupCommentDao.GetAllGroupComments();
 

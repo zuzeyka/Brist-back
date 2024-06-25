@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsDao;
+using Slush.DAO.CreatorsRepository;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PublisherController : Controller
     {
-        private readonly PublisherDao _publisherDao;
+        private readonly PublisherRepository _publisherDao;
         private readonly MinioService _minioService;
 
-        public PublisherController(PublisherDao publisherDao, MinioService minioService)
+        public PublisherController(PublisherRepository publisherDao, MinioService minioService)
         {
             _publisherDao = publisherDao;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PublisherDao>>> GetAllPublishers()
+        public async Task<ActionResult<List<PublisherRepository>>> GetAllPublishers()
         {
             var publishers = await _publisherDao.GetAllPublishers();
 

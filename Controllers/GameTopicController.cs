@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupDao;
+using Slush.DAO.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameTopicController : Controller
     {
-        private readonly GameTopicDao _gameTopicDao;
+        private readonly GameTopicRepository _gameTopicDao;
 
-        public GameTopicController(GameTopicDao gameTopicDao)
+        public GameTopicController(GameTopicRepository gameTopicDao)
         {
             _gameTopicDao = gameTopicDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameTopicDao>>> GetAllGameTopics()
+        public async Task<ActionResult<List<GameTopicRepository>>> GetAllGameTopics()
         {
             var gameTopics = await _gameTopicDao.GetAllGameTopics();
 

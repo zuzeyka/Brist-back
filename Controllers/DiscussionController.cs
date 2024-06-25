@@ -9,17 +9,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class DiscussionController : Controller
     {
-        private readonly DiscussionDao _discussionDao;
+        private readonly DiscussionRepository _DiscussionRepository;
 
-        public DiscussionController( DiscussionDao discussionDao)
+        public DiscussionController( DiscussionRepository DiscussionRepository)
         {
-            _discussionDao = discussionDao;
+            _DiscussionRepository = DiscussionRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DiscussionDao>>> GetAllDiscussions()
+        public async Task<ActionResult<List<DiscussionRepository>>> GetAllDiscussions()
         {
-            var _discussions = await _discussionDao.GetAllDiscussions();
+            var _discussions = await _DiscussionRepository.GetAllDiscussions();
 
             return Ok(_discussions);
         }
@@ -35,7 +35,7 @@ namespace Slush.Controllers
                 model.rate,
                 DateTime.Now);
 
-            var response = _discussionDao.UpdateDiscussion(result);
+            var response = _DiscussionRepository.UpdateDiscussion(result);
 
             return Ok(response);
         }
@@ -43,7 +43,7 @@ namespace Slush.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Discussion>> GetDiscussion(Guid id)
         {
-            var response = await _discussionDao.GetById(id);
+            var response = await _DiscussionRepository.GetById(id);
 
             if (response == null)
             {
@@ -56,7 +56,7 @@ namespace Slush.Controllers
         [HttpGet("byattachedid/{id}")]
         public async Task<ActionResult<List<Discussion>>> GetDiscussionByAttachedId(Guid id)
         {
-            var response = await _discussionDao.GetByAttachedId(id);
+            var response = await _DiscussionRepository.GetByAttachedId(id);
 
             if (response == null)
             {
@@ -69,21 +69,21 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDiscussion(Guid id)
         {
-            await _discussionDao.DeleteDiscussion(id);
+            await _DiscussionRepository.DeleteDiscussion(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateDiscussion(Guid id, [FromBody] DiscussionModel model)
         {
-            var result = await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
+            var result = await _DiscussionRepository.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Discussion>>> GetAllDiscussionsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _discussionDao.GetByIds(guidList);
+            var response = await _DiscussionRepository.GetByIds(guidList);
 
             return Ok(response);
         }

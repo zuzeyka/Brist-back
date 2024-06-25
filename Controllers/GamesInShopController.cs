@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopDao;
+using Slush.DAO.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;
 
@@ -11,18 +11,18 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GamesInShopController : Controller
     {
-        private readonly GameInShopDao _gameInShopDao;
+        private readonly GameInShopRepository _GameInShopRepository;
         private readonly MinioService _minioService;
 
-        public GamesInShopController(GameInShopDao gameInShopDao, MinioService minioService)
+        public GamesInShopController(GameInShopRepository GameInShopRepository, MinioService minioService)
         {
-            _gameInShopDao = gameInShopDao;
+            _GameInShopRepository = GameInShopRepository;
             _minioService = minioService;
         }
         [HttpGet]
-        public async Task<ActionResult<List<GameInShopDao>>> GetAllGames()
+        public async Task<ActionResult<List<GameInShopRepository>>> GetAllGames()
         {
-            var games = await _gameInShopDao.GetAll();
+            var games = await _GameInShopRepository.GetAll();
         
             return Ok(games);
         }
@@ -61,14 +61,14 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            await _gameInShopDao.Add(result);
+            await _GameInShopRepository.Add(result);
 
             return Ok(result);
         }
         [HttpGet("byname/{name}")]
         public async Task<ActionResult<GameInShop>> GetByName(String name)
         {
-            var response = await _gameInShopDao.GetGameInShopByName(name);
+            var response = await _GameInShopRepository.GetGameInShopByName(name);
 
             return Ok(response);
         }
@@ -76,7 +76,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameInShop>> GetGameInShop(Guid id)
         {
-            var response = await _gameInShopDao.GetById(id);
+            var response = await _GameInShopRepository.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGameInShop(Guid id)
         {
-            await _gameInShopDao.DeleteGameInShop(id);
+            await _GameInShopRepository.DeleteGameInShop(id);
             return NoContent();
         }
         [HttpPatch("{id}")]
@@ -104,7 +104,7 @@ namespace FullStackBrist.Server.Controllers
                         var url = await _minioService.GetUrlToFile(imageUrl);
                         game.previeImage = url;
 
-                        var res = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
+                        var res = await _GameInShopRepository.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
 
                         return Ok(res);
                     }
@@ -115,13 +115,13 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _gameInShopDao.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
+            var result = await _GameInShopRepository.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));
             return Ok(result);
         }
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameInShop>>> GetAllGamesInShopByIds([FromBody] List<Guid> ids)
         {
-            var response = await _gameInShopDao.GetByIds(ids);
+            var response = await _GameInShopRepository.GetByIds(ids);
 
             return Ok(response);
         }

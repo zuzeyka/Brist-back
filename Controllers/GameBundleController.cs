@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopDao;
+using Slush.DAO.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Models.ShopContent;
 
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class GameBundleController : Controller
     {
-        private readonly GameBundleDao _gameBundleDao;
+        private readonly GameBundleRepository _gameBundleDao;
 
-        public GameBundleController(GameBundleDao gameBundleDao)
+        public GameBundleController(GameBundleRepository gameBundleDao)
         {
             _gameBundleDao = gameBundleDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameBundleDao>>> GetAllGameBundles()
+        public async Task<ActionResult<List<GameBundleRepository>>> GetAllGameBundles()
         {
             var _bundles = await _gameBundleDao.GetAll();
 

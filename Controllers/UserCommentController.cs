@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using System.Net.WebSockets;
 
@@ -10,15 +10,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserCommentController : Controller
     {
-        private readonly UserCommentDao _userCommentDao;
+        private readonly UserCommentRepository _userCommentDao;
 
-        public UserCommentController(UserCommentDao userCommentDao)
+        public UserCommentController(UserCommentRepository userCommentDao)
         {
             _userCommentDao = userCommentDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserCommentDao>>> GetAllUserComments()
+        public async Task<ActionResult<List<UserCommentRepository>>> GetAllUserComments()
         {
             var _userComments = await _userCommentDao.GetAllUserComments();
 

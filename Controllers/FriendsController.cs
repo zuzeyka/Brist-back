@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileDao;
+using Slush.DAO.ProfileRepository;
 using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class FriendsController : Controller
     {
-        private readonly FriendsDao _friendsDao;
+        private readonly FriendsRepository _friendsDao;
 
-        public FriendsController(FriendsDao friendsDao)
+        public FriendsController(FriendsRepository friendsDao)
         {
             _friendsDao = friendsDao;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FriendsDao>>> GetAllFriends()
+        public async Task<ActionResult<List<FriendsRepository>>> GetAllFriends()
         {
             var _friends = await _friendsDao.GetAllFriends();
 
