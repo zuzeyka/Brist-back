@@ -90,7 +90,7 @@ namespace Slush.DAO.RequirementsDao
         public async Task<List<MinimalSystemRequirement?>> GetByGameId(Guid id)
         {
             var response = await _context.dbMinimalSystemRequirements
-                .Where(x => x.id == id)
+                .Where(x => x.gameId == id)
                 .Select(r => new MinimalSystemRequirement
                 {
                     id = r.id,

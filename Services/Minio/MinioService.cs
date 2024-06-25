@@ -73,14 +73,13 @@ namespace Slush.Services.Minio
 
         public async Task<String> GetUrlToFile( String fileName)
         {
-            var reqParams = new Dictionary<string, string>(StringComparer.Ordinal)
-        { { "response-content-type", "image/jpeg" } };
+            var reqParams = new Dictionary<string, string>(StringComparer.Ordinal);
 
             PresignedGetObjectArgs args = new PresignedGetObjectArgs()
                 .WithBucket("images")
                 .WithObject(fileName)
                 .WithHeaders(reqParams)
-                .WithExpiry(1000);
+                .WithExpiry(604800);
 
             string url = await _minioClient.PresignedGetObjectAsync(args);
 

@@ -194,7 +194,7 @@ namespace FullStackBrist.Server.Controllers
         public async Task<ActionResult<List<User>>> GetAllUsersByIds([FromBody] List<Guid> guidList)
         {
             var response = await _userDao.GetByIds(guidList);
-
+             
             return Ok(response);
         }
     }
