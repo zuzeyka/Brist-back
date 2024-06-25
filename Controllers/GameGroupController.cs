@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupRepository;
+using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers

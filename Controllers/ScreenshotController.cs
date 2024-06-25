@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class ScreenshotController : Controller
     {
-        private readonly ScreenshotRepository _screenshotDao;
+        private readonly ScreenshotRepository _screenshotRepositories;
         private readonly MinioService _minioService;
 
-        public ScreenshotController(ScreenshotRepository screenshotDao, MinioService minioService)
+        public ScreenshotController(ScreenshotRepository screenshotRepositories, MinioService minioService)
         {
-            _screenshotDao = screenshotDao;
+            _screenshotRepositories = screenshotRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ScreenshotRepository>>> GetAllScreenshots()
         {
-            var _screenshots = await _screenshotDao.GetAllScreenshots();
+            var _screenshots = await _screenshotRepositories.GetAllScreenshots();
 
             return Ok(_screenshots);
         }
@@ -59,7 +59,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _screenshotDao.Add(result);
+            await _screenshotRepositories.Add(result);
 
             return Ok(result);
         }
@@ -67,7 +67,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Screenshot>> GetScreenshot(Guid id)
         {
-            var response = await _screenshotDao.GetById(id);
+            var response = await _screenshotRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<Screenshot>>> GetScreenshotByGame(Guid id)
         {
-            var response = await _screenshotDao.GetByGameId(id);
+            var response = await _screenshotRepositories.GetByGameId(id);
             if (response == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteScreenshot(Guid id)
         {
-            await _screenshotDao.DeleteScreenshot(id);
+            await _screenshotRepositories.DeleteScreenshot(id);
             return NoContent();
         }
 
@@ -117,14 +117,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _screenshotDao.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.contentUrl, screenshot.createdAt));
+            var result = await _screenshotRepositories.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.contentUrl, screenshot.createdAt));
             return Ok(result);
         }
 
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<Screenshot>>> GetByUserId(Guid id)
         {
-            var response = await _screenshotDao.GetByUserId(id);
+            var response = await _screenshotRepositories.GetByUserId(id);
 
             if(response == null)
             {
@@ -137,7 +137,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<Screenshot>>> GetAllScreenshotsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _screenshotDao.GetByIds(guidList);
+            var response = await _screenshotRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

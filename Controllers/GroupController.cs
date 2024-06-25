@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupRepository;
+using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
 

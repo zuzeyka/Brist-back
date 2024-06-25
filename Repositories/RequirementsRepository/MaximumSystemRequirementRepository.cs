@@ -2,7 +2,7 @@
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slush.DAO.RequirementsRepository
+namespace Slush.Repositories.RequirementsRepository
 {
     public class MaximumSystemRequirementRepository
     {

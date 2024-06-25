@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using System.Reactive.Subjects;
 
@@ -9,17 +9,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class OwnedDlcController : Controller
     {
-        private readonly OwnedDlcRepository _dao;
+        private readonly OwnedDlcRepository _Repositories;
 
-        public OwnedDlcController(OwnedDlcRepository dao)
+        public OwnedDlcController(OwnedDlcRepository Repositories)
         {
-            _dao = dao;
+            _Repositories = Repositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedDlcs()
         {
-            var dlcs = await _dao.GetAllDlcs();
+            var dlcs = await _Repositories.GetAllDlcs();
 
             return Ok(dlcs);
         }
@@ -32,7 +32,7 @@ namespace Slush.Controllers
                 entity.userId,
                 DateTime.Now);
 
-            await _dao.Add(result);
+            await _Repositories.Add(result);
 
             return Ok(result);
         }
@@ -40,7 +40,7 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteOwnedDlc(Guid id)
         {
-            await _dao.Delete(id);
+            await _Repositories.Delete(id);
 
             return NoContent();
         }
@@ -48,7 +48,7 @@ namespace Slush.Controllers
         [HttpPatch]
         public async Task<ActionResult> UpdateOwnedDlc(Guid id, [FromBody] OwnedDlc dlc)
         {
-            var result = await _dao.UpdateOwned(new OwnedDlc(id, dlc.ownedDlcId, dlc.userId, dlc.createdAt));
+            var result = await _Repositories.UpdateOwned(new OwnedDlc(id, dlc.ownedDlcId, dlc.userId, dlc.createdAt));
 
             return Ok(result);
         }
@@ -56,7 +56,7 @@ namespace Slush.Controllers
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<OwnedDlc>>> GetOwnedDlcByUserId(Guid id)
         {
-            var response = await _dao.GetByUserId(id);
+            var response = await _Repositories.GetByUserId(id);
 
             if(response == null)
             {
@@ -69,7 +69,7 @@ namespace Slush.Controllers
         [HttpGet("byid/{id}")]
         public async Task<ActionResult<OwnedDlc>> GetOwnedDlcById(Guid id)
         {
-            var response = await _dao.GetById(id);
+            var response = await _Repositories.GetById(id);
 
             if (response == null)
             {
@@ -82,7 +82,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<OwnedDlc>>> GetAllOwnedDlcsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _dao.GetByIds(guidList);
+            var response = await _Repositories.GetByIds(guidList);
 
             return Ok(response); 
         }

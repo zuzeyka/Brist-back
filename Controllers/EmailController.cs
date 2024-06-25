@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using FullStackBrist.Server.Services.Email;
 
 namespace Slush.Controllers

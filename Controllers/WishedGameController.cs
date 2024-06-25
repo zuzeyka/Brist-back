@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class WishedGameController : Controller
     {
-        private readonly WishedGameRepository _wishedGameDao;
+        private readonly WishedGameRepository _wishedGameRepositories;
 
-        public WishedGameController(WishedGameRepository wishedGameDao)
+        public WishedGameController(WishedGameRepository wishedGameRepositories)
         {
-            _wishedGameDao = wishedGameDao;
+            _wishedGameRepositories = wishedGameRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<WishedGameRepository>>> GetAllWishedGames()
         {
-            var wishedGames = await _wishedGameDao.GetAllWishedGames();
+            var wishedGames = await _wishedGameRepositories.GetAllWishedGames();
 
             return Ok(wishedGames);
         }
@@ -34,7 +34,7 @@ namespace FullStackBrist.Server.Controllers
                 model.userId,
                 DateTime.Now);
 
-            await _wishedGameDao.Add(result);
+            await _wishedGameRepositories.Add(result);
 
             return Ok(result);
         }
@@ -42,7 +42,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetWishedGame(Guid id)
         {
-            var response = await _wishedGameDao.GetById(id);
+            var response = await _wishedGameRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("byuid/{id}/bygameid/{gameid}")]
         public async Task<ActionResult<User>> GetWishedGameByUser(Guid id, Guid gameid)
         {
-            var response = await _wishedGameDao.GetByUserAndGameId(id, gameid);
+            var response = await _wishedGameRepositories.GetByUserAndGameId(id, gameid);
             if (response == null)
             {
                 return NotFound();
@@ -66,21 +66,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteWishedGame(Guid id)
         {
-            await _wishedGameDao.DeleteWishedGame(id);
+            await _wishedGameRepositories.DeleteWishedGame(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateWishedGame(Guid id, [FromBody] WishedGameModel game)
         {
-            var result = await _wishedGameDao.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));
+            var result = await _wishedGameRepositories.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<WishedGame>>> GetAllWishedGamesByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _wishedGameDao.GetIds(guidList);
+            var response = await _wishedGameRepositories.GetIds(guidList);
 
             return Ok(response);
         }

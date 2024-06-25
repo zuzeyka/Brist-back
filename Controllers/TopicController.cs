@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupRepository;
+using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class TopicController : Controller
     {
-        private readonly TopicRepository _topicDao;
+        private readonly TopicRepository _topicRepositories;
 
-        public TopicController(TopicRepository topicDao)
+        public TopicController(TopicRepository topicRepositories)
         {
-            _topicDao = topicDao;
+            _topicRepositories = topicRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<TopicRepository>>> GetAllTopics()
         {
-            var topics = await _topicDao.GetAllTopics();
+            var topics = await _topicRepositories.GetAllTopics();
 
             return Ok(topics);
         }
@@ -35,7 +35,7 @@ namespace FullStackBrist.Server.Controllers
                 model.authorId,
                 DateTime.Now);
 
-            await _topicDao.Add(result);
+            await _topicRepositories.Add(result);
 
             return Ok(result);
         }
@@ -43,7 +43,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Topic>> GetTopic(Guid id)
         {
-            var response = await _topicDao.GetById(id);
+            var response = await _topicRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -55,21 +55,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTopic(Guid id)
         {
-            await _topicDao.DeleteTopic(id);
+            await _topicRepositories.DeleteTopic(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateTopic(Guid id, [FromBody] TopicModel topic)
         {
-            var result = await _topicDao.UpdateTopic(new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt));
+            var result = await _topicRepositories.UpdateTopic(new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt));
             return Ok(result);
         }
 
         [HttpGet("byattachedid/{id}")]
         public async Task<ActionResult<List<Topic>>> GetByAttachedId(Guid id)
         {
-            var response = await _topicDao.GetByAttachedId(id);
+            var response = await _topicRepositories.GetByAttachedId(id);
 
             if(response == null)
             {
@@ -82,7 +82,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<Topic>>> GetAllTopicsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _topicDao.GetByIds(guidList);
+            var response = await _topicRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

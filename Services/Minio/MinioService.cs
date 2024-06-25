@@ -71,19 +71,42 @@ namespace Slush.Services.Minio
             }
         }
 
-        public async Task<String> GetUrlToFile( String fileName)
+        public async Task<List<String>> GetUrlToFiles()
         {
+            var reqParams = new Dictionary<string, string>(StringComparer.Ordinal);
+
+            List<String> list = new List<String>();
+
+            for (int i = 1; i < 51; i++)
+            {
+
+                PresignedGetObjectArgs args = new PresignedGetObjectArgs()
+                    .WithBucket("images")
+                    .WithObject($"GameImages/{i}.jpg")
+                    .WithHeaders(reqParams)
+                    .WithExpiry(604800);
+
+                string url = await _minioClient.PresignedGetObjectAsync(args);
+
+                list.Add(url);
+            }
+
+            return list;
+        }
+
+        public async Task<String> GetUrlToFile(String fileName)
+        {
+
             var reqParams = new Dictionary<string, string>(StringComparer.Ordinal);
 
             PresignedGetObjectArgs args = new PresignedGetObjectArgs()
                 .WithBucket("images")
-                .WithObject(fileName)
+                .WithObject($"{fileName}")
                 .WithHeaders(reqParams)
                 .WithExpiry(604800);
 
             string url = await _minioClient.PresignedGetObjectAsync(args);
 
-            Console.WriteLine(url);
 
             return url;
         }

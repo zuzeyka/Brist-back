@@ -5,7 +5,7 @@ using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
 using Slush.Data.Entity.Community.GameGroup;
 
-namespace Slush.DAO.GroupRepository
+namespace Slush.Repositories.GroupRepository
 {
     public class PostRepository
     {

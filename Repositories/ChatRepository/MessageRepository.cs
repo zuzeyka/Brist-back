@@ -3,7 +3,7 @@ using Org.BouncyCastle.Crypto;
 using Slush.Data;
 using Slush.Entity.Chat;
 
-namespace Slush.DAO.ChatRepository
+namespace Slush.Repositories.ChatRepository
 {
     public class MessageRepository
     {

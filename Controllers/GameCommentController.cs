@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupRepository;
+using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameCommentController : Controller
     {
-        private readonly GameCommentRepository _gameCommentDao;
+        private readonly GameCommentRepository _gameCommentRepositories;
 
         public GameCommentController(GameCommentRepository GameGroupRepository)
         {
-            _gameCommentDao = GameGroupRepository;
+            _gameCommentRepositories = GameGroupRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GameCommentRepository>>> GetAllGameComments()
         {
-            var _gameComment = await _gameCommentDao.GetAllGameComments();
+            var _gameComment = await _gameCommentRepositories.GetAllGameComments();
 
             return Ok(_gameComment);
         }
@@ -33,14 +33,14 @@ namespace FullStackBrist.Server.Controllers
                                             model.authorId,
                                             DateTime.Now
                                             );
-            await _gameCommentDao.Add(result);
+            await _gameCommentRepositories.Add(result);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GameComment>> GetGameComment(Guid id)
         {
-            var response = await _gameCommentDao.GetById(id);
+            var response = await _gameCommentRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -52,21 +52,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGameComment(Guid id)
         {
-            await _gameCommentDao.DeleteGameComment(id);
+            await _gameCommentRepositories.DeleteGameComment(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGameComment(Guid id, [FromBody] GameCommentModel game)
         {
-            var result = await _gameCommentDao.UpdateGameComment(new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt));
+            var result = await _gameCommentRepositories.UpdateGameComment(new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt));
             return Ok(result);
         }
 
         [HttpGet("bygamepost/{id}")]
         public async Task<ActionResult<List<GameComment>>> GetByGamePostId(Guid id)
         {
-            var response = await _gameCommentDao.GetByGamePostId(id);
+            var response = await _gameCommentRepositories.GetByGamePostId(id);
 
             if(response == null)
             {
@@ -79,7 +79,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameComment>>> GetAllGameCommentsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _gameCommentDao.GetByIds(guidList);
+            var response = await _gameCommentRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

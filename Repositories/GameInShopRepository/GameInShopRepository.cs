@@ -2,7 +2,7 @@
 using Slush.Data;
 using Slush.Entity.Store.Product;
 
-namespace Slush.DAO.GameInShopRepository
+namespace Slush.Repositories.GameInShopRepository
 {
     public class GameInShopRepository
     {

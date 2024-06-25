@@ -2,7 +2,7 @@
 using Slush.Data;
 using Slush.Entity;
 
-namespace Slush.DAO
+namespace Slush.Repositories
 {
     public class DiscussionRepository
     {

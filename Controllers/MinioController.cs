@@ -65,5 +65,11 @@ namespace Slush.Controllers
         {
             return Ok(await _minioService.GetUrlToFile(fileName));
         }
+
+        [HttpGet("geturltofiles")]
+        public async Task<ActionResult> GetUrlToImages()
+        {
+            return Ok(await _minioService.GetUrlToFiles());
+        }
     }
 }

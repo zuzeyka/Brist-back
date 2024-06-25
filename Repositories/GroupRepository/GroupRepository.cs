@@ -4,7 +4,7 @@ using Slush.Data.Entity.Community;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity;
 
-namespace Slush.DAO.GroupRepository
+namespace Slush.Repositories.GroupRepository
 {
     public class GroupRepository
     {

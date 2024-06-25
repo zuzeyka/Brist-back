@@ -2,7 +2,7 @@
 using Slush.Data;
 using Slush.Data.Entity.Community;
 
-namespace Slush.DAO.GroupRepository
+namespace Slush.Repositories.GroupRepository
 {
     public class GroupCommentRepository
     {

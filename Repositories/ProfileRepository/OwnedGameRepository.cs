@@ -3,7 +3,7 @@ using Slush.Data;
 using Slush.Data.Entity;
 using Slush.Entity.Profile;
 
-namespace Slush.DAO.ProfileRepository
+namespace Slush.Repositories.ProfileRepository
 {
     public class OwnedGameRepository
     {

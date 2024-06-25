@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class FriendsController : Controller
     {
-        private readonly FriendsRepository _friendsDao;
+        private readonly FriendsRepository _friendsRepositories;
 
-        public FriendsController(FriendsRepository friendsDao)
+        public FriendsController(FriendsRepository friendsRepositories)
         {
-            _friendsDao = friendsDao;
+            _friendsRepositories = friendsRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<FriendsRepository>>> GetAllFriends()
         {
-            var _friends = await _friendsDao.GetAllFriends();
+            var _friends = await _friendsRepositories.GetAllFriends();
 
             return Ok(_friends);
         }
@@ -32,7 +32,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.friendId,
                                             DateTime.Now
                                             );
-           await _friendsDao.Add(result);
+           await _friendsRepositories.Add(result);
 
             return Ok(result);
         }
@@ -41,7 +41,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Friends>> GetFriends(Guid id)
         {
-            var response = await _friendsDao.GetById(id);
+            var response = await _friendsRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("getbyuserid/{id}")]
         public async Task<ActionResult<List<Friends>>> GetFriendsByUserId(Guid id)
         {
-            var response = await _friendsDao.GetByUserId(id);
+            var response = await _friendsRepositories.GetByUserId(id);
             if (response == null)
             {
                 return NotFound();
@@ -65,21 +65,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteFriends(Guid id)
         {
-            await _friendsDao.DeleteFriends(id);
+            await _friendsRepositories.DeleteFriends(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateFriends(Guid id, [FromBody] FriendsModel model)
         {
-            var result = await _friendsDao.UpdateFriends(new Friends(id, model.userId, model.friendId, model.createdAt));
+            var result = await _friendsRepositories.UpdateFriends(new Friends(id, model.userId, model.friendId, model.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Friends>>> GetAllFriendsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _friendsDao.GetByUserIds(guidList);
+            var response = await _friendsRepositories.GetByUserIds(guidList);
 
             return Ok(response);
         }

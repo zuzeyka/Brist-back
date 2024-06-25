@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO;
+using Slush.Repositories;
 using Slush.Entity;
 using Slush.Models;
 

@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesRepository;
+using Slush.Repositories.CategoriesRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesByUserController : Controller
     {
-        private readonly CategoriesByUserRepository _categoriesByUserDao;
+        private readonly CategoriesByUserRepository _categoriesByUserRepositories;
 
-        public CategoriesByUserController( CategoriesByUserRepository categoriesByUserDao)
+        public CategoriesByUserController( CategoriesByUserRepository categoriesByUserRepositories)
         {
-            _categoriesByUserDao = categoriesByUserDao;
+            _categoriesByUserRepositories = categoriesByUserRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CategoriesByUserRepository>>> GetAllCategoriesByUser()
         {
-            var categoriesByUser = await _categoriesByUserDao.GetAllCategoriesByUser();
+            var categoriesByUser = await _categoriesByUserRepositories.GetAllCategoriesByUser();
 
             return Ok(categoriesByUser);
         }
@@ -31,7 +31,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.name,
                                         model.description,
                                         DateTime.Now);
-            await _categoriesByUserDao.Add(result);
+            await _categoriesByUserRepositories.Add(result);
 
             return Ok(result);
         }
@@ -39,7 +39,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryByUser>> GetCategoryByUser(Guid id)
         {
-            var response = await _categoriesByUserDao.GetById(id);
+            var response = await _categoriesByUserRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -51,21 +51,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategoryByUser(Guid id)
         {
-            await _categoriesByUserDao.DeleteCategoryByUser(id);
+            await _categoriesByUserRepositories.DeleteCategoryByUser(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateCategoryByUser(Guid id, [FromBody] CategoryByUserModel model)
         {
-            var result = await _categoriesByUserDao.UpdateCategoriesByUser(new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now));
+            var result = await _categoriesByUserRepositories.UpdateCategoriesByUser(new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<CategoryByUser>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _categoriesByUserDao.GetAllById(guidList);
+            var response = await _categoriesByUserRepositories.GetAllById(guidList);
 
             return Ok(response);
         }

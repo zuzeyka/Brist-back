@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CategoriesRepository;
+using Slush.Repositories.CategoriesRepository;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesForGameController : Controller
     {
-        private readonly CategoryForGameRepository _categoryForGameDao;
+        private readonly CategoryForGameRepository _categoryForGameRepositories;
 
-        public CategoriesForGameController(CategoryForGameRepository categoryForGameDao)
+        public CategoriesForGameController(CategoryForGameRepository categoryForGameRepositories)
         {
-            _categoryForGameDao = categoryForGameDao;
+            _categoryForGameRepositories = categoryForGameRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CategoryForGameRepository>>> GetAllCategoriesForGame()
         {
-            var categoriesForGame = await _categoryForGameDao.GetAll();
+            var categoriesForGame = await _categoryForGameRepositories.GetAll();
 
             return Ok(categoriesForGame);
         }
@@ -33,7 +33,7 @@ namespace FullStackBrist.Server.Controllers
                                         model.gameId,
                                         model.categoryId,
                                         DateTime.Now);
-            await _categoryForGameDao.Add(result);
+            await _categoryForGameRepositories.Add(result);
 
             return Ok(result);
         }
@@ -41,7 +41,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryForGame>> GetCategoryForGame(Guid id)
         {
-            var response = await _categoryForGameDao.GetById(id);
+            var response = await _categoryForGameRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<CategoryForGame>>> GetCategoryForGameByGameId(Guid id)
         {
-            var response = await _categoryForGameDao.GetByGameId(id);
+            var response = await _categoryForGameRepositories.GetByGameId(id);
             if (response == null)
             {
                 return NotFound();
@@ -65,21 +65,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategoryForGame(Guid id)
         {
-            await _categoryForGameDao.DeleteCategoryForGame(id);
+            await _categoryForGameRepositories.DeleteCategoryForGame(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateCategoryForGame(Guid id, [FromBody] CategoryForGameModel model)
         {
-            var result = await _categoryForGameDao.UpdateCategoryForGame(new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now));
+            var result = await _categoryForGameRepositories.UpdateCategoryForGame(new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<CategoryForGame>>> GetAllCategoriesByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _categoryForGameDao.GetByGameIds(guidList);
+            var response = await _categoryForGameRepositories.GetByGameIds(guidList);
 
             return Ok(response);
         }

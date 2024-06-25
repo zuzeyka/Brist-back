@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ChatRepository;
+using Slush.Repositories.ChatRepository;
 using Slush.Entity.Chat;
 using Slush.Models.Chat;
 

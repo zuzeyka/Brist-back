@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupRepository;
+using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameNewsController : Controller
     {
-        private readonly GameNewsRepository _gameNewsDao;
+        private readonly GameNewsRepository _gameNewsRepositories;
         private readonly MinioService _minioService;
 
-        public GameNewsController(GameNewsRepository gameNewsDao, MinioService minioService)
+        public GameNewsController(GameNewsRepository gameNewsRepositories, MinioService minioService)
         {
-            _gameNewsDao = gameNewsDao;
+            _gameNewsRepositories = gameNewsRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GameNewsRepository>>> GetAllGameNews()
         {
-            var _gameNews = await _gameNewsDao.GetAllGameNews();
+            var _gameNews = await _gameNewsRepositories.GetAllGameNews();
 
             return Ok(_gameNews);
         }
@@ -63,7 +63,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _gameNewsDao.Add(result);
+            await _gameNewsRepositories.Add(result);
 
             return Ok(result);
         }
@@ -72,7 +72,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameNews>> GetGameNews(Guid id)
         {
-            var response = await _gameNewsDao.GetById(id);
+            var response = await _gameNewsRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGameNews(Guid id)
         {
-            await _gameNewsDao.DeleteGameNews(id);
+            await _gameNewsRepositories.DeleteGameNews(id);
             return NoContent();
         }
 
@@ -111,14 +111,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _gameNewsDao.UpdateGameNews(new GameNews(id, game.title, game.description, game.likesCount, game.gameId, game.gameGroupId, game.authorId, game.content, game.contentUrl, game.createdAt));
+            var result = await _gameNewsRepositories.UpdateGameNews(new GameNews(id, game.title, game.description, game.likesCount, game.gameId, game.gameGroupId, game.authorId, game.content, game.contentUrl, game.createdAt));
             return Ok(result);
         }
 
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<GameNews>>> GetByGameId(Guid id)
         {
-            var response = await _gameNewsDao.GetByGameId(id);
+            var response = await _gameNewsRepositories.GetByGameId(id);
 
             if(response == null)
             {
@@ -131,7 +131,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameNews>>> GetAllGameNewsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _gameNewsDao.GetByIds(guidList);
+            var response = await _gameNewsRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

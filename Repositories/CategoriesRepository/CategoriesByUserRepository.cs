@@ -2,7 +2,7 @@
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slush.DAO.CategoriesRepository
+namespace Slush.Repositories.CategoriesRepository
 {
     public class CategoriesByUserRepository
     {

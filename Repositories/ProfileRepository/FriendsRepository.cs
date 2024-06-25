@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity;
 
-namespace Slush.DAO.ProfileRepository
+namespace Slush.Repositories.ProfileRepository
 {
     public class FriendsRepository
     {

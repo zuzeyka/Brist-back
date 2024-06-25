@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameGroupRepository;
+using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameTopicController : Controller
     {
-        private readonly GameTopicRepository _gameTopicDao;
+        private readonly GameTopicRepository _gameTopicRepositories;
 
-        public GameTopicController(GameTopicRepository gameTopicDao)
+        public GameTopicController(GameTopicRepository gameTopicRepositories)
         {
-            _gameTopicDao = gameTopicDao;
+            _gameTopicRepositories = gameTopicRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GameTopicRepository>>> GetAllGameTopics()
         {
-            var gameTopics = await _gameTopicDao.GetAllGameTopics();
+            var gameTopics = await _gameTopicRepositories.GetAllGameTopics();
 
             return Ok(gameTopics);
         }
@@ -34,7 +34,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.description,
                                             DateTime.Now
                                             );
-            await _gameTopicDao.Add(result);
+            await _gameTopicRepositories.Add(result);
 
             return Ok(result);
         }
@@ -43,7 +43,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameTopic>> GetGameTopic(Guid id)
         {
-            var response = await _gameTopicDao.GetById(id);
+            var response = await _gameTopicRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -55,21 +55,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGameTopic(Guid id)
         {
-            await _gameTopicDao.DeleteGameTopic(id);
+            await _gameTopicRepositories.DeleteGameTopic(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameTopicModel game)
         {
-            var result = await _gameTopicDao.UpdateGameTopic(new GameTopic(id, game.attachedId, game.name, game.description, game.createdAt));
+            var result = await _gameTopicRepositories.UpdateGameTopic(new GameTopic(id, game.attachedId, game.name, game.description, game.createdAt));
             return Ok(result);
         }
 
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<GameTopic>>> GetByGameId(Guid id)
         {
-            var response = await _gameTopicDao.GetByGameId(id);
+            var response = await _gameTopicRepositories.GetByGameId(id);
 
             if(response == null)
             {
@@ -82,7 +82,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameTopic>>> GetAllGameNewsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _gameTopicDao.GetByIds(guidList);
+            var response = await _gameTopicRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

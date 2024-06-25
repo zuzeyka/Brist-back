@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsRepository;
+using Slush.Repositories.CreatorsRepository;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DeveloperController : Controller
     {
-        private readonly DeveloperRepository _developerDao;
+        private readonly DeveloperRepository _developerRepositories;
         private readonly MinioService _minioService;
 
-        public DeveloperController(DeveloperRepository developerDao, MinioService minioService)
+        public DeveloperController(DeveloperRepository developerRepositories, MinioService minioService)
         {
-            _developerDao = developerDao;
+            _developerRepositories = developerRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<DeveloperRepository>>> GetAllDevelopers()
         {
-            var _developers = await _developerDao.GetAllDevelopersDao();
+            var _developers = await _developerRepositories.GetAllDevelopersRepositories();
 
             return Ok(_developers);
         }
@@ -78,7 +78,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _developerDao.Add(result);
+            await _developerRepositories.Add(result);
 
             return Ok(result);
         }
@@ -86,7 +86,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Developer>> GetDeveloper(Guid id)
         {
-            var response = await _developerDao.GetById(id);
+            var response = await _developerRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -98,7 +98,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDeveloper(Guid id)
         {
-            await _developerDao.DeleteDeveloper(id);
+            await _developerRepositories.DeleteDeveloper(id);
             return NoContent();
         }
 
@@ -142,14 +142,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _developerDao.UpdateDeveloper(new Developer(id, model.subscribersCount, model.name, model.description, model.avatar, model.backgroundImage, model.urlForNewsPage, model.createdAt));
+            var result = await _developerRepositories.UpdateDeveloper(new Developer(id, model.subscribersCount, model.name, model.description, model.avatar, model.backgroundImage, model.urlForNewsPage, model.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Developer>>> GetAllDevelopersByIds(List<Guid> guidList)
         {
-            var result = await _developerDao.GetByIds(guidList);
+            var result = await _developerRepositories.GetByIds(guidList);
 
             return Ok(result);
         }

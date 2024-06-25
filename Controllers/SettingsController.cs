@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -9,17 +9,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        private readonly SettingsRepository _settingsDao;
+        private readonly SettingsRepository _settingsRepositories;
 
-        public SettingsController(SettingsRepository settingsDao)
+        public SettingsController(SettingsRepository settingsRepositories)
         {
-            _settingsDao = settingsDao;
+            _settingsRepositories = settingsRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<SettingsRepository>>> GetAll()
         {
-            var settings = await _settingsDao.GetAll();
+            var settings = await _settingsRepositories.GetAll();
 
             return Ok(settings);
         }
@@ -28,7 +28,7 @@ namespace Slush.Controllers
         [Route("{id}")]
         public async Task<ActionResult<Settings>> GetById(Guid id)
         {
-            var response = await _settingsDao.GetById(id);
+            var response = await _settingsRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace Slush.Controllers
         [Route("getbyuid/{id}")]
         public async Task<ActionResult<Settings>> GetByUserId(Guid userId)
         {
-            var response = await _settingsDao.GetByUserId(userId);
+            var response = await _settingsRepositories.GetByUserId(userId);
 
             if (response == null)
             {
@@ -63,7 +63,7 @@ namespace Slush.Controllers
                model.approvedFriendRequestNotification,
                model.declinedFriendRequestNotification,
                DateTime.Now);
-            await _settingsDao.Add(settings);
+            await _settingsRepositories.Add(settings);
 
             return Ok(settings);
         }
@@ -71,7 +71,7 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSettings(Guid id)
         {
-            await _settingsDao.DeleteSettings(id);
+            await _settingsRepositories.DeleteSettings(id);
             return NoContent();
         }
 
@@ -79,7 +79,7 @@ namespace Slush.Controllers
         public async Task<ActionResult> Update(Guid id, [FromBody] SettingsModel model)
         {
 
-            var result = await _settingsDao.UpdateSettings(new Settings(id,
+            var result = await _settingsRepositories.UpdateSettings(new Settings(id,
                 model.attachedUserId,
                 model.bigSaleNotification,
                model.saleFromWishlistNotification,
@@ -95,7 +95,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<Settings>>> GetAllSettingsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _settingsDao.GetByIds(guidList);
+            var response = await _settingsRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

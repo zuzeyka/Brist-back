@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 
 namespace Slush.Controllers
@@ -8,17 +8,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class AchievementByUserController : Controller
     {
-        private readonly AchievementByUserRepository _achievementByUserDao;
+        private readonly AchievementByUserRepository _achievementByUserRepositories;
 
-        public AchievementByUserController(AchievementByUserRepository achievementByUserDao)
+        public AchievementByUserController(AchievementByUserRepository achievementByUserRepositories)
         {
-            _achievementByUserDao = achievementByUserDao;
+            _achievementByUserRepositories = achievementByUserRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<AchievementByUserRepository>>> GetAllAchievementsByUser()
         {
-            var achievements = await _achievementByUserDao.GetAllAchievements();
+            var achievements = await _achievementByUserRepositories.GetAllAchievements();
 
             return Ok(achievements);
         }
@@ -32,7 +32,7 @@ namespace Slush.Controllers
                 achievement.awardTime,
                 DateTime.Now);
 
-            await _achievementByUserDao.Add(result);
+            await _achievementByUserRepositories.Add(result);
 
             return Ok(result);
         }
@@ -40,7 +40,7 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAchievement(Guid id)
         {
-            await _achievementByUserDao.Delete(id);
+            await _achievementByUserRepositories.Delete(id);
 
             return NoContent();
         }
@@ -48,7 +48,7 @@ namespace Slush.Controllers
         [HttpPatch]
         public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] AchievementByUser achievement)
         {
-            var result = await _achievementByUserDao.UpdateAchievementByUser(new AchievementByUser(id, achievement.userId, achievement.achievementId, achievement.awardTime, achievement.createdAt));
+            var result = await _achievementByUserRepositories.UpdateAchievementByUser(new AchievementByUser(id, achievement.userId, achievement.achievementId, achievement.awardTime, achievement.createdAt));
 
             return Ok(result);
         }
@@ -56,7 +56,7 @@ namespace Slush.Controllers
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<AchievementByUser>>> GetAchievementByUserId(Guid id)
         {
-            var response = await _achievementByUserDao.GetByUserId(id);
+            var response = await _achievementByUserRepositories.GetByUserId(id);
             if (response == null)
             {
                 return NotFound();
@@ -67,7 +67,7 @@ namespace Slush.Controllers
         [HttpGet("byid/{id}")]
         public async Task<ActionResult<AchievementByUser>> GetAchievementById(Guid id)
         {
-            var response = await _achievementByUserDao.GetById(id);
+            var response = await _achievementByUserRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -78,7 +78,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<AchievementByUser>>> GetAllAchievementsByUserIds([FromBody] List<Guid> guidList)
         {
-            var response = _achievementByUserDao.GetByIds(guidList);
+            var response = _achievementByUserRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

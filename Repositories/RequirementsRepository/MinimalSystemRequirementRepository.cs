@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Profile;
 using Slush.Data.Entity.Community.GameGroup;
 
-namespace Slush.DAO.RequirementsRepository
+namespace Slush.Repositories.RequirementsRepository
 {
     public class MinimalSystemRequirementRepository
     {

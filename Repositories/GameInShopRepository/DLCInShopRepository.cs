@@ -2,7 +2,7 @@
 using Slush.Entity.Store.Product;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slush.DAO.GameInShopRepository
+namespace Slush.Repositories.GameInShopRepository
 {
     public class DLCInShopRepository
     {

@@ -3,7 +3,7 @@ using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slush.DAO.CreatorsRepository
+namespace Slush.Repositories.CreatorsRepository
 {
     public class PublisherRepository
     {

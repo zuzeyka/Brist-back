@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupRepository;
+using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupCommentController : Controller
     {       
-        private readonly GroupCommentRepository _groupCommentDao;
+        private readonly GroupCommentRepository _groupCommentRepositories;
 
-        public GroupCommentController(GroupCommentRepository groupCommentDao)
+        public GroupCommentController(GroupCommentRepository groupCommentRepositories)
         {
-            _groupCommentDao = groupCommentDao;
+            _groupCommentRepositories = groupCommentRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GroupComment>>> GetAllGroupComments()
         {
-            var _groupComments = await _groupCommentDao.GetAllGroupComments();
+            var _groupComments = await _groupCommentRepositories.GetAllGroupComments();
 
             return Ok(_groupComments);
         }
@@ -33,7 +33,7 @@ namespace FullStackBrist.Server.Controllers
                                             model.userId,
                                             DateTime.Now
                                             );
-            await _groupCommentDao.Add(result);
+            await _groupCommentRepositories.Add(result);
 
             return Ok(result);
         }
@@ -41,7 +41,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GroupComment>> GetGroupComment(Guid id)
         {
-            var response = await _groupCommentDao.GetById(id);
+            var response = await _groupCommentRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -53,21 +53,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGroupComment(Guid id)
         {
-            await _groupCommentDao.DeleteGroupComment(id);
+            await _groupCommentRepositories.DeleteGroupComment(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGroupComment(Guid id, [FromBody] GroupCommentModel group)
         {
-            var result = await _groupCommentDao.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
+            var result = await _groupCommentRepositories.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<GroupComment>>> GetAllGroupCommentsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _groupCommentDao.GetByIds(guidList);
+            var response = await _groupCommentRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

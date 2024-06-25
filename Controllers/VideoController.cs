@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class VideoController : Controller
     {
-        private readonly VideoRepository _videoDao;
+        private readonly VideoRepository _videoRepositories;
         private readonly MinioService _minioService;
 
-        public VideoController(VideoRepository videoDao, MinioService minioService)
+        public VideoController(VideoRepository videoRepositories, MinioService minioService)
         {
-            _videoDao = videoDao;
+            _videoRepositories = videoRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<VideoRepository>>> GetAllVideos()
         {
-            var videos = await _videoDao.GetAllVideos();
+            var videos = await _videoRepositories.GetAllVideos();
 
             return Ok(videos);
         }
@@ -59,7 +59,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _videoDao.Add(result);
+            await _videoRepositories.Add(result);
 
             return Ok(result);
         }
@@ -67,7 +67,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Video>> GetVideo(Guid id)
         {
-            var response = await _videoDao.GetById(id);
+            var response = await _videoRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteVideo(Guid id)
         {
-            await _videoDao.DeleteVideo(id);
+            await _videoRepositories.DeleteVideo(id);
             return NoContent();
         }
 
@@ -104,14 +104,14 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _videoDao.UpdateVideo(new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.contentUrl, video.createdAt));
+            var result = await _videoRepositories.UpdateVideo(new Video(id, video.title, video.description, video.likesCount, video.gameId, video.authorId, video.contentUrl, video.createdAt));
             return Ok(result);
         }
 
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<Video>>> GetByUserId(Guid id)
         {
-            var response = await _videoDao.GetByUId(id);
+            var response = await _videoRepositories.GetByUId(id);
 
             if(response == null)
             {
@@ -124,7 +124,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<Video>>> GetByGameId(Guid id)
         {
-            var response = await _videoDao.GetByGameId(id);
+            var response = await _videoRepositories.GetByGameId(id);
 
             if(response == null)
             {
@@ -137,7 +137,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<Video>>> GetAllVideosByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _videoDao.GetByIds(guidList);
+            var response = await _videoRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

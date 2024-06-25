@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopRepository;
+using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;
 

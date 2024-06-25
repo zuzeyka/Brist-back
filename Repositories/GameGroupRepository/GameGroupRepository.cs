@@ -3,7 +3,7 @@ using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity;
 
-namespace Slush.DAO.GameGroupRepository
+namespace Slush.Repositories.GameGroupRepository
 {
     public class GameGroupRepository
     {

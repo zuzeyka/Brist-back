@@ -6,7 +6,7 @@ using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
 using System.Collections.Immutable;
 
-namespace Slush.DAO.ProfileRepository
+namespace Slush.Repositories.ProfileRepository
 {
     public class ScreenshotRepository
     {

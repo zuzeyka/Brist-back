@@ -2,7 +2,7 @@
 using FullStackBrist.Server.Services.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
@@ -16,7 +16,7 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserRepository _userDao;
+        private readonly UserRepository _userRepositories;
         private readonly RegistrationService _registrationService;
         private readonly HashPasswordService _passwordService;
         private readonly JWTService _jwtService;
@@ -24,9 +24,9 @@ namespace FullStackBrist.Server.Controllers
         private readonly EmailService _emailService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserRepository userDao, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
+        public UserController(UserRepository userRepositories, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
         {
-            _userDao = userDao;
+            _userRepositories = userRepositories;
             _registrationService = registrationService;
             _passwordService = passwordService;
             _jwtService = jwtService;
@@ -38,7 +38,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserRepository>>> GetAllUsers()
         {
-            var _users = await _userDao.GetAllUsers();
+            var _users = await _userRepositories.GetAllUsers();
 
             return Ok(_users);
         }
@@ -82,7 +82,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("resend")]
         public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
         {
-            var user = await _userDao.GetByEmail(model.email);
+            var user = await _userRepositories.GetByEmail(model.email);
             if (user != null) 
             {
                 var code = await _emailService.SendEmail(model.email);
@@ -123,7 +123,7 @@ namespace FullStackBrist.Server.Controllers
 
         private async Task<string> Login(LoginValidationModel validationModel)
         {
-            var user = await _userDao.GetByEmail(validationModel.username);
+            var user = await _userRepositories.GetByEmail(validationModel.username);
 
             var result = _passwordService.Verify(validationModel.password, user.passwordSalt);
 
@@ -140,7 +140,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var response = await _userDao.GetById(id);
+            var response = await _userRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("getbyuid/{id}")]
         public async Task<ActionResult<User>> GetUserByUid(Guid id)
         {
-            var response = await _userDao.GetByUserId(id);
+            var response = await _userRepositories.GetByUserId(id);
             if (response == null)
             {
                 return NotFound();
@@ -162,7 +162,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
-            await _userDao.DeleteUser(id);
+            await _userRepositories.DeleteUser(id);
             return NoContent();
         }
         [HttpPatch("{id}")]
@@ -187,13 +187,13 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _userDao.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
+            var result = await _userRepositories.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
             return Ok(result);
         }
         [HttpPost("getall")]
         public async Task<ActionResult<List<User>>> GetAllUsersByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _userDao.GetByIds(guidList);
+            var response = await _userRepositories.GetByIds(guidList);
              
             return Ok(response);
         }

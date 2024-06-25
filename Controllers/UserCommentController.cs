@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using System.Net.WebSockets;
 
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserCommentController : Controller
     {
-        private readonly UserCommentRepository _userCommentDao;
+        private readonly UserCommentRepository _userCommentRepositories;
 
-        public UserCommentController(UserCommentRepository userCommentDao)
+        public UserCommentController(UserCommentRepository userCommentRepositories)
         {
-            _userCommentDao = userCommentDao;
+            _userCommentRepositories = userCommentRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<UserCommentRepository>>> GetAllUserComments()
         {
-            var _userComments = await _userCommentDao.GetAllUserComments();
+            var _userComments = await _userCommentRepositories.GetAllUserComments();
 
             return Ok(_userComments);
         }
@@ -34,7 +34,7 @@ namespace FullStackBrist.Server.Controllers
                 model.content,
                 DateTime.Now);
 
-            await _userCommentDao.Add(result);
+            await _userCommentRepositories.Add(result);
 
             return Ok(result);
         }
@@ -42,7 +42,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserComment>> GetUserComment(Guid id)
         {
-            var response = await _userCommentDao.GetById(id);
+            var response = await _userCommentRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -54,21 +54,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserComment(Guid id)
         {
-            await _userCommentDao.DeleteUserComment(id);
+            await _userCommentRepositories.DeleteUserComment(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateUserComment(Guid id, [FromBody] UserCommentModel comment)
         {
-            var result = await _userCommentDao.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));
+            var result = await _userCommentRepositories.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));
             return Ok(result);
         }
 
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<UserComment>>> GetAllUserCommentsById(Guid id)
         {
-            var response = await _userCommentDao.GetByUId(id);
+            var response = await _userCommentRepositories.GetByUId(id);
 
             if(response == null)
             {
@@ -81,7 +81,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<UserComment>>> GetAllUserCommentsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _userCommentDao.GetByIds(guidList);
+            var response = await _userCommentRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

@@ -2,7 +2,7 @@
 using Slush.Data;
 using Slush.Data.Entity;
 
-namespace Slush.DAO.LanguageRepository
+namespace Slush.Repositories.LanguageRepository
 {
     public class LanguageRepository
     {

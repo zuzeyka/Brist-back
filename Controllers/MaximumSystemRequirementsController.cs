@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.RequirementsRepository;
+using Slush.Repositories.RequirementsRepository;
 using Slush.Data.Entity;
 
 namespace FullStackBrist.Server.Controllers
@@ -9,17 +9,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MaximumSystemRequirementsController : Controller
     {
-        private readonly MaximumSystemRequirementRepository _requirementDao;
+        private readonly MaximumSystemRequirementRepository _requirementRepositories;
 
-        public MaximumSystemRequirementsController(MaximumSystemRequirementRepository requirementDao)
+        public MaximumSystemRequirementsController(MaximumSystemRequirementRepository requirementRepositories)
         {
-            _requirementDao = requirementDao;
+            _requirementRepositories = requirementRepositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<MaximumSystemRequirementRepository>>> GetAllMaximumSystemRequirements()
         {
-            var requirements = await _requirementDao.GetAllMaximumSystemRequirements();
+            var requirements = await _requirementRepositories.GetAllMaximumSystemRequirements();
 
             return Ok(requirements);
         }
@@ -37,7 +37,7 @@ namespace FullStackBrist.Server.Controllers
                 model.freeDiskSpace,
                                             DateTime.Now
                                             );
-            await _requirementDao.Add(result);
+            await _requirementRepositories.Add(result);
 
             return Ok(result);
         }
@@ -45,7 +45,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MaximumSystemRequirement>> GetMaximumSystemRequirement(Guid id)
         {
-            var response = await _requirementDao.GetById(id);
+            var response = await _requirementRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<MaximumSystemRequirement>>> GetRequirementsByGameId(Guid id)
         {
-            var response = await _requirementDao.GetByGameName(id);
+            var response = await _requirementRepositories.GetByGameName(id);
 
             if(response == null)
             {
@@ -70,21 +70,21 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMaximumSystemRequirement(Guid id)
         {
-            await _requirementDao.DeleteMaximumSystemRequirement(id);
+            await _requirementRepositories.DeleteMaximumSystemRequirement(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateMaximumSystemRequirement(Guid id, [FromBody] MaximumSystemRequirementModel requirement)
         {
-            var result = await _requirementDao.UpdateMaximumSystemRequirement(new MaximumSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));
+            var result = await _requirementRepositories.UpdateMaximumSystemRequirement(new MaximumSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<MaximumSystemRequirement>>> GetAllMaximumSystemRequirementByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _requirementDao.GetByIds(guidList);
+            var response = await _requirementRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

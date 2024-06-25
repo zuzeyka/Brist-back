@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Slush.DAO.GameInShopRepository;
-using Slush.DAO.CategoriesRepository;
+using Slush.Repositories.GameInShopRepository;
+using Slush.Repositories.CategoriesRepository;
 using Slush.Data;
-using Slush.DAO.CreatorsRepository;
-using Slush.DAO.GameGroupRepository;
-using Slush.DAO.GroupRepository;
-using Slush.DAO.LanguageRepository;
-using Slush.DAO.ProfileRepository;
-using Slush.DAO.RequirementsRepository;
-using Slush.DAO.ChatRepository;
-using Slush.DAO;
+using Slush.Repositories.CreatorsRepository;
+using Slush.Repositories.GameGroupRepository;
+using Slush.Repositories.GroupRepository;
+using Slush.Repositories.LanguageRepository;
+using Slush.Repositories.ProfileRepository;
+using Slush.Repositories.RequirementsRepository;
+using Slush.Repositories.ChatRepository;
+using Slush.Repositories;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
@@ -17,7 +17,6 @@ using Minio;
 using Slush.Services.Minio;
 using FullStackBrist.Server.Services.Email;
 using FullStackBrist.Server.Services.Random;
-using Slush.DAO.GroupRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +34,7 @@ builder.Services.AddSingleton<IMinioClient>(sp =>
 {
     return new MinioClient()
         .WithEndpoint("172.16.10.22:9000")
-        .WithCredentials("iLuBz5sTXKUSVwQkvigf", "SjlfQa6pJkEIvtcxCcSpa9l30Vq82G8uInJ6m0vT")
+        .WithCredentials("***REMOVED_MINIO_ACCESS_KEY***", "***REMOVED_MINIO_SECRET_KEY***")
         .WithSSL(false)
         .Build();
 });
@@ -61,7 +60,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddRazorPages();
 
-#region DAO
+#region Repositories
 
 builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<CategoriesByAuthorRepository>();

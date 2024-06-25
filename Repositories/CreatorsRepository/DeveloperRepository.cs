@@ -3,7 +3,7 @@ using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slush.DAO.CreatorsRepository
+namespace Slush.Repositories.CreatorsRepository
 {
     public class DeveloperRepository
     {
@@ -14,7 +14,7 @@ namespace Slush.DAO.CreatorsRepository
             _context = context;
         }
 
-        public async Task<List<Developer>> GetAllDevelopersDao()
+        public async Task<List<Developer>> GetAllDevelopersRepositories()
         {
             return await _context.dbDevelopers
                 .Where(d => d.deleteAt == null)

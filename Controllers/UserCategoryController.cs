@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.ProfileRepository;
+using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 
@@ -9,23 +9,23 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class UserCategoryController : Controller
     {
-        private readonly CategoryByUserForGameRepository _categoryByUserForGameDao;
-        private readonly UserCategoryRepository _userCategoryDao;
-        private readonly OwnedGameRepository _ownedGameDao;
+        private readonly CategoryByUserForGameRepository _categoryByUserForGameRepositories;
+        private readonly UserCategoryRepository _userCategoryRepositories;
+        private readonly OwnedGameRepository _ownedGameRepositories;
         private List<CategoryByUserForGame>? listOfCategoriesByUser { get; set; }
         private List<UserCategory>? listOfUserCategory { get; set; }
         private List<OwnedGame>? listOwnedGame { get; set; }
 
-        public UserCategoryController(CategoryByUserForGameRepository categoryByUserForGameDao, UserCategoryRepository userCategoryDao, OwnedGameRepository ownedGameDao)
+        public UserCategoryController(CategoryByUserForGameRepository categoryByUserForGameRepositories, UserCategoryRepository userCategoryRepositories, OwnedGameRepository ownedGameRepositories)
         {
-            _categoryByUserForGameDao = categoryByUserForGameDao;
-            _userCategoryDao = userCategoryDao;
-            _ownedGameDao = ownedGameDao;
+            _categoryByUserForGameRepositories = categoryByUserForGameRepositories;
+            _userCategoryRepositories = userCategoryRepositories;
+            _ownedGameRepositories = ownedGameRepositories;
         }
         [HttpGet("getcategories")]
         public async Task<ActionResult<List<CategoryByUserForGameRepository>>> GetAllCategories()
         {
-            var categories = await _categoryByUserForGameDao.GetAllCategoryByUserForGames();
+            var categories = await _categoryByUserForGameRepositories.GetAllCategoryByUserForGames();
 
             listOfCategoriesByUser = categories;
 
@@ -35,7 +35,7 @@ namespace Slush.Controllers
         [HttpGet("getcategoriesbyuser")]
         public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByUser()
         {
-            var categories = await _userCategoryDao.GetAllUserCategories();
+            var categories = await _userCategoryRepositories.GetAllUserCategories();
 
             listOfUserCategory = categories;
 
@@ -45,7 +45,7 @@ namespace Slush.Controllers
         [HttpGet("getownedgames")]
         public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedGames()
         {
-            var games = await _ownedGameDao.GetAllOwnedGames();
+            var games = await _ownedGameRepositories.GetAllOwnedGames();
 
             listOwnedGame = games;
 
@@ -55,7 +55,7 @@ namespace Slush.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
         {
-            var categories = await _userCategoryDao.GetAllCategoriesByUser(id);
+            var categories = await _userCategoryRepositories.GetAllCategoriesByUser(id);
 
             listOfUserCategory = categories;
 
@@ -71,7 +71,7 @@ namespace Slush.Controllers
                 model.image,
                 DateTime.Now);
 
-            await _categoryByUserForGameDao.Add(result);
+            await _categoryByUserForGameRepositories.Add(result);
 
             return Ok(result);
         }
@@ -86,7 +86,7 @@ namespace Slush.Controllers
                 model.categoryId,
                 DateTime.Now);
 
-            await _userCategoryDao.Add(result);
+            await _userCategoryRepositories.Add(result);
 
             return Ok(result);
         }
@@ -94,7 +94,7 @@ namespace Slush.Controllers
         [HttpPatch("updateusercategories/{id}")]
         public async Task<ActionResult> UpdateUserCategories(Guid id, [FromBody] UserCategoryModel model)
         {
-            var result = await _userCategoryDao.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
+            var result = await _userCategoryRepositories.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
 
             return Ok(result);
         }
@@ -102,7 +102,7 @@ namespace Slush.Controllers
         [HttpPatch("updatecategories/{id}")]
         public async Task<ActionResult> UpdateCategories(Guid id, [FromBody] CategoryByUserForGame model)
         {
-            var result = await _categoryByUserForGameDao.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));
+            var result = await _categoryByUserForGameRepositories.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));
 
             return Ok(result);
         }
@@ -110,21 +110,21 @@ namespace Slush.Controllers
         [HttpDelete("deletecategories/{id}")]
         public async Task<ActionResult> DeleteCategories(Guid id)
         {
-            await _categoryByUserForGameDao.Delete(id);
+            await _categoryByUserForGameRepositories.Delete(id);
             return NoContent();
         }
 
         [HttpDelete("deleteusercategoires/{id}")]
         public async Task<ActionResult> DeleteUserCategories(Guid id)
         {
-            await _userCategoryDao.Delete(id);
+            await _userCategoryRepositories.Delete(id);
             return NoContent();
         }
 
         [HttpPost("usercategories/getall")]
         public async Task<ActionResult<List<UserCategory>>> GetAllUserCategoriesByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _userCategoryDao.GetByIds(guidList);
+            var response = await _userCategoryRepositories.GetByIds(guidList);
 
             return Ok(response);
         }
@@ -132,7 +132,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<CategoryByUserForGame>>> GetAllCategoryByUserForGameByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _categoryByUserForGameDao.GetByIds(guidList);
+            var response = await _categoryByUserForGameRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

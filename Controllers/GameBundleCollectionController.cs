@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GameInShopRepository;
+using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Models.ShopContent;
 
@@ -9,17 +9,17 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class GameBundleCollectionController : Controller
     {
-        private readonly GameBundleCollectionRepository _dao;
+        private readonly GameBundleCollectionRepository _Repositories;
 
-        public GameBundleCollectionController(GameBundleCollectionRepository dao)
+        public GameBundleCollectionController(GameBundleCollectionRepository Repositories)
         {
-            _dao = dao;
+            _Repositories = Repositories;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GameBundleCollectionRepository>>> GetAllCollections()
         {
-            var _bundles = await _dao.GetAll();
+            var _bundles = await _Repositories.GetAll();
 
             return Ok(_bundles);
         }
@@ -33,7 +33,7 @@ namespace Slush.Controllers
                 model.bundleId,
                 DateTime.Now);
 
-            var response = _dao.Add(result);
+            var response = _Repositories.Add(result);
 
             return Ok(response);
         }
@@ -41,7 +41,7 @@ namespace Slush.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameBundleCollection>> GetCollection(Guid id)
         {
-            var response = await _dao.GetById(id);
+            var response = await _Repositories.GetById(id);
 
             if (response == null)
             {
@@ -54,7 +54,7 @@ namespace Slush.Controllers
         [HttpGet("bygameid/{id}")]
         public async Task<ActionResult<List<GameBundleCollection>>> GetCollectionByGameId(Guid id)
         {
-            var response = await _dao.GetByGameId(id);
+            var response = await _Repositories.GetByGameId(id);
 
             if (response == null)
             {
@@ -67,14 +67,14 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await _dao.DeleteGameBundleCollection(id);
+            await _Repositories.DeleteGameBundleCollection(id);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] GameBundleCollectionModel model)
         {
-            var result = await _dao.UpdateGameBundleCollection(new GameBundleCollection(id, model.gameId, model.dlcId, model.bundleId, DateTime.Now));
+            var result = await _Repositories.UpdateGameBundleCollection(new GameBundleCollection(id, model.gameId, model.dlcId, model.bundleId, DateTime.Now));
 
             return Ok(result);
         }
@@ -82,7 +82,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<GameBundleCollection>>> GetAllBundleCollectionsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _dao.GetByGameIds(guidList);
+            var response = await _Repositories.GetByGameIds(guidList);
 
             return Ok(response);
         }

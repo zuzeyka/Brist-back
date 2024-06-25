@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
 
-namespace Slush.DAO.ProfileRepository
+namespace Slush.Repositories.ProfileRepository
 {
     public class UserCategoryRepository
     {

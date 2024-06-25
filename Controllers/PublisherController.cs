@@ -1,6 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.CreatorsRepository;
+using Slush.Repositories.CreatorsRepository;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;
 
@@ -10,19 +10,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PublisherController : Controller
     {
-        private readonly PublisherRepository _publisherDao;
+        private readonly PublisherRepository _publisherRepositories;
         private readonly MinioService _minioService;
 
-        public PublisherController(PublisherRepository publisherDao, MinioService minioService)
+        public PublisherController(PublisherRepository publisherRepositories, MinioService minioService)
         {
-            _publisherDao = publisherDao;
+            _publisherRepositories = publisherRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<PublisherRepository>>> GetAllPublishers()
         {
-            var publishers = await _publisherDao.GetAllPublishers();
+            var publishers = await _publisherRepositories.GetAllPublishers();
 
             return Ok(publishers);
         }
@@ -77,7 +77,7 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _publisherDao.Add(result);
+            await _publisherRepositories.Add(result);
 
             return Ok(result);
         }
@@ -85,7 +85,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Publisher>> GetPublisher(Guid id)
         {
-            var response = await _publisherDao.GetById(id);
+            var response = await _publisherRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -97,7 +97,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePublisher(Guid id)
         {
-            await _publisherDao.DeletePublisher(id);
+            await _publisherRepositories.DeletePublisher(id);
             return NoContent();
         }
 
@@ -143,14 +143,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _publisherDao.UpdatePublisher(new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt));
+            var result = await _publisherRepositories.UpdatePublisher(new Publisher(id, publisher.subscribersCount, publisher.name, publisher.description, publisher.avatar, publisher.backgroundImage, publisher.urlForNewsPage, publisher.createdAt));
             return Ok(result);
         }
 
         [HttpPost("getall")]
         public async Task<ActionResult<List<Publisher>>> GetAllPublishersByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _publisherDao.GetByIds(guidList);
+            var response = await _publisherRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

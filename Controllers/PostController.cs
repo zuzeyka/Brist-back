@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.DAO.GroupRepository;
+using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
 
@@ -11,19 +11,19 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PostController : Controller
     {
-        private readonly PostRepository _postDao;
+        private readonly PostRepository _postRepositories;
         private readonly MinioService _minioService;
 
-        public PostController(PostRepository postDao, MinioService minioService)
+        public PostController(PostRepository postRepositories, MinioService minioService)
         {
-            _postDao = postDao;
+            _postRepositories = postRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<PostRepository>>> GetAllPosts()
         {
-            var _posts = await _postDao.GetAllPosts();
+            var _posts = await _postRepositories.GetAllPosts();
 
             return Ok(_posts);
         }
@@ -63,14 +63,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            await _postDao.Add(result);
+            await _postRepositories.Add(result);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(Guid id)
         {
-            var response = await _postDao.GetById(id);
+            var response = await _postRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
@@ -82,7 +82,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePost(Guid id)
         {
-            await _postDao.DeletePost(id);
+            await _postRepositories.DeletePost(id);
             return NoContent();
         }
 
@@ -110,14 +110,14 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _postDao.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.contentUrl, post.createdAt));
+            var result = await _postRepositories.UpdatePost(new Post(id, post.title, post.description, post.likesCount, post.discussionId, post.authorId, post.content, post.contentUrl, post.createdAt));
             return Ok(result);
         }
 
         [HttpGet("byattachedid/{id}")]
         public async Task<ActionResult<List<Post>>> GetByAttachedId(Guid id)
         {
-            var response = await _postDao.GetByAttachedId(id);
+            var response = await _postRepositories.GetByAttachedId(id);
 
             if (response == null)
             {
@@ -131,7 +131,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<Post>>> GetAllPostsByIds([FromBody] List<Guid> guidList)
         {
-            var response = await _postDao.GetByIds(guidList);
+            var response = await _postRepositories.GetByIds(guidList);
 
             return Ok(response);
         }

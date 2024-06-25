@@ -3,7 +3,7 @@ using Slush.Data;
 using Microsoft.EntityFrameworkCore;
 using Slush.Data.Entity.Community.GameGroup;
 
-namespace Slush.DAO.LanguageRepository
+namespace Slush.Repositories.LanguageRepository
 {
     public class LanguageInGameRepository
     {
