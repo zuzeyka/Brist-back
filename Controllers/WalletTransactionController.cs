@@ -73,7 +73,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] WalletTransactions model)
         {
             var result = await _walletTransactionsDao.UpdateWalletTransactions(new WalletTransactions(id,

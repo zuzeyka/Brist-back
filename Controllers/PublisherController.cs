@@ -101,7 +101,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdatePublisher(Guid id, [FromBody] PublisherModel publisher, IFormFile? avatar, IFormFile? background)
         {
             if (avatar != null || avatar.Length != 0)

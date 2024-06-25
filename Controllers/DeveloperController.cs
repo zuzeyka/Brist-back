@@ -102,7 +102,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateDeveloper(Guid id, [FromBody] DeveloperModel model, IFormFile avatar, IFormFile background)
         {
             if (avatar != null || avatar.Length != 0)

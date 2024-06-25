@@ -87,7 +87,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
         {
 

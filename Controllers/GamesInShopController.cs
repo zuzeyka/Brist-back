@@ -90,7 +90,7 @@ namespace FullStackBrist.Server.Controllers
             await _gameInShopDao.DeleteGameInShop(id);
             return NoContent();
         }
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game, IFormFile file)
         {
             if(file != null || file.Length != 0)

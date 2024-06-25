@@ -45,7 +45,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPatch]
         public async Task<ActionResult> UpdateOwnedDlc(Guid id, [FromBody] OwnedDlc dlc)
         {
             var result = await _dao.UpdateOwned(new OwnedDlc(id, dlc.ownedDlcId, dlc.userId, dlc.createdAt));

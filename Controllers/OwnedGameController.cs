@@ -81,7 +81,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateOwnedGame(Guid id, [FromBody] OwnedGameModel game)
         {
             var result = await _ownedGameDao.UpdateOwnedGame(new OwnedGame(id, game.ownedGameId, game.userId, game.createdAt));

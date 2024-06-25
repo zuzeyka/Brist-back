@@ -75,7 +75,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] SettingsModel model)
         {
 

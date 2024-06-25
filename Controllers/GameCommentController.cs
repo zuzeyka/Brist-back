@@ -56,7 +56,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGameComment(Guid id, [FromBody] GameCommentModel game)
         {
             var result = await _gameCommentDao.UpdateGameComment(new GameComment(id, game.gamePostId, game.content, game.authorId, game.createdAt));

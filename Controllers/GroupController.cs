@@ -83,7 +83,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateGroup(Guid id, [FromBody] GroupModel group, IFormFile file)
         {
             if (file != null || file.Length != 0)

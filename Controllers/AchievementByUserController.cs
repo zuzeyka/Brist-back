@@ -45,7 +45,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPatch]
         public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] AchievementByUser achievement)
         {
             var result = await _achievementByUserDao.UpdateAchievementByUser(new AchievementByUser(id, achievement.userId, achievement.achievementId, achievement.awardTime, achievement.createdAt));

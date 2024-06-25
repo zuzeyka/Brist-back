@@ -73,7 +73,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> UpdateDiscussion(Guid id, [FromBody] DiscussionModel model)
         {
             var result = await _discussionDao.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
