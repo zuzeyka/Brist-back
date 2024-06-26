@@ -12,10 +12,6 @@ namespace Slush.Controllers
         private readonly ICategoryByUserForGameRepository _categoryByUserForGameRepositories;
         private readonly IUserCategoryRepository _userCategoryRepositories;
         private readonly IOwnedGameRepository _ownedGameRepositories;
-        private List<CategoryByUserForGame>? listOfCategoriesByUser { get; set; }
-        private List<UserCategory>? listOfUserCategory { get; set; }
-        private List<OwnedGame>? listOwnedGame { get; set; }
-
         public UserCategoryController(ICategoryByUserForGameRepository categoryByUserForGameRepositories, IUserCategoryRepository userCategoryRepositories, IOwnedGameRepository ownedGameRepositories)
         {
             _categoryByUserForGameRepositories = categoryByUserForGameRepositories;
@@ -27,8 +23,6 @@ namespace Slush.Controllers
         {
             var categories = await _categoryByUserForGameRepositories.GetAllCategoryByUserForGames();
 
-            listOfCategoriesByUser = categories;
-
             return Ok(categories);
         }
 
@@ -36,8 +30,6 @@ namespace Slush.Controllers
         public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByUser()
         {
             var categories = await _userCategoryRepositories.GetAllUserCategories();
-
-            listOfUserCategory = categories;
 
             return Ok(categories);
         }
@@ -47,8 +39,6 @@ namespace Slush.Controllers
         {
             var games = await _ownedGameRepositories.GetAllOwnedGames();
 
-            listOwnedGame = games;
-
             return Ok(games);
         }
 
@@ -56,8 +46,6 @@ namespace Slush.Controllers
         public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
         {
             var categories = await _userCategoryRepositories.GetAllCategoriesByUser(id);
-
-            listOfUserCategory = categories;
 
             return Ok(categories);
         }
