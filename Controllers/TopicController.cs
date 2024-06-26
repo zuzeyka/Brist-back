@@ -59,7 +59,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTopic(Guid id, [FromBody] TopicModel topic)
         {
             var result = await _topicRepositories.UpdateTopic(new Topic(id, topic.attachedId, topic.name, topic.description, topic.authorId, topic.createdAt));

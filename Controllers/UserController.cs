@@ -165,7 +165,7 @@ namespace FullStackBrist.Server.Controllers
             await _userRepositories.DeleteUser(id);
             return NoContent();
         }
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
         {
             if (file != null || file.Length != 0)

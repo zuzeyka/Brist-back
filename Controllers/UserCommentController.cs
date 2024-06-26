@@ -58,7 +58,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUserComment(Guid id, [FromBody] UserCommentModel comment)
         {
             var result = await _userCommentRepositories.UpdateUserComment(new UserComment(id, comment.userId, comment.authorId, comment.content, comment.createdAt));

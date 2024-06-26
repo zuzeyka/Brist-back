@@ -52,7 +52,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateChat(Guid id, [FromBody] ChatModel model)
         {
             var result = await _ChatRepository.UpdateChat(new Chat(id, model.firstUser, model.secondUser, DateTime.Now));

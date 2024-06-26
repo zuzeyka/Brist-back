@@ -69,7 +69,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] Achievement achievement, IFormFile file)
         {
             if (file != null || file.Length != 0)

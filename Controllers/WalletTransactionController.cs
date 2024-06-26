@@ -73,7 +73,7 @@ namespace Slush.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] WalletTransactions model)
         {
             var result = await _walletTransactionsRepositories.UpdateWalletTransactions(new WalletTransactions(id,

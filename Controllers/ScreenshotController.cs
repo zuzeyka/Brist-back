@@ -95,7 +95,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile? file)
         {
             if (file != null || file.Length != 0)

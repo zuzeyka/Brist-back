@@ -69,7 +69,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryForGame(Guid id, [FromBody] CategoryForGameModel model)
         {
             var result = await _categoryForGameRepositories.UpdateCategoryForGame(new CategoryForGame(id, model.gameId, model.categoryId, DateTime.Now));

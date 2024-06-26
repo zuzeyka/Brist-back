@@ -102,7 +102,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model, IFormFile file)
         {
             if (file != null || file.Length != 0)

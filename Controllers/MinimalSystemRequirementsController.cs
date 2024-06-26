@@ -71,7 +71,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMinimalSystemRequirement(Guid id, [FromBody] MinimalSystemRequirementModel requirement)
         {
             var result = await _minimalSystemRequirementRepositories.UpdateMinimalSystemRequirement(new MinimalSystemRequirement(id, requirement.gameId, requirement.OS, requirement.processor, requirement.RAM, requirement.video, requirement.freeDiskSpace, requirement.createdAt));

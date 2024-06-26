@@ -55,7 +55,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryByUser(Guid id, [FromBody] CategoryByUserModel model)
         {
             var result = await _categoriesByUserRepositories.UpdateCategoriesByUser(new CategoryByUser(id, model.authorId, model.name, model.description, DateTime.Now));

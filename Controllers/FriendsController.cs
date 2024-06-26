@@ -69,7 +69,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateFriends(Guid id, [FromBody] FriendsModel model)
         {
             var result = await _friendsRepositories.UpdateFriends(new Friends(id, model.userId, model.friendId, model.createdAt));

@@ -88,7 +88,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameNewsModel game, IFormFile? file)
         {
 

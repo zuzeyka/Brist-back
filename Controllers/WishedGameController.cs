@@ -70,7 +70,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateWishedGame(Guid id, [FromBody] WishedGameModel game)
         {
             var result = await _wishedGameRepositories.UpdateWishedGame(new WishedGame(id, game.ownedGameId, game.userId, game.createdAt));

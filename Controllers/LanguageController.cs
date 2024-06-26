@@ -55,7 +55,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLanguage(Guid id, [FromBody] LanguageModel language)
         {
             var result = await _LanguageRepository.UpdateLanguage(new Language(id, language.name, language.createdAt));

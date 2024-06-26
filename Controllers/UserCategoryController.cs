@@ -91,7 +91,7 @@ namespace Slush.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("updateusercategories/{id}")]
+        [HttpPut("updateusercategories/{id}")]
         public async Task<ActionResult> UpdateUserCategories(Guid id, [FromBody] UserCategoryModel model)
         {
             var result = await _userCategoryRepositories.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
@@ -99,7 +99,7 @@ namespace Slush.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("updatecategories/{id}")]
+        [HttpPut("updatecategories/{id}")]
         public async Task<ActionResult> UpdateCategories(Guid id, [FromBody] CategoryByUserForGame model)
         {
             var result = await _categoryByUserForGameRepositories.UpdateCategoryByUserForGame(new CategoryByUserForGame(id, model.name, model.image, model.createdAt));

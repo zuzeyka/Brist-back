@@ -55,7 +55,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGroupModel game)
         {
             var result = await _GameGroupRepository.UpdateGameGroup(new GameGroup(id, game.gameId, game.createdAt));

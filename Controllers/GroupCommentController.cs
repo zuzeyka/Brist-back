@@ -57,7 +57,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGroupComment(Guid id, [FromBody] GroupCommentModel group)
         {
             var result = await _groupCommentRepositories.UpdateGroupComment(new GroupComment(id, group.groupId, group.content, group.userId, group.createdAt));
