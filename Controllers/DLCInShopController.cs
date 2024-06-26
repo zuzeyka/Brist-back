@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,10 +11,10 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DLCInShopController : Controller
     {
-        private readonly DLCInShopRepository _DLCInShopRepository;
-        private readonly MinioService _minioService;
+        private readonly IDLCInShopRepository _DLCInShopRepository;
+        private readonly IMinioService _minioService;
 
-        public DLCInShopController(DLCInShopRepository DLCInShopRepository, MinioService minioService)
+        public DLCInShopController(IDLCInShopRepository DLCInShopRepository, IMinioService minioService)
         {
             _DLCInShopRepository = DLCInShopRepository;
             _minioService = minioService;

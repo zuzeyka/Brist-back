@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private readonly GroupRepository _GroupRepository;
-        private readonly MinioService _minioService;
+        private readonly IGroupRepository _GroupRepository;
+        private readonly IMinioService _minioService;
 
-        public GroupController(GroupRepository GroupRepository, MinioService minioService)
+        public GroupController(IGroupRepository GroupRepository, IMinioService minioService)
         {
             _GroupRepository = GroupRepository;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GroupRepository>>> GetAllGroups()
+        public async Task<ActionResult<List<IGroupRepository>>> GetAllGroups()
         {
             var _groups = await _GroupRepository.GetAllGroups();
 

@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Language;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.LanguageRepository;
 using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class LanguageController : Controller
     {
-        private readonly LanguageRepository _LanguageRepository;
+        private readonly ILanguageRepository _LanguageRepository;
 
-        public LanguageController(LanguageRepository LanguageRepository)
+        public LanguageController(ILanguageRepository LanguageRepository)
         {
             _LanguageRepository = LanguageRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<LanguageRepository>>> GetAllLanguages()
+        public async Task<ActionResult<List<ILanguageRepository>>> GetAllLanguages()
         {
             var _languages = await _LanguageRepository.GetAllLanguages();
 

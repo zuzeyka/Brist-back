@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        private readonly SettingsRepository _settingsRepositories;
+        private readonly ISettingsRepository _settingsRepositories;
 
-        public SettingsController(SettingsRepository settingsRepositories)
+        public SettingsController(ISettingsRepository settingsRepositories)
         {
             _settingsRepositories = settingsRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<SettingsRepository>>> GetAll()
+        public async Task<ActionResult<List<ISettingsRepository>>> GetAll()
         {
             var settings = await _settingsRepositories.GetAll();
 

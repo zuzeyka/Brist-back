@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Models.ShopContent;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class GameBundleController : Controller
     {
-        private readonly GameBundleRepository _gameBundleRepositories;
+        private readonly IGameBundleRepository _gameBundleRepositories;
 
-        public GameBundleController(GameBundleRepository gameBundleRepositories)
+        public GameBundleController(IGameBundleRepository gameBundleRepositories)
         {
             _gameBundleRepositories = gameBundleRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameBundleRepository>>> GetAllGameBundles()
+        public async Task<ActionResult<List<IGameBundleRepository>>> GetAllGameBundles()
         {
             var _bundles = await _gameBundleRepositories.GetAll();
 

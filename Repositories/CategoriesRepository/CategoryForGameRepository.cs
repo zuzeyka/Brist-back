@@ -2,10 +2,11 @@
 using Slush.Data;
 
 using Microsoft.EntityFrameworkCore;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.CategoriesRepository
 {
-    public class CategoryForGameRepository
+    public class CategoryForGameRepository : ICategoryForGameRepository
     {
         private readonly DataContext _context;
 
@@ -80,6 +81,7 @@ namespace Slush.Repositories.CategoriesRepository
         {
             var response = await _context.dbCategoriesForGame
                 .Where(c => c.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(c => new CategoryForGame
                 {
                     id = c.id,
@@ -106,6 +108,7 @@ namespace Slush.Repositories.CategoriesRepository
             {
                 var result = await _context.dbCategoriesForGame
                 .Where(c => c.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(c => new CategoryForGame
                 {
                     id = c.id,

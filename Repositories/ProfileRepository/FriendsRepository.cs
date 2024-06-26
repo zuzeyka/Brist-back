@@ -1,13 +1,11 @@
-﻿using Slush.Data.Entity.Community;
-using Slush.Data;
+﻿using Slush.Data;
 using Slush.Entity.Profile;
 using Microsoft.EntityFrameworkCore;
-using Slush.Data.Entity.Community.GameGroup;
-using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class FriendsRepository
+    public class FriendsRepository : IFriendsRepository
     {
         private readonly DataContext _context;
 

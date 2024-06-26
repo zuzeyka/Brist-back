@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class CategoryByUserForGameRepository
+    public class CategoryByUserForGameRepository : ICategoryByUserForGameRepository
     {
         private readonly DataContext _context;
 

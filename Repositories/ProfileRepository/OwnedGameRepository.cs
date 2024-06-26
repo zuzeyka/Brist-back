@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class OwnedGameRepository
+    public class OwnedGameRepository : IOwnedGameRepository
     {
         private readonly DataContext _context;
 

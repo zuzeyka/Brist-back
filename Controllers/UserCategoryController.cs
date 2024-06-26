@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,21 +9,21 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class UserCategoryController : Controller
     {
-        private readonly CategoryByUserForGameRepository _categoryByUserForGameRepositories;
-        private readonly UserCategoryRepository _userCategoryRepositories;
-        private readonly OwnedGameRepository _ownedGameRepositories;
+        private readonly ICategoryByUserForGameRepository _categoryByUserForGameRepositories;
+        private readonly IUserCategoryRepository _userCategoryRepositories;
+        private readonly IOwnedGameRepository _ownedGameRepositories;
         private List<CategoryByUserForGame>? listOfCategoriesByUser { get; set; }
         private List<UserCategory>? listOfUserCategory { get; set; }
         private List<OwnedGame>? listOwnedGame { get; set; }
 
-        public UserCategoryController(CategoryByUserForGameRepository categoryByUserForGameRepositories, UserCategoryRepository userCategoryRepositories, OwnedGameRepository ownedGameRepositories)
+        public UserCategoryController(ICategoryByUserForGameRepository categoryByUserForGameRepositories, IUserCategoryRepository userCategoryRepositories, IOwnedGameRepository ownedGameRepositories)
         {
             _categoryByUserForGameRepositories = categoryByUserForGameRepositories;
             _userCategoryRepositories = userCategoryRepositories;
             _ownedGameRepositories = ownedGameRepositories;
         }
         [HttpGet("getcategories")]
-        public async Task<ActionResult<List<CategoryByUserForGameRepository>>> GetAllCategories()
+        public async Task<ActionResult<List<ICategoryByUserForGameRepository>>> GetAllCategories()
         {
             var categories = await _categoryByUserForGameRepositories.GetAllCategoryByUserForGames();
 
@@ -33,7 +33,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("getcategoriesbyuser")]
-        public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByUser()
+        public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByUser()
         {
             var categories = await _userCategoryRepositories.GetAllUserCategories();
 
@@ -43,7 +43,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("getownedgames")]
-        public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedGames()
+        public async Task<ActionResult<List<IOwnedGameRepository>>> GetAllOwnedGames()
         {
             var games = await _ownedGameRepositories.GetAllOwnedGames();
 
@@ -53,7 +53,7 @@ namespace Slush.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<UserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
+        public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
         {
             var categories = await _userCategoryRepositories.GetAllCategoriesByUser(id);
 

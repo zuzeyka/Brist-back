@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class WalletTransactionController : Controller
     {
-        private readonly WalletTransactionsRepository _walletTransactionsRepositories;
+        private readonly IWalletTransactions _walletTransactionsRepositories;
 
-        public WalletTransactionController(WalletTransactionsRepository walletTransactionsRepositories)
+        public WalletTransactionController(IWalletTransactions walletTransactionsRepositories)
         {
             _walletTransactionsRepositories = walletTransactionsRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WalletTransactionsRepository>>> GetAll()
+        public async Task<ActionResult<List<IWalletTransactions>>> GetAll()
         {
             var walletTransactions = await _walletTransactionsRepositories.GetAll();
 

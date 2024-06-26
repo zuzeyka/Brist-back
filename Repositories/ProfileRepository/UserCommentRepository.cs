@@ -1,14 +1,11 @@
 ﻿using Slush.Data.Entity.Profile;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using Slush.Data.Entity.Community.GameGroup;
-using Slush.Data.Entity;
-using System.Diagnostics;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class UserCommentRepository
+    public class UserCommentRepository : IUserCommentRepository
     {
         private readonly DataContext _context;
 

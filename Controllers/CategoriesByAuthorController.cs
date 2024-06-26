@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.CategoriesRepository;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesByAuthorController : Controller
     {
-        private readonly CategoriesByAuthorRepository _categoriesByAuthorRepositories;
-        private readonly MinioService _minioService;
+        private readonly ICategoriesByAuthorRepository _categoriesByAuthorRepositories;
+        private readonly IMinioService _minioService;
 
-        public CategoriesByAuthorController(CategoriesByAuthorRepository categoriesByAuthorRepositories, MinioService minioService)
+        public CategoriesByAuthorController(ICategoriesByAuthorRepository categoriesByAuthorRepositories, IMinioService minioService)
         {
             _categoriesByAuthorRepositories = categoriesByAuthorRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriesByAuthorRepository>>> GetAllCategoriesByAuthor()
+        public async Task<ActionResult<List<ICategoriesByAuthorRepository>>> GetAllCategoriesByAuthor()
         {
             var _categoriesByAuthor = await _categoriesByAuthorRepositories.GetAllCategoriesByAuthor();
 

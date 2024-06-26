@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Data.Entity.Community;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.GroupRepository
 {
-    public class GroupCommentRepository
+    public class GroupCommentRepository : IGroupCommentRepository
     {
         private readonly DataContext _context;
 

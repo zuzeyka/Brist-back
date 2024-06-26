@@ -1,14 +1,13 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using FullStackBrist.Server.Services.Email;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
 using Slush.Services.JWT;
 using Slush.Services.Minio;
 using Slush.Services.RegistrationValidation;
+using Slush.Repositories.IRepository;
+using Slush.Services.Email;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -16,15 +15,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserRepository _userRepositories;
-        private readonly RegistrationService _registrationService;
-        private readonly HashPasswordService _passwordService;
-        private readonly JWTService _jwtService;
-        private readonly MinioService _minioService;
-        private readonly EmailService _emailService;
+        private readonly IUserRepository _userRepositories;
+        private readonly IRegistrationService _registrationService;
+        private readonly IHashPasswordService _passwordService;
+        private readonly IJWTService _jwtService;
+        private readonly IMinioService _minioService;
+        private readonly IEmailService _emailService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserRepository userRepositories, RegistrationService registrationService, HashPasswordService passwordService, JWTService jwtService, ILogger<UserController> logger, MinioService minioService, EmailService emailService)
+        public UserController(IUserRepository userRepositories, IRegistrationService registrationService, IHashPasswordService passwordService, IJWTService jwtService, ILogger<UserController> logger, IMinioService minioService, IEmailService emailService)
         {
             _userRepositories = userRepositories;
             _registrationService = registrationService;
@@ -36,7 +35,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserRepository>>> GetAllUsers()
+        public async Task<ActionResult<List<IUserRepository>>> GetAllUsers()
         {
             var _users = await _userRepositories.GetAllUsers();
 

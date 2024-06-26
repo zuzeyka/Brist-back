@@ -1,11 +1,11 @@
-﻿using Slush.Data.Entity;
-using Slush.Data;
+﻿using Slush.Data;
 using Slush.Entity.Store.Product.Creators;
 using Microsoft.EntityFrameworkCore;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.CreatorsRepository
 {
-    public class DeveloperRepository
+    public class DeveloperRepository : IDeveloperRepository
     {
         private readonly DataContext _context;
 

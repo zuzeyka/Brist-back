@@ -1,10 +1,11 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.RequirementsRepository
 {
-    public class MaximumSystemRequirementRepository
+    public class MaximumSystemRequirementRepository : IMaximumSystemRequirementRepository
     {
         private readonly DataContext _context;
 

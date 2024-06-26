@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class ScreenshotController : Controller
     {
-        private readonly ScreenshotRepository _screenshotRepositories;
-        private readonly MinioService _minioService;
+        private readonly IScreenshotRepository _screenshotRepositories;
+        private readonly IMinioService _minioService;
 
-        public ScreenshotController(ScreenshotRepository screenshotRepositories, MinioService minioService)
+        public ScreenshotController(IScreenshotRepository screenshotRepositories, IMinioService minioService)
         {
             _screenshotRepositories = screenshotRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ScreenshotRepository>>> GetAllScreenshots()
+        public async Task<ActionResult<List<IScreenshotRepository>>> GetAllScreenshots()
         {
             var _screenshots = await _screenshotRepositories.GetAllScreenshots();
 

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Minio;
-using Minio.DataModel.Args;
-using Minio.Exceptions;
 using Slush.Services.Minio;
 
 namespace Slush.Controllers
@@ -11,11 +9,11 @@ namespace Slush.Controllers
     public class MinioController : Controller
     {
         private readonly IMinioClient _minioClient;
-        private readonly MinioService _minioService;
+        private readonly IMinioService _minioService;
 
         private readonly ILogger<MinioController> _logger;
 
-        public MinioController(IMinioClient minioClient, ILogger<MinioController> logger, MinioService minioService)
+        public MinioController(IMinioClient minioClient, ILogger<MinioController> logger, IMinioService minioService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _minioClient = minioClient;

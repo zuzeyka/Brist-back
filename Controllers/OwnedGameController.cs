@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class OwnedGameController : Controller
     {
-        private readonly OwnedGameRepository _ownedGameRepositories;
+        private readonly IOwnedGameRepository _ownedGameRepositories;
 
-        public OwnedGameController(OwnedGameRepository ownedGameRepositories)
+        public OwnedGameController(IOwnedGameRepository ownedGameRepositories)
         {
             _ownedGameRepositories = ownedGameRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedGames()
+        public async Task<ActionResult<List<IOwnedGameRepository>>> GetAllOwnedGames()
         {
             var _ownedGames = await _ownedGameRepositories.GetAllOwnedGames();
 

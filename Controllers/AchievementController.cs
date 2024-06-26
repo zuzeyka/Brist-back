@@ -2,6 +2,7 @@
 using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,10 +10,10 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class AchievementController : Controller
     {
-        private readonly AchievementRepository _achievementRepositories;
-        private readonly MinioService _minioService;
+        private readonly IAchievementRepository _achievementRepositories;
+        private readonly IMinioService _minioService;
 
-        public AchievementController(AchievementRepository achievementRepositories, MinioService minioService)
+        public AchievementController(IAchievementRepository achievementRepositories, IMinioService minioService)
         {
             _achievementRepositories = achievementRepositories;
             _minioService = minioService;

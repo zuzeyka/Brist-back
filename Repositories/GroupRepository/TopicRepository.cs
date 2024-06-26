@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
-using Slush.Data.Entity.Community.GameGroup;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.GroupRepository
 {
-    public class TopicRepository
+    public class TopicRepository : ITopicRepository
     {
         private readonly DataContext _context;
 

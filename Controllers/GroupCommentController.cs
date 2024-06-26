@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,9 +9,9 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GroupCommentController : Controller
     {       
-        private readonly GroupCommentRepository _groupCommentRepositories;
+        private readonly IGroupCommentRepository _groupCommentRepositories;
 
-        public GroupCommentController(GroupCommentRepository groupCommentRepositories)
+        public GroupCommentController(IGroupCommentRepository groupCommentRepositories)
         {
             _groupCommentRepositories = groupCommentRepositories;
         }

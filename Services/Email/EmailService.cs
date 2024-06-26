@@ -2,15 +2,16 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using FullStackBrist.Server.Services.Random;
+using Slush.Services.Email;
 
 namespace FullStackBrist.Server.Services.Email
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly RandomService _randomService;
+        private readonly IRandomService _randomService;
 
-        public EmailService(IConfiguration configuration, RandomService randomService)
+        public EmailService(IConfiguration configuration, IRandomService randomService)
         {
             _configuration = configuration;
             _randomService = randomService;

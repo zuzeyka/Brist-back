@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
-using System.Reactive.Subjects;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +8,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class OwnedDlcController : Controller
     {
-        private readonly OwnedDlcRepository _Repositories;
+        private readonly IOwnedDlcRepository _Repositories;
 
-        public OwnedDlcController(OwnedDlcRepository Repositories)
+        public OwnedDlcController(IOwnedDlcRepository Repositories)
         {
             _Repositories = Repositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OwnedGameRepository>>> GetAllOwnedDlcs()
+        public async Task<ActionResult<List<IOwnedDlcRepository>>> GetAllOwnedDlcs()
         {
             var dlcs = await _Repositories.GetAllDlcs();
 

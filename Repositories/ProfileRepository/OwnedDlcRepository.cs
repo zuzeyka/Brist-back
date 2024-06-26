@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class OwnedDlcRepository
+    public class OwnedDlcRepository : IOwnedDlcRepository
     {
         private readonly DataContext _dataContext;
 

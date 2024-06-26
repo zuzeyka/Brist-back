@@ -1,8 +1,3 @@
-using Slush.Data.Entity.Community;
-
-using Slush.Entity.Profile;
-using Slush.Entity.Store.Product;
-
 namespace Slush.Data.Entity.Profile
 {
     public class User 

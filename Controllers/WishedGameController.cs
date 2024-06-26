@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,15 +10,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class WishedGameController : Controller
     {
-        private readonly WishedGameRepository _wishedGameRepositories;
+        private readonly IWishedGameRepository _wishedGameRepositories;
 
-        public WishedGameController(WishedGameRepository wishedGameRepositories)
+        public WishedGameController(IWishedGameRepository wishedGameRepositories)
         {
             _wishedGameRepositories = wishedGameRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WishedGameRepository>>> GetAllWishedGames()
+        public async Task<ActionResult<List<IWishedGameRepository>>> GetAllWishedGames()
         {
             var wishedGames = await _wishedGameRepositories.GetAllWishedGames();
 

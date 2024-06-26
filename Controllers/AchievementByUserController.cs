@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -8,15 +8,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class AchievementByUserController : Controller
     {
-        private readonly AchievementByUserRepository _achievementByUserRepositories;
+        private readonly IAchievementByUserRepository _achievementByUserRepositories;
 
-        public AchievementByUserController(AchievementByUserRepository achievementByUserRepositories)
+        public AchievementByUserController(IAchievementByUserRepository achievementByUserRepositories)
         {
             _achievementByUserRepositories = achievementByUserRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AchievementByUserRepository>>> GetAllAchievementsByUser()
+        public async Task<ActionResult<List<IAchievementByUserRepository>>> GetAllAchievementsByUser()
         {
             var achievements = await _achievementByUserRepositories.GetAllAchievements();
 

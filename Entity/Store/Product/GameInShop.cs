@@ -1,7 +1,4 @@
-﻿using Slush.Data.Entity;
-
-
-namespace Slush.Entity.Store.Product
+﻿namespace Slush.Entity.Store.Product
 {
     public class GameInShop
     {

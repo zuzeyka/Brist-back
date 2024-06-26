@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class TopicController : Controller
     {
-        private readonly TopicRepository _topicRepositories;
+        private readonly ITopicRepository _topicRepositories;
 
-        public TopicController(TopicRepository topicRepositories)
+        public TopicController(ITopicRepository topicRepositories)
         {
             _topicRepositories = topicRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TopicRepository>>> GetAllTopics()
+        public async Task<ActionResult<List<ITopicRepository>>> GetAllTopics()
         {
             var topics = await _topicRepositories.GetAllTopics();
 

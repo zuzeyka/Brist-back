@@ -1,9 +1,8 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -11,16 +10,16 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GamesInShopController : Controller
     {
-        private readonly GameInShopRepository _GameInShopRepository;
-        private readonly MinioService _minioService;
+        private readonly IGameInShopRepository _GameInShopRepository;
+        private readonly IMinioService _minioService;
 
-        public GamesInShopController(GameInShopRepository GameInShopRepository, MinioService minioService)
+        public GamesInShopController(IGameInShopRepository GameInShopRepository, IMinioService minioService)
         {
             _GameInShopRepository = GameInShopRepository;
             _minioService = minioService;
         }
         [HttpGet]
-        public async Task<ActionResult<List<GameInShopRepository>>> GetAllGames()
+        public async Task<ActionResult<List<IGameInShopRepository>>> GetAllGames()
         {
             var games = await _GameInShopRepository.GetAll();
         

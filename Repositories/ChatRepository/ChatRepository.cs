@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Chat;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ChatRepository
 {
-    public class ChatRepository
+    public class ChatRepository : IChatRepository
     {
         private readonly DataContext _context;
 

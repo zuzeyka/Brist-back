@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class FriendsController : Controller
     {
-        private readonly FriendsRepository _friendsRepositories;
+        private readonly IFriendsRepository _friendsRepositories;
 
-        public FriendsController(FriendsRepository friendsRepositories)
+        public FriendsController(IFriendsRepository friendsRepositories)
         {
             _friendsRepositories = friendsRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FriendsRepository>>> GetAllFriends()
+        public async Task<ActionResult<List<IFriendsRepository>>> GetAllFriends()
         {
             var _friends = await _friendsRepositories.GetAllFriends();
 

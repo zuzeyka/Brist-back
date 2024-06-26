@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.LanguageRepository
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly DataContext _context;
 

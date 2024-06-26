@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Slush.Models.Validation
+﻿namespace Slush.Models.Validation
 {
     public class LoginValidationModel
     {

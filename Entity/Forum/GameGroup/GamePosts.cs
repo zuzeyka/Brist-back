@@ -1,5 +1,3 @@
-using Slush.Data.Entity.Profile;
-
 namespace Slush.Data.Entity.Community.GameGroup
 {
     public class GamePosts

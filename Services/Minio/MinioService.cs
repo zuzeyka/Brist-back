@@ -1,15 +1,13 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Minio;
+﻿using Minio;
 using Minio.DataModel;
 using Minio.DataModel.Args;
 using Minio.DataModel.Result;
 using Minio.Exceptions;
 using System.Reactive.Linq;
-using System.Security.AccessControl;
 
 namespace Slush.Services.Minio
 {
-    public class MinioService
+    public class MinioService : IMinioService
     {
         private readonly IMinioClient _minioClient;
 

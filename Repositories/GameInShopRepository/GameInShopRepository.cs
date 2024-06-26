@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Store.Product;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.GameInShopRepository
 {
-    public class GameInShopRepository
+    public class GameInShopRepository : IGameInShopRepository
     {
         private readonly DataContext _context;
 

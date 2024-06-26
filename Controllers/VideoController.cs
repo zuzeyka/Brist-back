@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class VideoController : Controller
     {
-        private readonly VideoRepository _videoRepositories;
-        private readonly MinioService _minioService;
+        private readonly IVideoRepository _videoRepositories;
+        private readonly IMinioService _minioService;
 
-        public VideoController(VideoRepository videoRepositories, MinioService minioService)
+        public VideoController(IVideoRepository videoRepositories, IMinioService minioService)
         {
             _videoRepositories = videoRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<VideoRepository>>> GetAllVideos()
+        public async Task<ActionResult<List<IVideoRepository>>> GetAllVideos()
         {
             var videos = await _videoRepositories.GetAllVideos();
 

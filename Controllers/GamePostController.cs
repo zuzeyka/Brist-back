@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GamePostController : Controller
     {
-        private readonly GamePostsRepository _gamePostsRepositories;
-        private readonly MinioService _minioService;
+        private readonly IGamePostsRepository _gamePostsRepositories;
+        private readonly IMinioService _minioService;
 
-        public GamePostController(GamePostsRepository gamePostsRepositories, MinioService minioService)
+        public GamePostController(IGamePostsRepository gamePostsRepositories, IMinioService minioService)
         {
             _gamePostsRepositories = gamePostsRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GamePostsRepository>>> GetAllGamePosts()
+        public async Task<ActionResult<List<IGamePostsRepository>>> GetAllGamePosts()
         {
             var gamePosts = await _gamePostsRepositories.GetAllGamePosts();
 

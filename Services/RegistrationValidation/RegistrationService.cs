@@ -1,18 +1,18 @@
 ﻿using FullStackBrist.Server.Models.Profile;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Hash;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Services.RegistrationValidation
 {
-    public class RegistrationService
+    public class RegistrationService : IRegistrationService
     {
-        private readonly HashPasswordService _passwordService;
-        private readonly MinioService _minioService;
-        private readonly UserRepository _userRepositories;
+        private readonly IHashPasswordService _passwordService;
+        private readonly IMinioService _minioService;
+        private readonly IUserRepository _userRepositories;
 
-        public RegistrationService(HashPasswordService passwordService, UserRepository userRepositories, MinioService minioService)
+        public RegistrationService(IHashPasswordService passwordService, IUserRepository userRepositories, IMinioService minioService)
         {
             _passwordService = passwordService;
             _userRepositories = userRepositories;

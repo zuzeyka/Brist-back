@@ -1,8 +1,6 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Slush.Services.Hash
+﻿namespace Slush.Services.Hash
 {
-    public class HashPasswordService
+    public class HashPasswordService : IHashPasswordService
     {
         public String Generate(String password)
         {

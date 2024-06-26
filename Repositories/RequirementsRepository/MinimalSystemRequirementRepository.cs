@@ -1,12 +1,11 @@
 ﻿using Slush.Data.Entity;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
-using Slush.Data.Entity.Profile;
-using Slush.Data.Entity.Community.GameGroup;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.RequirementsRepository
 {
-    public class MinimalSystemRequirementRepository
+    public class MinimalSystemRequirementRepository : IMinimalSystemRequirementRepository
     {
         private readonly DataContext _context;
 

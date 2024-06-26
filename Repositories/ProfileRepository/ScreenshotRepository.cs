@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
-using Slush.Data.Entity;
-using Slush.Data.Entity.Community.GameGroup;
 using Slush.Data.Entity.Profile;
-using Slush.Entity.Profile;
-using System.Collections.Immutable;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class ScreenshotRepository
+    public class ScreenshotRepository : IScreenshotRepository
     {
         private readonly DataContext _context;
 

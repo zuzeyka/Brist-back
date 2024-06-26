@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameTopicController : Controller
     {
-        private readonly GameTopicRepository _gameTopicRepositories;
+        private readonly IGameTopicRepository _gameTopicRepositories;
 
-        public GameTopicController(GameTopicRepository gameTopicRepositories)
+        public GameTopicController(IGameTopicRepository gameTopicRepositories)
         {
             _gameTopicRepositories = gameTopicRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameTopicRepository>>> GetAllGameTopics()
+        public async Task<ActionResult<List<IGameTopicRepository>>> GetAllGameTopics()
         {
             var gameTopics = await _gameTopicRepositories.GetAllGameTopics();
 

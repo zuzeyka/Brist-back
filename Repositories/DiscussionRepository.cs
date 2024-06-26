@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories
 {
-    public class DiscussionRepository
+    public class DiscussionRepository : IDiscussionRepository
     {
         private readonly DataContext _context;
         public DiscussionRepository(DataContext context)

@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.RequirementsRepository;
 using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MinimalSystemRequirementsController : Controller
     {
-        private readonly MinimalSystemRequirementRepository _minimalSystemRequirementRepositories;
+        private readonly IMinimalSystemRequirementRepository _minimalSystemRequirementRepositories;
 
-        public MinimalSystemRequirementsController(MinimalSystemRequirementRepository minimalSystemRequirementRepositories)
+        public MinimalSystemRequirementsController(IMinimalSystemRequirementRepository minimalSystemRequirementRepositories)
         {
             _minimalSystemRequirementRepositories = minimalSystemRequirementRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MinimalSystemRequirementRepository>>> GetAllMinimalSystemRequirements()
+        public async Task<ActionResult<List<IMinimalSystemRequirementRepository>>> GetAllMinimalSystemRequirements()
         {
             var requirements = await _minimalSystemRequirementRepositories.GetAllMinimalSystemRequirements();
 

@@ -1,5 +1,3 @@
-
-
 namespace Slush.Data.Entity
 {
     public class Language

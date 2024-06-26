@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class UserCategoryRepository
+    public class UserCategoryRepository : IUserCategoryRepository
     {
         private readonly DataContext _context;
         public UserCategoryRepository(DataContext context)

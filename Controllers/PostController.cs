@@ -1,9 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Group;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GroupRepository;
 using Slush.Data.Entity.Community;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -11,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class PostController : Controller
     {
-        private readonly PostRepository _postRepositories;
-        private readonly MinioService _minioService;
+        private readonly IPostRepository _postRepositories;
+        private readonly IMinioService _minioService;
 
-        public PostController(PostRepository postRepositories, MinioService minioService)
+        public PostController(IPostRepository postRepositories, IMinioService minioService)
         {
             _postRepositories = postRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PostRepository>>> GetAllPosts()
+        public async Task<ActionResult<List<IPostRepository>>> GetAllPosts()
         {
             var _posts = await _postRepositories.GetAllPosts();
 
@@ -86,7 +85,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
 
-        [Authorize]
+        
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
         {

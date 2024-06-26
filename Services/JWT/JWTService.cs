@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Slush.Services.JWT
 {
-    public class JWTService
+    public class JWTService : IJWTService
     {
         private readonly JWTOptions _options;
         public JWTService(IOptions<JWTOptions> options)

@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.CategoriesRepository;
 using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
-        private readonly CategoriesRepository _CategoriesRepository;
+        private readonly ICategoriesRepository _CategoriesRepository;
 
-        public CategoriesController(CategoriesRepository CategoriesRepository)
+        public CategoriesController(ICategoriesRepository CategoriesRepository)
         {
             _CategoriesRepository = CategoriesRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriesRepository>>> GetAllCategories()
+        public async Task<ActionResult<List<ICategoriesRepository>>> GetAllCategories()
         {
             var categories = await _CategoriesRepository.GetAll();
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class SettingsRepository
+    public class SettingsRepository : ISettingsRepository
     {
         private readonly DataContext _context;
 
@@ -125,7 +126,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbSettings
                     .Where(x => x.attachedUserId == id)
-                    .Where(c => c.deleteAt == null)
+                    .Where(c => c.deletedAt == null)
                     .Select(s => new Settings
                     {
                         id = s.id,

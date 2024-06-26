@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FullStackBrist.Server.Services.Email;
+using Slush.Services.Email;
 
 namespace Slush.Controllers
 {
@@ -8,9 +8,9 @@ namespace Slush.Controllers
     public class EmailController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly EmailService _emailService;
+        private readonly IEmailService _emailService;
 
-        public EmailController(IConfiguration configuration, EmailService emailService)
+        public EmailController(IConfiguration configuration, IEmailService emailService)
         {
             _configuration = configuration;
             _emailService = emailService;

@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.CreatorsRepository;
 using Slush.Entity.Store.Product.Creators;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class DeveloperController : Controller
     {
-        private readonly DeveloperRepository _developerRepositories;
-        private readonly MinioService _minioService;
+        private readonly IDeveloperRepository _developerRepositories;
+        private readonly IMinioService _minioService;
 
-        public DeveloperController(DeveloperRepository developerRepositories, MinioService minioService)
+        public DeveloperController(IDeveloperRepository developerRepositories, IMinioService minioService)
         {
             _developerRepositories = developerRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DeveloperRepository>>> GetAllDevelopers()
+        public async Task<ActionResult<List<IDeveloperRepository>>> GetAllDevelopers()
         {
             var _developers = await _developerRepositories.GetAllDevelopersRepositories();
 

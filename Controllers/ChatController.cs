@@ -2,6 +2,7 @@
 using Slush.Repositories.ChatRepository;
 using Slush.Entity.Chat;
 using Slush.Models.Chat;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,9 +10,9 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class ChatController : Controller
     {
-        private readonly ChatRepository _ChatRepository;
+        private readonly IChatRepository _ChatRepository;
 
-        public ChatController(ChatRepository ChatRepository)
+        public ChatController(IChatRepository ChatRepository)
         {
             _ChatRepository = ChatRepository;
         }

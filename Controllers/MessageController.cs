@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ChatRepository;
 using Slush.Entity.Chat;
 using Slush.Models.Chat;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-        private readonly MessageRepository _messageRepositories;
+        private readonly IMessageRepository _messageRepositories;
 
-        public MessageController(MessageRepository messageRepositories)
+        public MessageController(IMessageRepository messageRepositories)
         {
             _messageRepositories = messageRepositories;
         }
 
         [HttpGet("bychat/{id}")]
-        public async Task<ActionResult<List<MessageRepository>>> GetAllMessages([FromBody] Chat chat)
+        public async Task<ActionResult<List<IMessageRepository>>> GetAllMessages([FromBody] Chat chat)
         {
             var messages = await _messageRepositories.GetAllMessages(chat.id);
 

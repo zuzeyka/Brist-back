@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Slush.Services.JWT;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Slush.Extensions

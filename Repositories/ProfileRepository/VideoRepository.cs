@@ -1,12 +1,11 @@
 ﻿using Slush.Data.Entity.Profile;
 using Slush.Data;
 using Microsoft.EntityFrameworkCore;
-using Slush.Data.Entity.Community.GameGroup;
-using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class VideoRepository
+    public class VideoRepository : IVideoRepository
     {
         private readonly DataContext _context;
 

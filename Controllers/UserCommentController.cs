@@ -1,8 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.ProfileRepository;
 using Slush.Data.Entity.Profile;
-using System.Net.WebSockets;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class UserCommentController : Controller
     {
-        private readonly UserCommentRepository _userCommentRepositories;
+        private readonly IUserCommentRepository _userCommentRepositories;
 
-        public UserCommentController(UserCommentRepository userCommentRepositories)
+        public UserCommentController(IUserCommentRepository userCommentRepositories)
         {
             _userCommentRepositories = userCommentRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserCommentRepository>>> GetAllUserComments()
+        public async Task<ActionResult<List<IUserCommentRepository>>> GetAllUserComments()
         {
             var _userComments = await _userCommentRepositories.GetAllUserComments();
 

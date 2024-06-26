@@ -1,8 +1,8 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.GameGroupRepository;
 using Slush.Data.Entity.Community.GameGroup;
 using Slush.Services.Minio;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -10,17 +10,17 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class GameNewsController : Controller
     {
-        private readonly GameNewsRepository _gameNewsRepositories;
-        private readonly MinioService _minioService;
+        private readonly IGameNewsRepository _gameNewsRepositories;
+        private readonly IMinioService _minioService;
 
-        public GameNewsController(GameNewsRepository gameNewsRepositories, MinioService minioService)
+        public GameNewsController(IGameNewsRepository gameNewsRepositories, IMinioService minioService)
         {
             _gameNewsRepositories = gameNewsRepositories;
             _minioService = minioService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameNewsRepository>>> GetAllGameNews()
+        public async Task<ActionResult<List<IGameNewsRepository>>> GetAllGameNews()
         {
             var _gameNews = await _gameNewsRepositories.GetAllGameNews();
 

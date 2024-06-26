@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Bcpg;
 using Slush.Data;
-using Slush.Data.Entity;
 using Slush.Data.Entity.Community;
-using Slush.Data.Entity.Community.GameGroup;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.GroupRepository
 {
-    public class PostRepository
+    public class PostRepository : IPostRepository
     {
         private readonly DataContext _context;
 

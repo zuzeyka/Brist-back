@@ -1,4 +1,3 @@
-
 namespace Slush.Data.Entity.Profile
 {
     public class Video

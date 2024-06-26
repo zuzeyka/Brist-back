@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories;
 using Slush.Entity;
 using Slush.Models;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
 {
@@ -9,15 +9,15 @@ namespace Slush.Controllers
     [Route("api/[controller]")]
     public class DiscussionController : Controller
     {
-        private readonly DiscussionRepository _DiscussionRepository;
+        private readonly IDiscussionRepository _DiscussionRepository;
 
-        public DiscussionController( DiscussionRepository DiscussionRepository)
+        public DiscussionController(IDiscussionRepository DiscussionRepository)
         {
             _DiscussionRepository = DiscussionRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DiscussionRepository>>> GetAllDiscussions()
+        public async Task<ActionResult<List<IDiscussionRepository>>> GetAllDiscussions()
         {
             var _discussions = await _DiscussionRepository.GetAllDiscussions();
 

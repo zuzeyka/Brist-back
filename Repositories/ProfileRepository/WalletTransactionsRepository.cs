@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
+using Slush.Repositories.IRepository;
 
 namespace Slush.Repositories.ProfileRepository
 {
-    public class WalletTransactionsRepository
+    public class WalletTransactionsRepository : IWalletTransactions
     {
         private DataContext _context;
 

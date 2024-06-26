@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
-using Slush.Repositories.RequirementsRepository;
 using Slush.Data.Entity;
+using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -9,15 +9,15 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class MaximumSystemRequirementsController : Controller
     {
-        private readonly MaximumSystemRequirementRepository _requirementRepositories;
+        private readonly IMaximumSystemRequirementRepository _requirementRepositories;
 
-        public MaximumSystemRequirementsController(MaximumSystemRequirementRepository requirementRepositories)
+        public MaximumSystemRequirementsController(IMaximumSystemRequirementRepository requirementRepositories)
         {
             _requirementRepositories = requirementRepositories;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MaximumSystemRequirementRepository>>> GetAllMaximumSystemRequirements()
+        public async Task<ActionResult<List<IMaximumSystemRequirementRepository>>> GetAllMaximumSystemRequirements()
         {
             var requirements = await _requirementRepositories.GetAllMaximumSystemRequirements();
 
