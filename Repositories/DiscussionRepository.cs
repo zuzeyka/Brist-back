@@ -88,6 +88,7 @@ namespace Slush.Repositories
         {
             var response = await _context.dbDiscussions
                 .Where(x => x.attachedId == id)
+                .Where(c => c.deletedAt == null)
                 .Select(x => new Discussion
                 {
                     id = x.id,
@@ -117,6 +118,7 @@ namespace Slush.Repositories
             {
                 var result = await _context.dbDiscussions
                 .Where(x => x.id == item)
+                .Where(c => c.deletedAt == null)
                 .Select(x => new Discussion
                 {
                     id = x.id,

@@ -59,7 +59,7 @@ namespace Slush.Repositories.CategoriesRepository
 
         public async Task<CategoryByUser?> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbCategoriesByUsers.FirstOrDefault(c => c.id == id));
+            return await Task.FromResult(_context.dbCategoriesByUsers.Where(c => c.deleteAt == null).FirstOrDefault(c => c.id == id));
         }
 
         public async Task<List<CategoryByUser?>> GetAllById(List<Guid> ids)

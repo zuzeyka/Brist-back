@@ -94,6 +94,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameNews
                 .Where(x => x.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new GameNews
                 {
                     id = g.id,
@@ -124,6 +125,7 @@ namespace Slush.Repositories.GameGroupRepository
             {
                 var result = await _context.dbGameNews
                 .Where(x => x.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new GameNews
                 {
                     id = g.id,

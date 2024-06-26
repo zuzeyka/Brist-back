@@ -94,6 +94,7 @@ namespace Slush.Repositories.RequirementsRepository
             {
                 var result = await _context.dbMaximumSystemRequirements
                 .Where(x => x.id == i)
+                .Where(c => c.deleteAt == null)
                 .Select(r => new MaximumSystemRequirement
                 {
                     id = r.id,
@@ -127,6 +128,7 @@ namespace Slush.Repositories.RequirementsRepository
 
                 var result = await _context.dbMaximumSystemRequirements
                 .Where(x => x.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(r => new MaximumSystemRequirement
                 {
                     id = r.id,

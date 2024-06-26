@@ -78,6 +78,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbOwnedGames
                 .Where(x => x.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(o => new OwnedGame
                 {
                     id = o.id,
@@ -125,6 +126,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbOwnedGames
                 .Where(x => x.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(o => new OwnedGame
                 {
                     id = o.id,

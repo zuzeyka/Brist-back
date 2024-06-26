@@ -84,6 +84,7 @@ namespace Slush.Repositories.GroupRepository
         {
             var response = await _context.dbTopics
                 .Where(x => x.attachedId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(t => new Topic
                 {
                     id = t.id,
@@ -111,6 +112,7 @@ namespace Slush.Repositories.GroupRepository
             {
                 var result = await _context.dbTopics
                     .Where(x => x.id == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(t => new Topic
                     {
                         id = t.id,

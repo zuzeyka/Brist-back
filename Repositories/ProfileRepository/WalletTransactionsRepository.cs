@@ -107,6 +107,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbWalletTransactions
                     .Where(x => x.id == id)
+                    .Where(c => c.deletedAt == null)
                     .Select(w => new WalletTransactions
                     {
                         id = w.id,

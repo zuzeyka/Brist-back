@@ -164,6 +164,7 @@ namespace Slush.Repositories.GameInShopRepository
             {
                 var result = await _context.dbGamesInShops
                    .Where(x => x.id == item)
+                   .Where(c => c.deleteAt == null)
                    .Select(g => new GameInShop
                    {
                        id = Guid.Parse(g.id.ToString()),

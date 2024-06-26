@@ -125,6 +125,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbSettings
                     .Where(x => x.attachedUserId == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(s => new Settings
                     {
                         id = s.id,

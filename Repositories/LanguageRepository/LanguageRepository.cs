@@ -80,6 +80,7 @@ namespace Slush.Repositories.LanguageRepository
             {
                 var result = await _context.dbLanguages
                 .Where(x => x.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(l => new Language
                 {
                     id = l.id,

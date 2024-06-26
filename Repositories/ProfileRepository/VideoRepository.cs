@@ -91,6 +91,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbVideos
                 .Where(x => x.authorId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(v => new Video
                 {
                     id = v.id,
@@ -116,6 +117,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbVideos
                 .Where(x => x.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(v => new Video
                 {
                     id = v.id,
@@ -145,6 +147,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbVideos
                     .Where(x => x.id == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(v => new Video
                     {
                         id = v.id,

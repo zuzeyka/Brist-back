@@ -104,6 +104,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbWishedGames
                     .Where(x => x.id == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(s => new WishedGame
                     {
                         id = s.id,

@@ -99,6 +99,7 @@ namespace Slush.Repositories.CreatorsRepository
             {
                 var result = await _context.dbDevelopers
                 .Where(x => x.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(d => new Developer
                 {
                     id = d.id,

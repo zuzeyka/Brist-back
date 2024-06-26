@@ -149,6 +149,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbUsers
                     .Where(x => x.id == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(u => new User
                     {
                         id = u.id,

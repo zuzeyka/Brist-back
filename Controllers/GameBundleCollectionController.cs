@@ -2,6 +2,8 @@
 using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
 using Slush.Models.ShopContent;
+using Slush.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Slush.Controllers
 {
@@ -10,10 +12,12 @@ namespace Slush.Controllers
     public class GameBundleCollectionController : Controller
     {
         private readonly GameBundleCollectionRepository _Repositories;
+        private readonly DataContext _context;
 
-        public GameBundleCollectionController(GameBundleCollectionRepository Repositories)
+        public GameBundleCollectionController(GameBundleCollectionRepository Repositories, DataContext context)
         {
             _Repositories = Repositories;
+            _context = context;
         }
 
         [HttpGet]

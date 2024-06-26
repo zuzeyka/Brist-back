@@ -86,6 +86,7 @@ namespace Slush.Repositories.LanguageRepository
             {
                 var result = await _context.dbLanguagesInGame
                 .Where(x => x.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(l => new LanguageInGame
                 {
                     id = l.id,

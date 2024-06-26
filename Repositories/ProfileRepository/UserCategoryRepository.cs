@@ -31,6 +31,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             return await _context.dbUserCategories
                 .Where(x => x.userId == id)
+                .Where(c => c.deletedAt == null)
                 .Select(x => new UserCategory
                 {
                     id = x.id,
@@ -106,6 +107,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbUserCategories
                     .Where(c => c.id == id)
+                    .Where(c => c.deletedAt == null)
                     .Select(c => new UserCategory
                     {
                         id = c.id,

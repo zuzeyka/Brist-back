@@ -92,6 +92,7 @@ namespace Slush.Repositories.GroupRepository
             {
                 var result = await _context.dbGroups
                 .Where(x => x.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new Group
                 {
                     id = g.id,

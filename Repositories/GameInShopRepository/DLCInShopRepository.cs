@@ -98,6 +98,7 @@ namespace Slush.Repositories.GameInShopRepository
         {
             var response =  await _context.dbDLCsInShop
                 .Where(x => x.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(d => new DLCInShop
                 {
                     id = d.id,
@@ -131,6 +132,7 @@ namespace Slush.Repositories.GameInShopRepository
             {
                 var result = await _context.dbDLCsInShop
                 .Where(x => x.id == dlc)
+                .Where(c => c.deleteAt == null)
                 .Select(d => new DLCInShop
                 {
                     id = d.id,

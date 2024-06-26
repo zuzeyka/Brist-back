@@ -86,6 +86,7 @@ namespace Slush.Repositories.GroupRepository
             {
                 var result = await _context.dbGroupComments
                 .Where(x => x.id == item)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new GroupComment
                 {
                     id = g.id,

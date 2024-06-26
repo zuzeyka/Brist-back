@@ -84,6 +84,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _dataContext.dbOwnedDlcs
                 .Where(d => d.userId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(d => new OwnedDlc
                 {
                     id = d.id,
@@ -110,6 +111,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _dataContext.dbOwnedDlcs
                 .Where(d => d.userId == item)
+                .Where(c => c.deleteAt == null)
                 .Select(d => new OwnedDlc
                 {
                     id = d.id,

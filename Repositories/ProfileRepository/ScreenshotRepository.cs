@@ -92,6 +92,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbScreenshots
                 .Where(x => x.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(s => new Screenshot
                 {
                     id = s.id,
@@ -117,6 +118,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbScreenshots
                 .Where(x => x.authorId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(s => new Screenshot
                 {
                     id = s.id,
@@ -146,6 +148,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbScreenshots
                 .Where(x => x.gameId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(s => new Screenshot
                 {
                     id = s.id,

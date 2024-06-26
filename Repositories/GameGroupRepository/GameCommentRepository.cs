@@ -55,6 +55,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameComments
                 .Where(x => x.id == id)
+
                 .Select(g => new GameComment
                 {
                     id = g.id,
@@ -76,6 +77,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameComments
                 .Where(x => x.gamePostId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new GameComment
                 {
                     id = g.id,
@@ -101,6 +103,7 @@ namespace Slush.Repositories.GameGroupRepository
             {
                 var result = await _context.dbGameComments
                 .Where(x => x.id == i)
+                .Where(c => c.deleteAt == null)
                 .Select(g => new GameComment
                 {
                     id = g.id,

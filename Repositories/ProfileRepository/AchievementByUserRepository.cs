@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Slush.Data;
 using Slush.Entity.Profile;
 
@@ -13,6 +14,7 @@ namespace Slush.Repositories.ProfileRepository
             _context = context;
         }
 
+        [Authorize]
         public async Task<List<AchievementByUser>> GetAllAchievements()
         {
             return await _context.dbAchievementByUser
@@ -82,6 +84,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbAchievementByUser
                 .Where(x => x.userId == id)
+                .Where(c => c.deletedAt == null)
                 .Select(x => new AchievementByUser
                 {
                     id = x.id,
@@ -105,6 +108,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbAchievementByUser
                     .Where(x => x.id == item)
+                    .Where(c => c.deletedAt == null)
                     .Select(x => new AchievementByUser
                     {
                         id = x.id,

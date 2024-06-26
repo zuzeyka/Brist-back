@@ -97,6 +97,7 @@ namespace Slush.Repositories.CreatorsRepository
             {
                 var result = await _context.dbPublishers
                 .Where(x => x.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(p => new Publisher
                 {
                     id = p.id,

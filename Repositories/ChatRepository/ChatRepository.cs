@@ -86,6 +86,7 @@ namespace Slush.Repositories.ChatRepository
             {
                 var result = await _context.dbChats
                .Where(c => c.id == id)
+               .Where(c => c.deletedAt == null)
                .Select(c => new Chat
                {
                    id = c.id,

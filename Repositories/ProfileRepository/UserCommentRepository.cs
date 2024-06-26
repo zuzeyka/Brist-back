@@ -85,6 +85,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbUserComments
                 .Where(x => x.userId == id)
+                .Where(c => c.deleteAt == null)
                 .Select(s => new UserComment
                 {
                     id = s.id,
@@ -111,6 +112,7 @@ namespace Slush.Repositories.ProfileRepository
             {
                 var result = await _context.dbUserComments
                     .Where(x => x.id == id)
+                    .Where(c => c.deleteAt == null)
                     .Select(s => new UserComment
                     {
                         id = s.id,
