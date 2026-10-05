@@ -1,7 +1,7 @@
-﻿using MimeKit;
+using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using FullStackBrist.Server.Services.Random;
+using Microsoft.Extensions.Logging;
 using Slush.Services.Email;
 
 namespace FullStackBrist.Server.Services.Email
@@ -9,26 +9,24 @@ namespace FullStackBrist.Server.Services.Email
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly IRandomService _randomService;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration configuration, IRandomService randomService)
+        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
         {
             _configuration = configuration;
-            _randomService = randomService;
+            _logger = logger;
         }
 
-        public async Task<String> SendEmail(String post)
+        public async Task<bool> SendVerificationCode(String toEmail, String code)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Slush", _configuration["EmailSettings:FromEmail"]));
-            message.To.Add(new MailboxAddress("", post));
+            message.To.Add(new MailboxAddress("", toEmail));
             message.Subject = "Slush";
-
-            String code = _randomService.RandomString(6);
 
             var bodyBuilder = new BodyBuilder
             {
-                HtmlBody = $"<h1>Slush verification email</h1><p>Greetings, {post}, you need verificate your account by this code:<b>{code}</b></p>"
+                HtmlBody = $"<h1>Slush verification email</h1><p>Greetings, {toEmail}, you need to verify your account with this code: <b>{code}</b></p>"
             };
             message.Body = bodyBuilder.ToMessageBody();
 
@@ -41,11 +39,12 @@ namespace FullStackBrist.Server.Services.Email
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
 
-                    return code;
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    return ex.Message.ToString();
+                    _logger.LogError(ex, "Failed to send verification email to {Email}", toEmail);
+                    return false;
                 }
             }
         }

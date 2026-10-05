@@ -9,6 +9,7 @@ using Slush.Services.FileStorage;
 using Slush.Services.RegistrationValidation;
 using Slush.Repositories.IRepository;
 using Slush.Services.Email;
+using FullStackBrist.Server.Services.Random;
 
 namespace FullStackBrist.Server.Controllers
 {
@@ -17,15 +18,18 @@ namespace FullStackBrist.Server.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        private const int VerificationCodeValidMinutes = 15;
+
         private readonly IUserRepository _userRepositories;
         private readonly IRegistrationService _registrationService;
         private readonly IHashPasswordService _passwordService;
         private readonly IJWTService _jwtService;
         private readonly IFileStorageService _fileStorageService;
         private readonly IEmailService _emailService;
+        private readonly IRandomService _randomService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserRepository userRepositories, IRegistrationService registrationService, IHashPasswordService passwordService, IJWTService jwtService, ILogger<UserController> logger, IFileStorageService fileStorageService, IEmailService emailService)
+        public UserController(IUserRepository userRepositories, IRegistrationService registrationService, IHashPasswordService passwordService, IJWTService jwtService, ILogger<UserController> logger, IFileStorageService fileStorageService, IEmailService emailService, IRandomService randomService)
         {
             _userRepositories = userRepositories;
             _registrationService = registrationService;
@@ -34,6 +38,19 @@ namespace FullStackBrist.Server.Controllers
             _logger = logger;
             _fileStorageService = fileStorageService;
             _emailService = emailService;
+            _randomService = randomService;
+        }
+
+        private async Task SendVerificationEmail(User user)
+        {
+            var code = _randomService.RandomString(6);
+            await _userRepositories.SetVerificationCode(user.id, code, DateTime.UtcNow.AddMinutes(VerificationCodeValidMinutes));
+
+            var sent = await _emailService.SendVerificationCode(user.email, code);
+            if (!sent)
+            {
+                _logger.LogWarning("Failed to send verification email to {UserId}", user.id);
+            }
         }
 
         [HttpGet]
@@ -58,7 +75,7 @@ namespace FullStackBrist.Server.Controllers
                 return BadRequest("User already exist");
             }
 
-            var code = await _emailService.SendEmail(model.email);
+            await SendVerificationEmail(res);
 
             var token = _jwtService.GenerateToken(res);
 
@@ -83,17 +100,36 @@ namespace FullStackBrist.Server.Controllers
 
         [HttpPost("resend")]
         [AllowAnonymous]
-        public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
+        public async Task<ActionResult> ResendEmailCode([FromBody] UserModel model)
         {
             var user = await _userRepositories.GetByEmail(model.email);
-            if (user != null) 
+            if (user != null)
             {
-                var code = await _emailService.SendEmail(model.email);
-
-                return code;
+                await SendVerificationEmail(user);
             }
 
-            return "User is null";
+            // Always respond the same way regardless of whether the email exists,
+            // so this endpoint can't be used to enumerate registered accounts.
+            return Ok("If that email is registered, a verification code has been sent.");
+        }
+
+        [HttpPost("verify")]
+        [AllowAnonymous]
+        public async Task<ActionResult> VerifyEmail([FromBody] VerifyEmailModel model)
+        {
+            var user = await _userRepositories.GetByEmail(model.email);
+            if (user == null || String.IsNullOrEmpty(model.code))
+            {
+                return BadRequest("Invalid or expired verification code.");
+            }
+
+            var verified = await _userRepositories.VerifyEmail(user.id, model.code);
+            if (!verified)
+            {
+                return BadRequest("Invalid or expired verification code.");
+            }
+
+            return Ok("Email verified.");
         }
 
         #endregion

@@ -173,5 +173,37 @@ namespace Slush.Repositories.ProfileRepository
                 return null;
             }
         }
+
+        public async Task SetVerificationCode(Guid userId, String code, DateTime expiresAt)
+        {
+            var user = await _context.dbUsers.FindAsync(userId);
+            if (user != null)
+            {
+                user.verificationCode = code;
+                user.verificationCodeExpiresAt = expiresAt;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> VerifyEmail(Guid userId, String code)
+        {
+            var user = await _context.dbUsers.FindAsync(userId);
+            if (user == null || user.verificationCode == null || user.verificationCodeExpiresAt == null)
+            {
+                return false;
+            }
+
+            if (user.verificationCodeExpiresAt < DateTime.UtcNow || user.verificationCode != code)
+            {
+                return false;
+            }
+
+            user.verified = true;
+            user.verificationCode = null;
+            user.verificationCodeExpiresAt = null;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

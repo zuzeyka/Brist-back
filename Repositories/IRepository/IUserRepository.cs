@@ -12,5 +12,7 @@ namespace Slush.Repositories.IRepository
         Task<User?> GetByEmail(String name);
         Task<User?> GetByUserId(Guid id);
         Task<List<User?>> GetByIds(List<Guid> ids);
+        Task SetVerificationCode(Guid userId, String code, DateTime expiresAt);
+        Task<bool> VerifyEmail(Guid userId, String code);
     }
 }

@@ -36,5 +36,10 @@ namespace Slush.Data.Entity.Profile
 
         public DateTime? createdAt { get; set; }
         public DateTime? deleteAt { get; set; }
+
+        [JsonIgnore]
+        public String? verificationCode { get; set; }
+        [JsonIgnore]
+        public DateTime? verificationCodeExpiresAt { get; set; }
     }
 }
