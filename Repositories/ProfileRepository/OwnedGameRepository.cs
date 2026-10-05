@@ -77,7 +77,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task<List<OwnedGame?>> GetByUId(Guid id)
         {
             var response = await _context.dbOwnedGames
-                .Where(x => x.id == id)
+                .Where(x => x.userId == id)
                 .Where(c => c.deleteAt == null)
                 .Select(o => new OwnedGame
                 {

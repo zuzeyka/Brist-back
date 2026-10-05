@@ -18,9 +18,15 @@ namespace Slush.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<IOwnedDlcRepository>>> GetAllOwnedDlcs()
+        public async Task<ActionResult<List<OwnedDlc>>> GetAllOwnedDlcs()
         {
-            var dlcs = await _Repositories.GetAllDlcs();
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            var dlcs = await _Repositories.GetByUserId(currentUserId.Value);
 
             return Ok(dlcs);
         }
@@ -95,6 +101,12 @@ namespace Slush.Controllers
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<OwnedDlc>>> GetOwnedDlcByUserId(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null || id != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             var response = await _Repositories.GetByUserId(id);
 
             if(response == null)
@@ -108,11 +120,16 @@ namespace Slush.Controllers
         [HttpGet("byid/{id}")]
         public async Task<ActionResult<OwnedDlc>> GetOwnedDlcById(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
             var response = await _Repositories.GetById(id);
 
             if (response == null)
             {
                 return NotFound();
+            }
+            if (currentUserId == null || response.userId != currentUserId.Value)
+            {
+                return Forbid();
             }
 
             return Ok(response);
@@ -121,9 +138,17 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<OwnedDlc>>> GetAllOwnedDlcsByIds([FromBody] List<Guid> guidList)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
             var response = await _Repositories.GetByIds(guidList);
 
-            return Ok(response); 
+            // Only the caller's own owned-DLC records are ever returned, regardless
+            // of which ids were requested.
+            return Ok(response.Where(d => d != null && d.userId == currentUserId.Value).ToList());
         }
     }
 }

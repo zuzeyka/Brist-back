@@ -79,25 +79,18 @@ namespace Slush.Repositories.ProfileRepository
             }
         }
 
-        public async Task<WalletTransactions?> GetByUserId(Guid id)
+        public async Task<List<WalletTransactions>> GetByUserId(Guid id)
         {
-            var response = await _context.dbWalletTransactions
-                .Where(x => x.id == id)
+            return await _context.dbWalletTransactions
+                .Where(x => x.userId == id && x.deletedAt == null)
                 .Select(w => new WalletTransactions
                 {
                     id = w.id,
                     userId = w.userId,
                     transactionObj = w.transactionObj,
-                    currency = w.currency
-                }).FirstOrDefaultAsync();
-            if (response != null)
-            {
-                return response;
-            }
-            else
-            {
-                return null;
-            }
+                    currency = w.currency,
+                    createdAt = w.createdAt
+                }).ToListAsync();
         }
 
         public async Task<List<WalletTransactions?>> GetByIds(List<Guid> ids)

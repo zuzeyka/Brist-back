@@ -65,7 +65,7 @@ namespace FullStackBrist.Server.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.Strict,
                 IsEssential = true,
             };
@@ -115,7 +115,7 @@ namespace FullStackBrist.Server.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.Strict,
                 IsEssential = true,
             };

@@ -9,7 +9,7 @@ namespace Slush.Repositories.IRepository
         Task DeleteWalletTransaction(Guid id);
         Task Add(WalletTransactions transaction);
         Task<WalletTransactions?> GetById(Guid id);
-        Task<WalletTransactions?> GetByUserId(Guid id);
+        Task<List<WalletTransactions>> GetByUserId(Guid id);
         Task<List<WalletTransactions?>> GetByIds(List<Guid> ids);
     }
 }

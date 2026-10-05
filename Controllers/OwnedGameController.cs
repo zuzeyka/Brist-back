@@ -19,9 +19,15 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<IOwnedGameRepository>>> GetAllOwnedGames()
+        public async Task<ActionResult<List<OwnedGame>>> GetAllOwnedGames()
         {
-            var _ownedGames = await _ownedGameRepositories.GetAllOwnedGames();
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            var _ownedGames = await _ownedGameRepositories.GetByUId(currentUserId.Value);
 
             return Ok(_ownedGames);
         }
@@ -50,10 +56,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OwnedGame>> GetOwnedGame(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
             var response = await _ownedGameRepositories.GetById(id);
             if (response == null)
             {
                 return NotFound();
+            }
+            if (currentUserId == null || response.userId != currentUserId.Value)
+            {
+                return Forbid();
             }
 
             return Ok(response);
@@ -62,12 +73,13 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("byuserid/{id}")]
         public async Task<ActionResult<List<OwnedGame>>> GetByUserId(Guid id)
         {
-            var response = await _ownedGameRepositories.GetByUId(id);
-
-            if(response == null)
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null || id != currentUserId.Value)
             {
-                return NotFound();
+                return Forbid();
             }
+
+            var response = await _ownedGameRepositories.GetByUId(id);
 
             return Ok(response);
         }
@@ -75,6 +87,12 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("bygameid/{id}/byuserid/{uid}")]
         public async Task<ActionResult<List<OwnedGame>>> GetUsersByOwnedGame(Guid id, Guid uid)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null || uid != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             var response = await _ownedGameRepositories.GetByGameId(id, uid);
             if (response == null)
             {
@@ -131,9 +149,17 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<OwnedGame>>> GetAllOwnedGamesByIds([FromBody] List<Guid> guidList)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
             var response = await _ownedGameRepositories.GetByIds(guidList);
 
-            return Ok(response);
+            // Only the caller's own owned-game records are ever returned, regardless
+            // of which ids were requested.
+            return Ok(response.Where(g => g != null && g.userId == currentUserId.Value).ToList());
         }
     }
 }

@@ -19,9 +19,15 @@ namespace Slush.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<IWalletTransactions>>> GetAll()
+        public async Task<ActionResult<List<WalletTransactions>>> GetAll()
         {
-            var walletTransactions = await _walletTransactionsRepositories.GetAll();
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            var walletTransactions = await _walletTransactionsRepositories.GetByUserId(currentUserId.Value);
 
             return Ok(walletTransactions);
         }
@@ -30,11 +36,16 @@ namespace Slush.Controllers
         [Route("{id}")]
         public async Task<ActionResult<WalletTransactions>> GetById(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
             var response = await _walletTransactionsRepositories.GetById(id);
 
             if(response == null)
             {
                 return NotFound();
+            }
+            if (currentUserId == null || response.userId != currentUserId.Value)
+            {
+                return Forbid();
             }
 
             return Ok(response);
@@ -42,14 +53,15 @@ namespace Slush.Controllers
 
         [HttpGet]
         [Route("getbyuid/{id}")]
-        public async Task<ActionResult<WalletTransactions>> GetByUserId(Guid userId)
+        public async Task<ActionResult<List<WalletTransactions>>> GetByUserId(Guid id)
         {
-            var response = await _walletTransactionsRepositories.GetById(userId);
-
-            if (response == null)
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null || id != currentUserId.Value)
             {
-                return NotFound();
+                return Forbid();
             }
+
+            var response = await _walletTransactionsRepositories.GetByUserId(id);
 
             return Ok(response);
         }
@@ -128,9 +140,17 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<WalletTransactions>>> GetAllWalletTransactionsByIds([FromBody] List<Guid> ids)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
             var response = await _walletTransactionsRepositories.GetByIds(ids);
 
-            return Ok(response);
+            // Only the caller's own transactions are ever returned, regardless of
+            // which ids were requested.
+            return Ok(response.Where(t => t != null && t.userId == currentUserId.Value).ToList());
         }
     }
 }
