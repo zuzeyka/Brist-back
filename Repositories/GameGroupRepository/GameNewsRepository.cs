@@ -93,7 +93,7 @@ namespace Slush.Repositories.GameGroupRepository
         public async Task<List<GameNews?>> GetByGameId(Guid id)
         {
             var response = await _context.dbGameNews
-                .Where(x => x.id == id)
+                .Where(x => x.gameId == id)
                 .Where(c => c.deleteAt == null)
                 .Select(g => new GameNews
                 {
