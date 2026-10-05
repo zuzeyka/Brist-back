@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 using Slush.Repositories.IRepository;
@@ -7,6 +8,7 @@ namespace Slush.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class WalletTransactionController : Controller
     {
         private readonly IWalletTransactions _walletTransactionsRepositories;
@@ -55,8 +57,16 @@ namespace Slush.Controllers
         [HttpPost]
         public async Task<ActionResult<WalletTransactions>> CreateWalletTransaction([FromBody] WalletTransactionsModel model)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            // The caller can only ever create a transaction for themselves —
+            // client-supplied model.userId is ignored to prevent crediting/debiting others.
             var transaction = new WalletTransactions(Guid.NewGuid(),
-                model.userId,
+                currentUserId.Value,
                 model.transactionObj,
                 model.currency,
                 DateTime.Now);
@@ -69,6 +79,17 @@ namespace Slush.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteWalletTransactions(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _walletTransactionsRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             await _walletTransactionsRepositories.DeleteWalletTransaction(id);
             return NoContent();
         }
@@ -76,13 +97,32 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] WalletTransactions model)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _walletTransactionsRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
+            // userId is intentionally not taken from the client — ownership of a
+            // transaction can never be reassigned through this endpoint.
             var result = await _walletTransactionsRepositories.UpdateWalletTransactions(new WalletTransactions(id,
-                model.userId,
+                existing.userId,
                 model.transactionObj,
                 model.currency,
                 DateTime.Now));
 
             return Ok(result);
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            var claim = User.FindFirst("userId")?.Value;
+            return Guid.TryParse(claim, out var currentUserId) ? currentUserId : null;
         }
 
         [HttpPost("getall")]

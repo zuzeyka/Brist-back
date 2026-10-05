@@ -1,4 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Entity.Profile;
 using Slush.Repositories.IRepository;
@@ -7,6 +8,7 @@ namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class OwnedGameController : Controller
     {
         private readonly IOwnedGameRepository _ownedGameRepositories;
@@ -28,9 +30,17 @@ namespace FullStackBrist.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<OwnedGame>> CreateOwnedGame([FromBody] OwnedGameModel model)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            // Ownership can only ever be granted to the authenticated caller here;
+            // client-supplied model.userId is ignored to prevent granting games to others.
             var result = new OwnedGame(Guid.NewGuid(),
                 model.ownedGameId,
-                model.userId,
+                currentUserId.Value,
                                             DateTime.Now
                                             );
             await _ownedGameRepositories.Add(result);
@@ -77,6 +87,17 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteOwnedGame(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _ownedGameRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             await _ownedGameRepositories.DeleteOwnedGame(id);
             return NoContent();
         }
@@ -84,8 +105,27 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOwnedGame(Guid id, [FromBody] OwnedGameModel game)
         {
-            var result = await _ownedGameRepositories.UpdateOwnedGame(new OwnedGame(id, game.ownedGameId, game.userId, game.createdAt));
+            var currentUserId = GetCurrentUserId();
+            var existing = await _ownedGameRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
+            // userId is intentionally not taken from the client — ownership of a
+            // grant can never be reassigned to another user through this endpoint.
+            var result = await _ownedGameRepositories.UpdateOwnedGame(new OwnedGame(id, game.ownedGameId, existing.userId, game.createdAt));
             return Ok(result);
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            var claim = User.FindFirst("userId")?.Value;
+            return Guid.TryParse(claim, out var currentUserId) ? currentUserId : null;
         }
 
         [HttpPost("getall")]

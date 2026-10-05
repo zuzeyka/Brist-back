@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.Repositories.ProfileRepository;
 using Slush.Entity.Profile;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace Slush.Controllers
@@ -11,12 +11,12 @@ namespace Slush.Controllers
     public class AchievementController : Controller
     {
         private readonly IAchievementRepository _achievementRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public AchievementController(IAchievementRepository achievementRepositories, IMinioService minioService)
+        public AchievementController(IAchievementRepository achievementRepositories, IFileStorageService fileStorageService)
         {
             _achievementRepositories = achievementRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -45,9 +45,9 @@ namespace Slush.Controllers
             {
                 try
                 {
-                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                    String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = _minioService.GetUrlToFile(imageUrl);
+                    var url = _fileStorageService.GetUrlToFile(imageUrl);
 
                     result.urlForImage = url.ToString();
 
@@ -73,15 +73,15 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] Achievement achievement, IFormFile file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", achievement.id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", achievement.id, file.FileName, stream);
 
-                        var url = _minioService.GetUrlToFile(imageUrl);
+                        var url = _fileStorageService.GetUrlToFile(imageUrl);
 
                         var res = await _achievementRepositories.UpdateAchievement(new Achievement(id, url.ToString(), achievement.description, achievement.amountOfExperience, achievement.createdAt));
 

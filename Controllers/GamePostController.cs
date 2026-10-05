@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Community.GameGroup;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GamePostController : Controller
     {
         private readonly IGamePostsRepository _gamePostsRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public GamePostController(IGamePostsRepository gamePostsRepositories, IMinioService minioService)
+        public GamePostController(IGamePostsRepository gamePostsRepositories, IFileStorageService fileStorageService)
         {
             _gamePostsRepositories = gamePostsRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -30,7 +30,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GamePosts>> CreateGamePost([FromBody] GamePostsModel model, IFormFile? file)
+        public async Task<ActionResult<GamePosts>> CreateGamePost([FromBody] GamePostsModel model)
         {
             var result = new GamePosts(Guid.NewGuid(),
                                             model.title,
@@ -42,25 +42,6 @@ namespace FullStackBrist.Server.Controllers
                                             model.contentUrl,
                                             DateTime.Now
                                             );
-
-            if (file != null || file.Length != 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    try
-                    {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
-
-                        var url = await _minioService.GetUrlToFile(imageUrl);
-
-                        result.contentUrl = url;
-                    }
-                    catch (Exception ex)
-                    {
-                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
-                    }
-                }
-            }
 
             await _gamePostsRepositories.Add(result);
             return Ok(result);
@@ -104,15 +85,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game, IFormFile? file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         game.contentUrl = url;
                     }

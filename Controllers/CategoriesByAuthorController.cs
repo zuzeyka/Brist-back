@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity;
 using FullStackBrist.Server.Models.Categories;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class CategoriesByAuthorController : Controller
     {
         private readonly ICategoriesByAuthorRepository _categoriesByAuthorRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public CategoriesByAuthorController(ICategoriesByAuthorRepository categoriesByAuthorRepositories, IMinioService minioService)
+        public CategoriesByAuthorController(ICategoriesByAuthorRepository categoriesByAuthorRepositories, IFileStorageService fileStorageService)
         {
             _categoriesByAuthorRepositories = categoriesByAuthorRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -46,9 +46,9 @@ namespace FullStackBrist.Server.Controllers
             {
                 try
                 {
-                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                    String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = _minioService.GetUrlToFile(imageUrl);
+                    var url = _fileStorageService.GetUrlToFile(imageUrl);
 
                     result.image = url.ToString();
 
@@ -85,15 +85,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model, IFormFile file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = _minioService.GetUrlToFile(imageUrl);
+                        var url = _fileStorageService.GetUrlToFile(imageUrl);
 
                         model.image = url.ToString();
                     }

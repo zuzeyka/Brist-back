@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: devpassword
+      MYSQL_DATABASE: BristDB
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdevpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__MySqlDb: "Server=db;Port=3306;Database=BristDB;Uid=root;Pwd=devpassword;AllowPublicKeyRetrieval=True;SslMode=None;"
+      # Real credentials — never hardcode these. Populate a local, untracked .env
+      # file (see .env.example) and docker compose will substitute them in.
+      EmailSettings__FromEmail: ${EMAIL_FROM:-}
+      EmailSettings__Username: ${EMAIL_USERNAME:-}
+      EmailSettings__Password: ${EMAIL_PASSWORD:-}
+    volumes:
+      - uploads-data:/app/wwwroot/uploads
+    ports:
+      - "5049:8080"
+
+volumes:
+  mysql-data:
+  uploads-data:

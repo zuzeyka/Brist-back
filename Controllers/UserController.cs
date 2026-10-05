@@ -1,10 +1,11 @@
 ﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Profile;
 using Slush.Models.Validation;
 using Slush.Services.Hash;
 using Slush.Services.JWT;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Services.RegistrationValidation;
 using Slush.Repositories.IRepository;
 using Slush.Services.Email;
@@ -13,24 +14,25 @@ namespace FullStackBrist.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepositories;
         private readonly IRegistrationService _registrationService;
         private readonly IHashPasswordService _passwordService;
         private readonly IJWTService _jwtService;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
         private readonly IEmailService _emailService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserRepository userRepositories, IRegistrationService registrationService, IHashPasswordService passwordService, IJWTService jwtService, ILogger<UserController> logger, IMinioService minioService, IEmailService emailService)
+        public UserController(IUserRepository userRepositories, IRegistrationService registrationService, IHashPasswordService passwordService, IJWTService jwtService, ILogger<UserController> logger, IFileStorageService fileStorageService, IEmailService emailService)
         {
             _userRepositories = userRepositories;
             _registrationService = registrationService;
             _passwordService = passwordService;
             _jwtService = jwtService;
             _logger = logger;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
             _emailService = emailService;
         }
 
@@ -45,6 +47,7 @@ namespace FullStackBrist.Server.Controllers
         #region Registration
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> CreateUser([FromBody] UserModel model)
         {
 
@@ -79,6 +82,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost("resend")]
+        [AllowAnonymous]
         public async Task<ActionResult<String>> ResendEmailCode([FromBody] UserModel model)
         {
             var user = await _userRepositories.GetByEmail(model.email);
@@ -95,9 +99,18 @@ namespace FullStackBrist.Server.Controllers
         #endregion
         #region Login
         [HttpPost("validatelogin")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginByModel([FromBody] LoginValidationModel model)
         {
-            var token = await Login(model);
+            string token;
+            try
+            {
+                token = await Login(model);
+            }
+            catch (Exception)
+            {
+                return Unauthorized("Invalid username/email or password");
+            }
 
             var cookieOptions = new CookieOptions
             {
@@ -114,15 +127,17 @@ namespace FullStackBrist.Server.Controllers
                 res = token,
             };
 
-
-            _logger.LogWarning("Login token: {1}", result);
-
             return Ok(result);
         }
 
         private async Task<string> Login(LoginValidationModel validationModel)
         {
             var user = await _userRepositories.GetByEmail(validationModel.username);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
 
             var result = _passwordService.Verify(validationModel.password, user.passwordSalt);
 
@@ -161,21 +176,37 @@ namespace FullStackBrist.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
+            if (!IsCurrentUser(id))
+            {
+                return Forbid();
+            }
+
             await _userRepositories.DeleteUser(id);
             return NoContent();
         }
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
         {
-            if (file != null || file.Length != 0)
+            if (!IsCurrentUser(id))
+            {
+                return Forbid();
+            }
+
+            var existing = await _userRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         user.image = url;
                     }
@@ -186,8 +217,27 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            var result = await _userRepositories.UpdateUser(new User(id, user.name, user.passwordSalt, user.email, user.description, user.image, user.verified, user.amountOfMoney, user.amountOfXp, user.createdAt));
+
+            // Only profile fields are client-editable here; password, verification
+            // status and balances must never be settable through this endpoint.
+            var result = await _userRepositories.UpdateUser(new User(
+                id,
+                user.name,
+                existing.passwordSalt,
+                user.email,
+                user.description,
+                user.image,
+                existing.verified,
+                existing.amountOfMoney,
+                existing.amountOfXp,
+                existing.createdAt));
             return Ok(result);
+        }
+
+        private bool IsCurrentUser(Guid id)
+        {
+            var claim = User.FindFirst("userId")?.Value;
+            return Guid.TryParse(claim, out var currentUserId) && currentUserId == id;
         }
         [HttpPost("getall")]
         public async Task<ActionResult<List<User>>> GetAllUsersByIds([FromBody] List<Guid> guidList)

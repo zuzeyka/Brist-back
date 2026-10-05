@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Slush.Repositories.GameInShopRepository;
 using Slush.Entity.Store.Product;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -12,12 +12,12 @@ namespace FullStackBrist.Server.Controllers
     public class DLCInShopController : Controller
     {
         private readonly IDLCInShopRepository _DLCInShopRepository;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public DLCInShopController(IDLCInShopRepository DLCInShopRepository, IMinioService minioService)
+        public DLCInShopController(IDLCInShopRepository DLCInShopRepository, IFileStorageService fileStorageService)
         {
             _DLCInShopRepository = DLCInShopRepository;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -46,16 +46,16 @@ namespace FullStackBrist.Server.Controllers
                                         DateTime.Now
                                             );
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
 
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.previeImage = url;
 
@@ -106,15 +106,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model, IFormFile file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         var result = await _DLCInShopRepository.UpdateDLCInShop(new DLCInShop(id, model.gameId, model.name, model.price, model.discount, model.discountFinish, url, model.description, model.dateOfRelease, model.developerId, model.publisherId, model.createdAt));
                         return Ok(result);

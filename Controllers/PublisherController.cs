@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Creators;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Entity.Store.Product.Creators;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class PublisherController : Controller
     {
         private readonly IPublisherRepository _publisherRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public PublisherController(IPublisherRepository publisherRepositories, IMinioService minioService)
+        public PublisherController(IPublisherRepository publisherRepositories, IFileStorageService fileStorageService)
         {
             _publisherRepositories = publisherRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -44,9 +44,9 @@ namespace FullStackBrist.Server.Controllers
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, avatar.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, avatar.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.avatar = url;
                     }
@@ -64,9 +64,9 @@ namespace FullStackBrist.Server.Controllers
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, background.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, background.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.backgroundImage = url;
                     }
@@ -110,9 +110,9 @@ namespace FullStackBrist.Server.Controllers
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, avatar.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, avatar.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         publisher.avatar = url;
                     }
@@ -130,9 +130,9 @@ namespace FullStackBrist.Server.Controllers
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, background.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, background.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         publisher.backgroundImage = url;
                     }

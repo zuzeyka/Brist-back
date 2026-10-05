@@ -32,3 +32,9 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Local secrets for docker-compose (see .env.example)
+.env
+
+# User-uploaded files (served locally instead of MinIO)
+wwwroot/uploads/

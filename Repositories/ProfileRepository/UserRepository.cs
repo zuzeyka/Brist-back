@@ -95,7 +95,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task<User?> GetByEmail(String name)
         {
             var response = await _context.dbUsers
-                .Where(x => x.name == name)
+                .Where(x => (x.name == name || x.email == name) && x.deleteAt == null)
                 .Select(u => new User
                 {
                     id = u.id,

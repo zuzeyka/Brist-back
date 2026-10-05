@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.ShopContent;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Entity.Store.Product;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GamesInShopController : Controller
     {
         private readonly IGameInShopRepository _GameInShopRepository;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public GamesInShopController(IGameInShopRepository GameInShopRepository, IMinioService minioService)
+        public GamesInShopController(IGameInShopRepository GameInShopRepository, IFileStorageService fileStorageService)
         {
             _GameInShopRepository = GameInShopRepository;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
         [HttpGet]
         public async Task<ActionResult<List<IGameInShopRepository>>> GetAllGames()
@@ -42,15 +42,15 @@ namespace FullStackBrist.Server.Controllers
                                             DateTime.Now
                                             );
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.previeImage = url;
                     }
@@ -92,15 +92,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game, IFormFile file)
         {
-            if(file != null || file.Length != 0)
+            if(file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
                         game.previeImage = url;
 
                         var res = await _GameInShopRepository.UpdateGameInShop(new GameInShop(id, game.name, game.price, game.discount, game.discountFinish, game.previeImage, game.description, game.dateOfRelease, game.developerId, game.publisherId, game.urlForContent, game.createdAt));

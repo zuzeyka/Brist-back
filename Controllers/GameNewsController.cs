@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.GameGroup;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Community.GameGroup;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GameNewsController : Controller
     {
         private readonly IGameNewsRepository _gameNewsRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public GameNewsController(IGameNewsRepository gameNewsRepositories, IMinioService minioService)
+        public GameNewsController(IGameNewsRepository gameNewsRepositories, IFileStorageService fileStorageService)
         {
             _gameNewsRepositories = gameNewsRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -44,15 +44,15 @@ namespace FullStackBrist.Server.Controllers
                                             );
 
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.contentUrl = url;
                     }
@@ -92,15 +92,15 @@ namespace FullStackBrist.Server.Controllers
         public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameNewsModel game, IFormFile? file)
         {
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         game.contentUrl = url;
                     }

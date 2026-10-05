@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Profile;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class VideoController : Controller
     {
         private readonly IVideoRepository _videoRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public VideoController(IVideoRepository videoRepositories, IMinioService minioService)
+        public VideoController(IVideoRepository videoRepositories, IFileStorageService fileStorageService)
         {
             _videoRepositories = videoRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Video>> CreateVideo([FromBody] VideoModel model, IFormFile? file)
+        public async Task<ActionResult<Video>> CreateVideo([FromBody] VideoModel model)
         {
             var result = new Video(Guid.NewGuid(),
                 model.title,
@@ -39,25 +39,6 @@ namespace FullStackBrist.Server.Controllers
                 model.authorId,
                 model.contentUrl,
                 DateTime.Now);
-
-            if (file != null || file.Length != 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    try
-                    {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
-
-                        var url = await _minioService.GetUrlToFile(imageUrl);
-
-                        result.contentUrl = url;
-                    }
-                    catch (Exception ex)
-                    {
-                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
-                    }
-                }
-            }
 
             await _videoRepositories.Add(result);
 
@@ -86,15 +67,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateVideo(Guid id, [FromBody] VideoModel video, IFormFile? file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         video.contentUrl = url;
                     }

@@ -1,6 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace Slush.Data.Entity.Profile
 {
-    public class User 
+    public class User
     {
         public User()
         {
@@ -23,6 +25,7 @@ namespace Slush.Data.Entity.Profile
 
         public Guid id { get; set; }
         public String? name { get;set; }
+        [JsonIgnore]
         public String? passwordSalt { get;set; }
         public String? email { get;set; }
         public String? description { get; set; }

@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Community;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class GroupController : Controller
     {
         private readonly IGroupRepository _GroupRepository;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public GroupController(IGroupRepository GroupRepository, IMinioService minioService)
+        public GroupController(IGroupRepository GroupRepository, IFileStorageService fileStorageService)
         {
             _GroupRepository = GroupRepository;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -47,9 +47,9 @@ namespace FullStackBrist.Server.Controllers
             {
                 try
                 {
-                    String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                    String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = await _minioService.GetUrlToFile(imageUrl);
+                    var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                     result.imageUrl = url;
 
@@ -86,15 +86,15 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGroup(Guid id, [FromBody] GroupModel group, IFormFile file)
         {
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         group.imageUrl = url;
 

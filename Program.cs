@@ -13,33 +13,36 @@ using Slush.Repositories;
 using Slush.Services.JWT;
 using Slush.Services.RegistrationValidation;
 using Slush.Services.Hash;
-using Minio;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using FullStackBrist.Server.Services.Email;
 using FullStackBrist.Server.Services.Random;
 using Slush.Repositories.IRepository;
 using Slush.Services.Email;
+using Slush.Extensions;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("MySqlDb") ?? throw new InvalidOperationException("Connection String 'MySqlDb' not found.");
+var connectionString = builder.Configuration.GetConnectionString("MySqlDb");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("ConnectionStrings:MySqlDb not configured. Set it via the ConnectionStrings__MySqlDb environment variable or user-secrets.");
+}
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection(nameof(JWTOptions)));
 
+var jwtOptions = builder.Configuration.GetSection(nameof(JWTOptions)).Get<JWTOptions>();
+if (jwtOptions == null || string.IsNullOrWhiteSpace(jwtOptions.SecretKey))
+{
+    throw new InvalidOperationException("JWTOptions:SecretKey not configured. Set it via the JWTOptions__SecretKey environment variable or user-secrets.");
+}
+builder.Services.ApiAuth(Options.Create(jwtOptions));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSingleton<IMinioClient>(sp =>
-{
-    return new MinioClient()
-        .WithEndpoint("172.16.10.22:9000")
-        .WithCredentials("***REMOVED_MINIO_ACCESS_KEY***", "***REMOVED_MINIO_SECRET_KEY***")
-        .WithSSL(false)
-        .Build();
-});
 
 
 builder.Services.AddHttpContextAccessor();
@@ -47,7 +50,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IHashPasswordService, HashPasswordService>();
 builder.Services.AddScoped<IRandomService, RandomService>();
-builder.Services.AddScoped<IMinioService, MinioService>();
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 builder.Services.AddScoped<IJWTService, JWTService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -124,6 +127,18 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+    // The committed migration history assumes tables that an earlier (now-missing)
+    // migration created, so replaying it against a fresh local DB fails partway.
+    // Build the schema straight from the current model instead.
+    await context.Database.EnsureCreatedAsync();
+    await DbSeeder.SeedAsync(context);
+}
+
 app.UseCors("corsapp");
 
 app.UseCookiePolicy(new CookiePolicyOptions

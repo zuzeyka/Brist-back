@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\FullStackBrist.Server.props" />
-</Project>

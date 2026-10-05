@@ -1,7 +1,7 @@
 ﻿using FullStackBrist.Server.Models.Group;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Community;
-using Slush.Services.Minio;
+using Slush.Services.FileStorage;
 using Slush.Repositories.IRepository;
 
 namespace FullStackBrist.Server.Controllers
@@ -11,12 +11,12 @@ namespace FullStackBrist.Server.Controllers
     public class PostController : Controller
     {
         private readonly IPostRepository _postRepositories;
-        private readonly IMinioService _minioService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public PostController(IPostRepository postRepositories, IMinioService minioService)
+        public PostController(IPostRepository postRepositories, IFileStorageService fileStorageService)
         {
             _postRepositories = postRepositories;
-            _minioService = minioService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -43,15 +43,15 @@ namespace FullStackBrist.Server.Controllers
                                             );
 
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", result.id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         result.contentUrl = url;
                     }
@@ -90,15 +90,15 @@ namespace FullStackBrist.Server.Controllers
         public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
         {
 
-            if (file != null || file.Length != 0)
+            if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
                     try
                     {
-                        String imageUrl = await _minioService.SaveFile("images", id, file.FileName, stream);
+                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = await _minioService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         post.contentUrl = url;
                     }

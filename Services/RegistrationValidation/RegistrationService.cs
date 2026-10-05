@@ -1,7 +1,6 @@
 ﻿using FullStackBrist.Server.Models.Profile;
 using Slush.Data.Entity.Profile;
 using Slush.Services.Hash;
-using Slush.Services.Minio;
 using Slush.Repositories.IRepository;
 
 namespace Slush.Services.RegistrationValidation
@@ -9,14 +8,12 @@ namespace Slush.Services.RegistrationValidation
     public class RegistrationService : IRegistrationService
     {
         private readonly IHashPasswordService _passwordService;
-        private readonly IMinioService _minioService;
         private readonly IUserRepository _userRepositories;
 
-        public RegistrationService(IHashPasswordService passwordService, IUserRepository userRepositories, IMinioService minioService)
+        public RegistrationService(IHashPasswordService passwordService, IUserRepository userRepositories)
         {
             _passwordService = passwordService;
             _userRepositories = userRepositories;
-            _minioService = minioService;
         }
 
         public async Task<User> Registration(UserModel model)
