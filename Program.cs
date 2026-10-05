@@ -136,7 +136,7 @@ if (app.Environment.IsDevelopment())
     // migration created, so replaying it against a fresh local DB fails partway.
     // Build the schema straight from the current model instead.
     await context.Database.EnsureCreatedAsync();
-    await DbSeeder.SeedAsync(context);
+    await DbSeeder.SeedAsync(context, scope.ServiceProvider.GetRequiredService<IHashPasswordService>());
 }
 
 app.UseCors("corsapp");
