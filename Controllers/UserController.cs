@@ -168,7 +168,10 @@ namespace FullStackBrist.Server.Controllers
 
         private async Task<string> Login(LoginValidationModel validationModel)
         {
-            var user = await _userRepositories.GetByEmail(validationModel.username);
+            // The frontend sends whichever of these looks right for what the user
+            // typed (email vs. username) — only one is ever populated.
+            var identifier = !String.IsNullOrEmpty(validationModel.username) ? validationModel.username : validationModel.email;
+            var user = await _userRepositories.GetByEmail(identifier);
 
             if (user == null)
             {
