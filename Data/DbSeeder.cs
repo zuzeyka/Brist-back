@@ -63,13 +63,20 @@ namespace Slush.Data
                 new Publisher { id = Guid.NewGuid(), name = "Electronic Arts", subscribersCount = 980000, description = "Один з найбільших видавців у світі.", avatar = Image("pub-ea", 150, 150), createdAt = now },
             };
 
-            var categoryNames = new[]
+            var genreNames = new[]
             {
                 "Шутер", "RPG", "Відкритий світ", "Стратегія", "Інді", "Пригоди", "Симулятор",
                 "Хоррор", "Гонки", "Спорт", "Платформер", "Паззл", "MOBA",
             };
-            var categories = categoryNames
-                .Select(name => new Categories { id = Guid.NewGuid(), name = name, description = "", createdAt = now })
+            var platformNames = new[] { "PC", "PlayStation", "Xbox", "Switch" };
+            var typeNames = new[] { "Одногравець", "Багатокористувацька", "Кооператив" };
+            var featureNames = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" };
+
+            var categories = genreNames
+                .Select(name => new Categories { id = Guid.NewGuid(), name = name, description = "", kind = "genre", createdAt = now })
+                .Concat(platformNames.Select(name => new Categories { id = Guid.NewGuid(), name = name, description = "", kind = "platform", createdAt = now }))
+                .Concat(typeNames.Select(name => new Categories { id = Guid.NewGuid(), name = name, description = "", kind = "type", createdAt = now }))
+                .Concat(featureNames.Select(name => new Categories { id = Guid.NewGuid(), name = name, description = "", kind = "feature", createdAt = now }))
                 .ToArray();
 
             Guid DevId(string name) => developers.First(d => d.name == name).id;
@@ -81,74 +88,120 @@ namespace Slush.Data
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Cyberpunk 2077", price = 1099, discount = 0, previeImage = Image("cyberpunk-2077"), description = "Рольовий бойовик з відкритим світом у Найт-Сіті.", dateOfRelease = new DateTime(2020, 12, 10), developerId = DevId("CD PROJEKT RED"), publisherId = PubId("CD PROJEKT RED"), createdAt = now },
                     Categories = new[] { "RPG", "Відкритий світ", "Шутер" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Відьмак 3: Дикий Гін", price = 729, discount = 50, discountFinish = now.AddDays(10), previeImage = Image("witcher-3"), description = "Епічна RPG про відьмака Ґеральта з Рівії.", dateOfRelease = new DateTime(2015, 5, 19), developerId = DevId("CD PROJEKT RED"), publisherId = PubId("CD PROJEKT RED"), createdAt = now },
                     Categories = new[] { "RPG", "Відкритий світ", "Пригоди" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox", "Switch" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Avatar: Frontiers of Pandora", price = 1519, discount = 40, discountFinish = now.AddDays(10), previeImage = Image("avatar-pandora"), description = "Пригодницький бойовик від першої особи на Пандорі.", dateOfRelease = new DateTime(2023, 12, 7), developerId = DevId("Massive Entertainment"), publisherId = PubId("Ubisoft"), createdAt = now },
                     Categories = new[] { "Шутер", "Відкритий світ", "Пригоди" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Stardew Valley", price = 229, discount = 0, previeImage = Image("stardew-valley"), description = "Симулятор фермерського життя.", dateOfRelease = new DateTime(2016, 2, 26), developerId = DevId("ConcernedApe"), publisherId = PubId("Ubisoft"), createdAt = now },
                     Categories = new[] { "Симулятор", "Інді" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox", "Switch" },
+                    Types = new[] { "Одногравець", "Кооператив" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Baldur's Gate 3", price = 899, discount = 0, previeImage = Image("baldurs-gate-3"), description = "Рольова гра на основі Dungeons & Dragons.", dateOfRelease = new DateTime(2023, 8, 3), developerId = DevId("Larian Studios"), publisherId = PubId("Larian Studios"), createdAt = now },
                     Categories = new[] { "RPG", "Пригоди", "Стратегія" },
+                    Platforms = new[] { "PC", "PlayStation" },
+                    Types = new[] { "Одногравець", "Кооператив" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Grand Theft Auto V", price = 799, discount = 60, discountFinish = now.AddDays(14), previeImage = Image("gta-5"), description = "Відкритий світ Лос-Сантоса очима трьох злочинців.", dateOfRelease = new DateTime(2015, 4, 14), developerId = DevId("Rockstar North"), publisherId = PubId("Rockstar Games"), createdAt = now },
                     Categories = new[] { "Відкритий світ", "Шутер", "Пригоди" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox" },
+                    Types = new[] { "Одногравець", "Багатокористувацька" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "The Last of Us Part I", price = 1399, discount = 0, previeImage = Image("tlou-1"), description = "Історія Джоела та Еллі у постапокаліптичній Америці.", dateOfRelease = new DateTime(2022, 9, 2), developerId = DevId("Naughty Dog"), publisherId = PubId("Sony Interactive Entertainment"), createdAt = now },
                     Categories = new[] { "Пригоди", "Хоррор" },
+                    Platforms = new[] { "PC", "PlayStation" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Elden Ring", price = 1199, discount = 20, discountFinish = now.AddDays(7), previeImage = Image("elden-ring"), description = "Фентезійний відкритий світ від FromSoftware та Джорджа Р. Р. Мартіна.", dateOfRelease = new DateTime(2022, 2, 25), developerId = DevId("FromSoftware"), publisherId = PubId("Bandai Namco"), createdAt = now },
                     Categories = new[] { "RPG", "Відкритий світ" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox" },
+                    Types = new[] { "Одногравець", "Кооператив" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Hades", price = 399, discount = 0, previeImage = Image("hades"), description = "Рогалик про втечу з підземного царства Аїда.", dateOfRelease = new DateTime(2020, 9, 17), developerId = DevId("Supergiant Games"), publisherId = PubId("Valve"), createdAt = now },
                     Categories = new[] { "Інді", "RPG" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox", "Switch" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Portal 2", price = 349, discount = 0, previeImage = Image("portal-2"), description = "Кооперативна головоломка від Valve з портальною гарматою.", dateOfRelease = new DateTime(2011, 4, 19), developerId = DevId("Valve"), publisherId = PubId("Valve"), createdAt = now },
                     Categories = new[] { "Паззл", "Пригоди" },
+                    Platforms = new[] { "PC" },
+                    Types = new[] { "Одногравець", "Кооператив" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Counter-Strike 2", price = 0, discount = 0, previeImage = Image("cs2"), description = "Командний тактичний шутер від першої особи.", dateOfRelease = new DateTime(2023, 9, 27), developerId = DevId("Valve"), publisherId = PubId("Valve"), createdAt = now },
                     Categories = new[] { "Шутер" },
+                    Platforms = new[] { "PC" },
+                    Types = new[] { "Багатокористувацька" },
+                    Features = new[] { "Досягнення", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Forza Horizon 5", price = 999, discount = 30, discountFinish = now.AddDays(5), previeImage = Image("forza-horizon-5"), description = "Гоночна пісочниця у відкритому світі Мексики.", dateOfRelease = new DateTime(2021, 11, 9), developerId = DevId("Playground Games"), publisherId = PubId("Xbox Game Studios"), createdAt = now },
                     Categories = new[] { "Гонки", "Відкритий світ" },
+                    Platforms = new[] { "PC", "Xbox" },
+                    Types = new[] { "Одногравець", "Багатокористувацька" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "EA Sports FC 24", price = 1299, discount = 25, discountFinish = now.AddDays(12), previeImage = Image("eafc-24"), description = "Футбольний симулятор з ліцензованими клубами та лігами.", dateOfRelease = new DateTime(2023, 9, 29), developerId = DevId("EA Vancouver"), publisherId = PubId("Electronic Arts"), createdAt = now },
                     Categories = new[] { "Спорт", "Симулятор" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox", "Switch" },
+                    Types = new[] { "Багатокористувацька" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Hollow Knight", price = 269, discount = 0, previeImage = Image("hollow-knight"), description = "Атмосферний метроідванія-платформер у підземному королівстві комах.", dateOfRelease = new DateTime(2017, 2, 24), developerId = DevId("Team Cherry"), publisherId = PubId("Valve"), createdAt = now },
                     Categories = new[] { "Інді", "Платформер", "Пригоди" },
+                    Platforms = new[] { "PC", "PlayStation", "Xbox", "Switch" },
+                    Types = new[] { "Одногравець" },
+                    Features = new[] { "Досягнення", "Підтримка контролера", "Хмарні збереження" },
                 },
                 new {
                     Game = new GameInShop { id = Guid.NewGuid(), name = "Dota 2", price = 0, discount = 0, previeImage = Image("dota-2"), description = "Командна MOBA з понад сотнею унікальних героїв.", dateOfRelease = new DateTime(2013, 7, 9), developerId = DevId("Valve"), publisherId = PubId("Valve"), createdAt = now },
                     Categories = new[] { "MOBA", "Стратегія" },
+                    Platforms = new[] { "PC" },
+                    Types = new[] { "Багатокористувацька" },
+                    Features = new[] { "Досягнення", "Хмарні збереження" },
                 },
             };
 
             Guid GameId(string name) => games.First(g => g.Game.name == name).Game.id;
 
-            var categoryLinks = games.SelectMany(g => g.Categories.Select(c => new CategoryForGame
-            {
-                id = Guid.NewGuid(),
-                gameId = g.Game.id,
-                categoryId = CatId(c),
-                createdAt = now,
-            }));
+            var categoryLinks = games.SelectMany(g =>
+                g.Categories.Concat(g.Platforms).Concat(g.Types).Concat(g.Features).Select(c => new CategoryForGame
+                {
+                    id = Guid.NewGuid(),
+                    gameId = g.Game.id,
+                    categoryId = CatId(c),
+                    createdAt = now,
+                }));
 
             var minRequirements = games.Select(g => new MinimalSystemRequirement
             {
@@ -211,6 +264,26 @@ namespace Slush.Data
                 new GameBundleCollection { id = Guid.NewGuid(), gameId = GameId("Відьмак 3: Дикий Гін"), dlcId = DlcId("Відьмак 3: Кам'яні серця"), bundleId = BundleId("CD PROJEKT RED: Повна колекція"), createdAt = now },
                 new GameBundleCollection { id = Guid.NewGuid(), gameId = GameId("Elden Ring"), dlcId = DlcId("Elden Ring: Shadow of the Erdtree"), bundleId = BundleId("Elden Ring: Deluxe Edition"), createdAt = now },
             };
+
+            // Events — time-bound, so unlike genre/platform/type/feature they can't
+            // reuse the Categories/CategoryForGame shape; a real start/end window.
+            var events = new[]
+            {
+                new GameEvent { id = Guid.NewGuid(), name = "Осінній розпродаж", description = "Знижки на обрані хіти.", startAt = now.AddDays(-3), endAt = now.AddDays(7), createdAt = now },
+                new GameEvent { id = Guid.NewGuid(), name = "Новинки тижня", description = "Нещодавні релізи, які варто спробувати.", startAt = now.AddDays(-14), endAt = now.AddDays(14), createdAt = now },
+                new GameEvent { id = Guid.NewGuid(), name = "Безкоштовні вихідні", description = "Грайте безкоштовно протягом обмеженого часу.", startAt = now.AddDays(2), endAt = now.AddDays(4), createdAt = now },
+            };
+
+            Guid EventId(string name) => events.First(e => e.name == name).id;
+
+            var saleGames = new[] { "Відьмак 3: Дикий Гін", "Avatar: Frontiers of Pandora", "Grand Theft Auto V", "Elden Ring", "Forza Horizon 5", "EA Sports FC 24" };
+            var newReleaseGames = new[] { "Avatar: Frontiers of Pandora", "EA Sports FC 24", "Counter-Strike 2", "Baldur's Gate 3" };
+            var freeWeekendGames = new[] { "Hades", "Portal 2" };
+
+            var eventLinks =
+                saleGames.Select(name => new GameEventForGame { id = Guid.NewGuid(), gameId = GameId(name), eventId = EventId("Осінній розпродаж"), createdAt = now })
+                .Concat(newReleaseGames.Select(name => new GameEventForGame { id = Guid.NewGuid(), gameId = GameId(name), eventId = EventId("Новинки тижня"), createdAt = now }))
+                .Concat(freeWeekendGames.Select(name => new GameEventForGame { id = Guid.NewGuid(), gameId = GameId(name), eventId = EventId("Безкоштовні вихідні"), createdAt = now }));
 
             // News, guides and screenshots — rotated templates per game so the
             // catalog pages have real-looking content without hand-authoring
@@ -277,6 +350,8 @@ namespace Slush.Data
             await context.dbDLCsInShop.AddRangeAsync(dlcs);
             await context.dbGameBundles.AddRangeAsync(bundles);
             await context.dbGameBundleCollections.AddRangeAsync(bundleCollections);
+            await context.dbGameEvents.AddRangeAsync(events);
+            await context.dbGameEventsForGame.AddRangeAsync(eventLinks);
             await context.dbGameNews.AddRangeAsync(gameNews);
             await context.dbGameGuides.AddRangeAsync(gameGuides);
             await context.dbScreenshots.AddRangeAsync(screenshots);

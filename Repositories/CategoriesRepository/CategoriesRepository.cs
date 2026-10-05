@@ -21,6 +21,7 @@ namespace Slush.Repositories.CategoriesRepository
                 .Select(c => new Categories{   id = c.id,
                                                                              name = c.name,
                                                                              description = c.description,
+                                                                             kind = c.kind,
                                                                              createdAt = c.createdAt
             }).ToListAsync();
         }
@@ -32,6 +33,7 @@ namespace Slush.Repositories.CategoriesRepository
             {
                 existing.name = category.name;
                 existing.description = category.description;
+                existing.kind = category.kind;
 
                 await _context.SaveChangesAsync();
             }
@@ -63,6 +65,7 @@ namespace Slush.Repositories.CategoriesRepository
                     id = c.id,
                     name = c.name,
                     description = c.description,
+                    kind = c.kind,
                     createdAt = c.createdAt
                 }).FirstOrDefaultAsync();
 
@@ -89,6 +92,7 @@ namespace Slush.Repositories.CategoriesRepository
                     id = c.id,
                     name = c.name,
                     description = c.description,
+                    kind = c.kind,
                     createdAt = c.createdAt
                 }).FirstOrDefaultAsync();
 

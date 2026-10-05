@@ -67,6 +67,8 @@ namespace Slush.Data
         public DbSet<GameInShop>               dbGamesInShops              { get; set; }
         public DbSet<GameBundle>               dbGameBundles               { get; set; }
         public DbSet<GameBundleCollection>     dbGameBundleCollections     { get; set; }
+        public DbSet<GameEvent>                dbGameEvents                { get; set; }
+        public DbSet<GameEventForGame>          dbGameEventsForGame         { get; set; }
         #endregion
         #region Chat
         public DbSet<Chat>                     dbChats                     { get; set; }
@@ -331,6 +333,18 @@ namespace Slush.Data
                 .HasOne<Categories>()
                 .WithMany()
                 .HasForeignKey(g => g.categoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GameEventForGame>()
+                .HasOne<GameInShop>()
+                .WithMany()
+                .HasForeignKey(g => g.gameId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GameEventForGame>()
+                .HasOne<GameEvent>()
+                .WithMany()
+                .HasForeignKey(g => g.eventId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<LanguageInGame>()

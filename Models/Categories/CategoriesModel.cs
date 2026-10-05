@@ -4,6 +4,7 @@
     {
         public String? name { get; set; }
         public String? description { get; set; }
+        public String? kind { get; set; } = "genre";
         public DateTime? createdAt { get; set; }
     }
 }

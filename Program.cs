@@ -112,6 +112,8 @@ builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();
 
 builder.Services.AddScoped<IGameBundleCollectionRepository, GameBundleCollectionRepository>();
 builder.Services.AddScoped<IGameBundleRepository, GameBundleRepository>();
+builder.Services.AddScoped<IGameEventRepository, GameEventRepository>();
+builder.Services.AddScoped<IGameEventForGameRepository, GameEventForGameRepository>();
 
 #endregion
 

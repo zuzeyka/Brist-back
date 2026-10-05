@@ -30,7 +30,8 @@ namespace FullStackBrist.Server.Controllers
             var result = new Categories(Guid.NewGuid(),
                                         model.name,
                                         model.description,
-                                        DateTime.Now);
+                                        DateTime.Now,
+                                        model.kind);
             await _CategoriesRepository.Add(result);
 
             return Ok(result);
