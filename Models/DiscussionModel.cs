@@ -2,7 +2,7 @@
 {
     public class DiscussionModel
     {
-        public Guid authordId { get; set; }
+        public Guid authorId { get; set; }
         public Guid attachedId { get; set; }
         public String? content { get; set; }
         public int likesCount { get; set; }

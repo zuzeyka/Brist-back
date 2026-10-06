@@ -25,6 +25,7 @@ namespace Slush.Repositories.ProfileRepository
                 email = u.email,
                 description = u.description,
                 image = u.image,
+                backgroundImage = u.backgroundImage,
                 verified = u.verified,
                 amountOfMoney = u.amountOfMoney,
                 amountOfXp = u.amountOfXp,
@@ -40,6 +41,7 @@ namespace Slush.Repositories.ProfileRepository
                 existing.email = user.email;
                 existing.description = user.description;
                 existing.image = user.image;
+                existing.backgroundImage = user.backgroundImage;
                 existing.verified = user.verified;
                 existing.amountOfMoney = user.amountOfMoney;
                 existing.amountOfXp = user.amountOfXp;
@@ -78,6 +80,7 @@ namespace Slush.Repositories.ProfileRepository
                     email = u.email,
                     description = u.description,
                     image = u.image,
+                    backgroundImage = u.backgroundImage,
                     verified = u.verified,
                     amountOfMoney = u.amountOfMoney,
                     amountOfXp = u.amountOfXp,
@@ -104,6 +107,7 @@ namespace Slush.Repositories.ProfileRepository
                     email = u.email,
                     description = u.description,
                     image = u.image,
+                    backgroundImage = u.backgroundImage,
                     verified = u.verified,
                     amountOfMoney = u.amountOfMoney,
                     amountOfXp = u.amountOfXp,

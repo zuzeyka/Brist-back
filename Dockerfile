@@ -1,5 +1,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
+# Pre-create the upload dir owned by "app": the uploads-data volume mounts here
+# empty on first run, and Docker seeds a new volume from whatever already exists
+# at the mount path in the image — if it's missing here, Docker creates it as
+# root instead, and the app user can never write to it.
+RUN mkdir -p /app/wwwroot/uploads && chown -R app:app /app/wwwroot
+
 USER app
 
 WORKDIR /app
@@ -34,6 +40,6 @@ FROM base AS final
 
 WORKDIR /app
 
-COPY --from=publish /app/publish .
+COPY --from=publish --chown=app:app /app/publish .
 
 ENTRYPOINT ["dotnet", "Slush.dll"]

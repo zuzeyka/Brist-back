@@ -28,14 +28,14 @@ namespace Slush.Controllers
         public async Task<ActionResult<Discussion>> CreateDiscussion([FromBody] DiscussionModel model)
         {
             var result = new Discussion(Guid.NewGuid(),
-                model.authordId,
+                model.authorId,
                 model.attachedId,
                 model.content,
                 model.likesCount,
                 model.rate,
                 DateTime.Now);
 
-            var response = _DiscussionRepository.UpdateDiscussion(result);
+            var response = await _DiscussionRepository.UpdateDiscussion(result);
 
             return Ok(response);
         }
@@ -76,7 +76,7 @@ namespace Slush.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDiscussion(Guid id, [FromBody] DiscussionModel model)
         {
-            var result = await _DiscussionRepository.UpdateDiscussion(new Discussion(id, model.authordId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
+            var result = await _DiscussionRepository.UpdateDiscussion(new Discussion(id, model.authorId, model.attachedId, model.content, model.likesCount, model.rate, model.createdAt));
             return Ok(result);
         }
 

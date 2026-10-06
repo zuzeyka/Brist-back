@@ -55,16 +55,17 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpGet("bygameid/{id}")]
-        public async Task<ActionResult<List<MaximumSystemRequirement>>> GetRequirementsByGameId(Guid id)
+        public async Task<ActionResult<MaximumSystemRequirement>> GetRequirementsByGameId(Guid id)
         {
             var response = await _requirementRepositories.GetByGameName(id);
+            var first = response?.FirstOrDefault();
 
-            if(response == null)
+            if(first == null)
             {
                 return NotFound();
             }
 
-            return Ok(response);
+            return Ok(first);
         }
 
         [HttpDelete("{id}")]

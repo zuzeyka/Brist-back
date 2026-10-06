@@ -224,7 +224,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user, IFormFile file)
+        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserModel user)
         {
             if (!IsCurrentUser(id))
             {
@@ -235,26 +235,6 @@ namespace FullStackBrist.Server.Controllers
             if (existing == null)
             {
                 return NotFound();
-            }
-
-            if (file != null && file.Length != 0)
-            {
-                using (var stream = file.OpenReadStream())
-                {
-                    try
-                    {
-                        String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
-
-                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
-
-                        user.image = url;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogInformation(ex.Message);
-                        return StatusCode(500, $"Failed to upload file: {ex.Message}");
-                    }
-                }
             }
 
             // Only profile fields are client-editable here; password, verification
@@ -269,7 +249,104 @@ namespace FullStackBrist.Server.Controllers
                 existing.verified,
                 existing.amountOfMoney,
                 existing.amountOfXp,
-                existing.createdAt));
+                existing.createdAt,
+                user.backgroundImage));
+            return Ok(result);
+        }
+        [HttpPut("{id}/avatar")]
+        public async Task<ActionResult<User>> UpdateUserAvatar(Guid id, IFormFile file)
+        {
+            if (!IsCurrentUser(id))
+            {
+                return Forbid();
+            }
+
+            var existing = await _userRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            string imageUrl;
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    string storedPath = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
+                    imageUrl = await _fileStorageService.GetUrlToFile(storedPath);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(ex.Message);
+                    return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                }
+            }
+
+            var result = await _userRepositories.UpdateUser(new User(
+                id,
+                existing.name,
+                existing.passwordSalt,
+                existing.email,
+                existing.description,
+                imageUrl,
+                existing.verified,
+                existing.amountOfMoney,
+                existing.amountOfXp,
+                existing.createdAt,
+                existing.backgroundImage));
+            return Ok(result);
+        }
+        [HttpPut("{id}/background")]
+        public async Task<ActionResult<User>> UpdateUserBackground(Guid id, IFormFile file)
+        {
+            if (!IsCurrentUser(id))
+            {
+                return Forbid();
+            }
+
+            var existing = await _userRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            string backgroundUrl;
+            using (var stream = file.OpenReadStream())
+            {
+                try
+                {
+                    string storedPath = await _fileStorageService.SaveFile("backgrounds", id, file.FileName, stream);
+                    backgroundUrl = await _fileStorageService.GetUrlToFile(storedPath);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(ex.Message);
+                    return StatusCode(500, $"Failed to upload file: {ex.Message}");
+                }
+            }
+
+            var result = await _userRepositories.UpdateUser(new User(
+                id,
+                existing.name,
+                existing.passwordSalt,
+                existing.email,
+                existing.description,
+                existing.image,
+                existing.verified,
+                existing.amountOfMoney,
+                existing.amountOfXp,
+                existing.createdAt,
+                backgroundUrl));
             return Ok(result);
         }
 

@@ -7,6 +7,7 @@
         public String? email { get; set; }
         public String? description { get; set; }
         public String? image { get; set; }
+        public String? backgroundImage { get; set; }
         public bool verified { get; set; }
         public float amountOfMoney { get; set; }
         public float amountOfXp { get; set; }

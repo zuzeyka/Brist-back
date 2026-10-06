@@ -56,12 +56,13 @@ namespace FullStackBrist.Server.Controllers
         public async Task<ActionResult<MinimalSystemRequirement>> GetRequirementsByGameId(Guid id)
         {
             var response = await _minimalSystemRequirementRepositories.GetByGameId(id);
-            if (response == null)
+            var first = response?.FirstOrDefault();
+            if (first == null)
             {
                 return NotFound();
             }
 
-            return Ok(response);
+            return Ok(first);
         }
 
         [HttpDelete("{id}")]

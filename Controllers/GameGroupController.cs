@@ -63,16 +63,17 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpGet("bygameid/{id}")]
-        public async Task<ActionResult<List<GameGroup>>> GetByGameId(Guid id)
+        public async Task<ActionResult<GameGroup>> GetByGameId(Guid id)
         {
             var response = await _GameGroupRepository.GetByGameId(id);
+            var first = response?.FirstOrDefault();
 
-            if(response == null)
+            if(first == null)
             {
                 return NotFound();
             }
 
-            return Ok(response);
+            return Ok(first);
         }
 
         [HttpPost("getall")]

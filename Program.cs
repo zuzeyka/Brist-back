@@ -147,7 +147,12 @@ app.UseCookiePolicy(new CookiePolicyOptions
 {
     MinimumSameSitePolicy = SameSiteMode.Strict,
     HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
+    // "Always" makes browsers silently refuse to store the auth cookie whenever the
+    // request isn't HTTPS (e.g. local dev over plain http://localhost) — the cookie
+    // never lands, so every later [Authorize] call 401s with no visible error.
+    // SameAsRequest marks it Secure only when the request actually was HTTPS, so it
+    // still gets the Secure flag in production behind TLS.
+    Secure = CookieSecurePolicy.SameAsRequest
 });
 
 app.UseDefaultFiles();
