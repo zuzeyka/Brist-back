@@ -35,9 +35,9 @@ namespace Slush.Controllers
                 model.rate,
                 DateTime.Now);
 
-            var response = await _DiscussionRepository.UpdateDiscussion(result);
+            await _DiscussionRepository.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

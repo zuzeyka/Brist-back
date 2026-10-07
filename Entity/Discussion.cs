@@ -8,6 +8,7 @@
         {
             this.id = id;
             this.authorId = authorId;
+            this.attachedId = attachedId;
             this.content = content;
             this.likesCount = likesCount;
             this.rate = rate;
