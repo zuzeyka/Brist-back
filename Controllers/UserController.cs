@@ -166,6 +166,22 @@ namespace FullStackBrist.Server.Controllers
             return Ok(result);
         }
 
+        [HttpPost("logout")]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            // The auth cookie is HttpOnly, so client-side script can never clear it --
+            // only a Set-Cookie response (with matching attributes) from the server can.
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+            };
+            Response.Cookies.Delete("somedonuts", cookieOptions);
+            return Ok();
+        }
+
         private async Task<string> Login(LoginValidationModel validationModel)
         {
             // The frontend sends whichever of these looks right for what the user
