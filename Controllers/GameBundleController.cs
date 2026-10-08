@@ -35,9 +35,9 @@ namespace Slush.Controllers
                 model.discountFinish,
                 DateTime.Now);
 
-            var response = _gameBundleRepositories.Add(result);
+            await _gameBundleRepositories.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

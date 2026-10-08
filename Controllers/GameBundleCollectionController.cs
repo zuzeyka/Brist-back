@@ -33,9 +33,9 @@ namespace Slush.Controllers
                 model.bundleId,
                 DateTime.Now);
 
-            var response = _Repositories.Add(result);
+            await _Repositories.Add(result);
 
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

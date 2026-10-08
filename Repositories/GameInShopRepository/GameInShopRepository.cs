@@ -55,7 +55,7 @@ namespace Slush.Repositories.GameInShopRepository
 
         public async Task<String> Add(GameInShop game)
         {
-            var result = GetGameInShopByName(game.name);
+            var result = await GetGameInShopByName(game.name);
 
             if (result != null)
             {
@@ -63,7 +63,7 @@ namespace Slush.Repositories.GameInShopRepository
             }
 
             await _context.dbGamesInShops.AddAsync(game);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return "Game added";
         }
@@ -131,6 +131,7 @@ namespace Slush.Repositories.GameInShopRepository
         {
             var response = await _context.dbGamesInShops
                    .Where(x => x.id == id)
+                   .Where(x => x.deleteAt == null)
                    .Select(g => new GameInShop
                    {
                        id = Guid.Parse(g.id.ToString()),

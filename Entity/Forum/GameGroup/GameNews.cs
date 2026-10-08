@@ -15,6 +15,7 @@ namespace Slush.Data.Entity.Community.GameGroup
             this.gameId = gameId;
             this.gameGroupId = gameGroupId;
             this.authorId = authorId;
+            this.content = content;
             this.contentUrl = contentUrl;
             this.createdAt = createdAt;
         }

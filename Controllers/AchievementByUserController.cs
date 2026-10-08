@@ -78,7 +78,7 @@ namespace Slush.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult<List<AchievementByUser>>> GetAllAchievementsByUserIds([FromBody] List<Guid> guidList)
         {
-            var response = _achievementByUserRepositories.GetByIds(guidList);
+            var response = await _achievementByUserRepositories.GetByIds(guidList);
 
             return Ok(response);
         }
