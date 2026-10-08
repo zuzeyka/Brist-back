@@ -425,17 +425,13 @@ namespace Slush.Data
                 .HasForeignKey(g => g.userId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<WalletTransactions>()
-                .HasOne<GameInShop>()
-                .WithMany()
-                .HasForeignKey(g => g.transactionObj)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<WalletTransactions>()
-                .HasOne<DLCInShop>()
-                .WithMany()
-                .HasForeignKey(g => g.transactionObj)
-                .OnDelete(DeleteBehavior.Restrict);
+            // transactionObj intentionally has no FK here: a wallet transaction
+            // can reference either a GameInShop or a DLCInShop purchase, and a single
+            // column can't carry two simultaneous FK constraints to different parent
+            // tables — EF Core happily configured both below, which meant every
+            // transactionObj had to exist in *both* tables at once to satisfy them,
+            // something that was never true in practice. Removed rather than given a
+            // discriminator column, since nothing currently reads this as a real FK.
 
             modelBuilder.Entity<AchievementByUser>()
                 .HasOne<Achievement>()

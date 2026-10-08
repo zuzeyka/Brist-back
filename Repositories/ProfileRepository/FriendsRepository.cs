@@ -39,6 +39,18 @@ namespace Slush.Repositories.ProfileRepository
             return existing;
         }
 
+        public async Task<Friends?> Accept(Guid id)
+        {
+            var existing = await _context.dbFriends.FindAsync(id);
+            if (existing != null)
+            {
+                existing.status = FriendRequestStatus.Accepted;
+                await _context.SaveChangesAsync();
+            }
+
+            return existing;
+        }
+
         public async Task Add(Friends friend)
         {
             await _context.dbFriends.AddAsync(friend);
@@ -65,7 +77,8 @@ namespace Slush.Repositories.ProfileRepository
                     id = f.id,
                     userId = f.userId,
                     friendId = f.friendId,
-                    createdAt = f.createdAt
+                    createdAt = f.createdAt,
+                    status = f.status
                 }).FirstOrDefaultAsync();
             if (response != null)
             {
@@ -86,7 +99,8 @@ namespace Slush.Repositories.ProfileRepository
                     id = f.id,
                     userId = f.userId,
                     friendId = f.friendId,
-                    createdAt = f.createdAt
+                    createdAt = f.createdAt,
+                    status = f.status
                 }).ToListAsync();
             if (response != null)
             {
@@ -96,6 +110,38 @@ namespace Slush.Repositories.ProfileRepository
             {
                 return null;
             }
+        }
+
+        public async Task<Friends?> GetRelationship(Guid userA, Guid userB)
+        {
+            return await _context.dbFriends
+                .Where(f => f.deleteAt == null)
+                .Where(f => (f.userId == userA && f.friendId == userB) || (f.userId == userB && f.friendId == userA))
+                .Select(f => new Friends
+                {
+                    id = f.id,
+                    userId = f.userId,
+                    friendId = f.friendId,
+                    createdAt = f.createdAt,
+                    status = f.status
+                }).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Friends>> GetFriendsOf(Guid userId)
+        {
+            return await _context.dbFriends
+                .Where(f => f.deleteAt == null && f.status == FriendRequestStatus.Accepted)
+                .Where(f => f.userId == userId || f.friendId == userId)
+                .Select(f => new Friends
+                {
+                    id = f.id,
+                    // Normalized so the caller always sees "the other person" in
+                    // friendId, regardless of which side originally sent the request.
+                    userId = userId,
+                    friendId = f.userId == userId ? f.friendId : f.userId,
+                    createdAt = f.createdAt,
+                    status = f.status
+                }).ToListAsync();
         }
 
         public async Task<List<Friends?>> GetByUserIds(List<Guid> id)

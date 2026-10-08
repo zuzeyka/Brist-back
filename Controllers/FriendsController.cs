@@ -30,17 +30,74 @@ namespace FullStackBrist.Server.Controllers
                 return Forbid();
             }
 
-            // A friend relation can only ever be created with the caller as one side;
-            // client-supplied model.userId is ignored to prevent creating relations
-            // between two other users.
+            var existing = await _friendsRepositories.GetRelationship(currentUserId.Value, model.friendId);
+            if (existing != null)
+            {
+                // The other side already sent a request to us — sending our own is
+                // treated as accepting theirs, rather than creating a second row.
+                if (existing.status == FriendRequestStatus.Pending && existing.friendId == currentUserId.Value)
+                {
+                    var accepted = await _friendsRepositories.Accept(existing.id);
+                    return Ok(accepted);
+                }
+
+                return Ok(existing);
+            }
+
+            // A friend request can only ever be sent as the caller; client-supplied
+            // model.userId is ignored to prevent creating relations between two
+            // other users.
             var result = new Friends(Guid.NewGuid(),
                                             currentUserId.Value,
                                             model.friendId,
-                                            DateTime.Now
+                                            DateTime.Now,
+                                            FriendRequestStatus.Pending
                                             );
            await _friendsRepositories.Add(result);
 
             return Ok(result);
+        }
+
+        [HttpPut("accept/{id}")]
+        public async Task<ActionResult<Friends>> AcceptFriend(Guid id)
+        {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _friendsRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            // Only the recipient of a request may accept it — the sender accepting
+            // their own request would make no sense.
+            if (currentUserId == null || existing.friendId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+            if (existing.status == FriendRequestStatus.Accepted)
+            {
+                return Ok(existing);
+            }
+
+            var result = await _friendsRepositories.Accept(id);
+            return Ok(result);
+        }
+
+        [HttpGet("relationship/{otherUserId}")]
+        public async Task<ActionResult<Friends>> GetRelationship(Guid otherUserId)
+        {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            var response = await _friendsRepositories.GetRelationship(currentUserId.Value, otherUserId);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
         }
 
 
@@ -68,7 +125,9 @@ namespace FullStackBrist.Server.Controllers
         [HttpGet("getbyuserid/{id}")]
         public async Task<ActionResult<List<Friends>>> GetFriendsByUserId(Guid id)
         {
-            var response = await _friendsRepositories.GetByUserId(id);
+            // Bidirectional and accepted-only: a friendship from either side counts,
+            // but a request that's still pending doesn't belong on a "friends" list.
+            var response = await _friendsRepositories.GetFriendsOf(id);
             if (response == null)
             {
                 return NotFound();

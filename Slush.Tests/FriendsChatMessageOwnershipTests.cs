@@ -87,6 +87,82 @@ namespace Slush.Tests
         }
 
         [Fact]
+        public async Task Friends_Create_StartsAsPending_AndIsExcludedFromFriendsList()
+        {
+            var userId = await SeedUserAsync();
+            var friendId = await SeedUserAsync();
+            var client = _factory.AuthenticatedClient(userId);
+
+            var created = await (await client.PostAsJsonAsync("/api/Friends", new { userId, friendId }))
+                .Content.ReadFromJsonAsync<FriendsDto>();
+
+            Assert.Equal(0, created!.status);
+
+            var list = await (await client.GetAsync($"/api/Friends/getbyuserid/{userId}"))
+                .Content.ReadFromJsonAsync<List<FriendsDto>>();
+            Assert.Empty(list!);
+        }
+
+        [Fact]
+        public async Task Friends_Create_WhenReverseRequestIsPending_AutoAcceptsInstead()
+        {
+            var userA = await SeedUserAsync();
+            var userB = await SeedUserAsync();
+
+            // A sends a request to B first.
+            await _factory.AuthenticatedClient(userA).PostAsJsonAsync("/api/Friends", new { userId = userA, friendId = userB });
+
+            // B "adds" A back — this should accept A's existing request, not create a second row.
+            var result = await (await _factory.AuthenticatedClient(userB).PostAsJsonAsync("/api/Friends", new { userId = userB, friendId = userA }))
+                .Content.ReadFromJsonAsync<FriendsDto>();
+            Assert.Equal(1, result!.status);
+
+            var aList = await (await _factory.AuthenticatedClient(userA).GetAsync($"/api/Friends/getbyuserid/{userA}"))
+                .Content.ReadFromJsonAsync<List<FriendsDto>>();
+            Assert.Single(aList!);
+        }
+
+        [Fact]
+        public async Task Friends_Accept_BySender_Returns403()
+        {
+            var userId = await SeedUserAsync();
+            var friendId = await SeedUserAsync();
+            var created = await (await _factory.AuthenticatedClient(userId).PostAsJsonAsync("/api/Friends", new { userId, friendId }))
+                .Content.ReadFromJsonAsync<FriendsDto>();
+
+            // The sender cannot accept their own outgoing request.
+            var response = await _factory.AuthenticatedClient(userId).PutAsync($"/api/Friends/accept/{created!.id}", null);
+
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Friends_Accept_ByRecipient_Succeeds()
+        {
+            var userId = await SeedUserAsync();
+            var friendId = await SeedUserAsync();
+            var created = await (await _factory.AuthenticatedClient(userId).PostAsJsonAsync("/api/Friends", new { userId, friendId }))
+                .Content.ReadFromJsonAsync<FriendsDto>();
+
+            var response = await _factory.AuthenticatedClient(friendId).PutAsync($"/api/Friends/accept/{created!.id}", null);
+            response.EnsureSuccessStatusCode();
+
+            var list = await (await _factory.AuthenticatedClient(userId).GetAsync($"/api/Friends/getbyuserid/{userId}"))
+                .Content.ReadFromJsonAsync<List<FriendsDto>>();
+            Assert.Single(list!);
+        }
+
+        [Fact]
+        public async Task Friends_Relationship_LoggedOut_Returns401()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync($"/api/Friends/relationship/{Guid.NewGuid()}");
+
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
         public async Task Friends_Delete_ByNonParticipant_Returns403()
         {
             var userId = await SeedUserAsync();
@@ -361,7 +437,7 @@ namespace Slush.Tests
             Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
         }
 
-        private record FriendsDto(Guid id, Guid userId, Guid friendId, DateTime? createdAt);
+        private record FriendsDto(Guid id, Guid userId, Guid friendId, DateTime? createdAt, int status);
         private record ChatDto(Guid id, Guid firstUser, Guid secondUser, DateTime? createdAt);
         private record MessageDto(Guid id, Guid chatId, Guid senderId, string? content, DateTime? createdAt);
     }

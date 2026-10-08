@@ -27,7 +27,10 @@ namespace Slush.Tests
             using var scope = _factory.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-            var game = await context.dbGamesInShops.FirstAsync();
+            // Must actually cost something — the insufficient-balance test depends
+            // on that, and FirstAsync() alone isn't guaranteed to land on a priced
+            // item if the seed data ever includes a free one.
+            var game = await context.dbGamesInShops.Where(g => g.price > 0).FirstAsync();
             _seededGameId = game.id;
             _seededGameFinalPrice = FinalPrice(game.price, game.discount);
             _seededDlcId = await context.dbDLCsInShop.Select(d => d.id).FirstAsync();
