@@ -1,4 +1,5 @@
 ﻿using FullStackBrist.Server.Models.Profile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Slush.Data.Entity.Profile;
 using Slush.Services.FileStorage;
@@ -10,6 +11,8 @@ namespace FullStackBrist.Server.Controllers
     [Route("api/[controller]")]
     public class ScreenshotController : Controller
     {
+        // Screenshots are public game-page content (like reviews/comments) — GET
+        // endpoints stay anonymous. Only the author can create/edit/delete their own.
         private readonly IScreenshotRepository _screenshotRepositories;
         private readonly IFileStorageService _fileStorageService;
 
@@ -29,14 +32,23 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Screenshot>> CreateScreenshot([FromBody] ScreenshotModel model)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            // A screenshot can only ever be posted under the caller's own authorship;
+            // client-supplied model.authorId is ignored to prevent impersonating another user.
             var result = new Screenshot(Guid.NewGuid(),
                 model.title,
                 model.description,
                 0,
                 model.gameId,
-                model.authorId,
+                currentUserId.Value,
                 model.contentUrl,
                 DateTime.Now);
 
@@ -70,15 +82,39 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteScreenshot(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _screenshotRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.authorId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             await _screenshotRepositories.DeleteScreenshot(id);
             return NoContent();
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile? file)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _screenshotRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.authorId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             if (file != null && file.Length != 0)
             {
                 using (var stream = file.OpenReadStream())
@@ -98,7 +134,9 @@ namespace FullStackBrist.Server.Controllers
                 }
             }
 
-            var result = await _screenshotRepositories.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, screenshot.authorId, screenshot.contentUrl, screenshot.createdAt));
+            // authorId is intentionally not taken from the client — authorship of a
+            // screenshot can never be reassigned to another user.
+            var result = await _screenshotRepositories.UpdateScreenshot(new Screenshot(id, screenshot.title, screenshot.description, screenshot.likesCount, screenshot.gameId, existing.authorId, screenshot.contentUrl, screenshot.createdAt));
             return Ok(result);
         }
 
@@ -121,6 +159,12 @@ namespace FullStackBrist.Server.Controllers
             var response = await _screenshotRepositories.GetByIds(guidList);
 
             return Ok(response);
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            var claim = User.FindFirst("userId")?.Value;
+            return Guid.TryParse(claim, out var currentUserId) ? currentUserId : null;
         }
     }
 }

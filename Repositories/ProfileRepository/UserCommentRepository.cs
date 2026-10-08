@@ -43,7 +43,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(UserComment comment)
         {
             await _context.dbUserComments.AddAsync(comment);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteUserComment(Guid id)
@@ -60,6 +60,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbUserComments
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(s => new UserComment
                 {
                     id = s.id,

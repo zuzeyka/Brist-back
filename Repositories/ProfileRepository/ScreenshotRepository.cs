@@ -48,7 +48,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(Screenshot screenshot)
         {
             await _context.dbScreenshots.AddAsync(screenshot);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteScreenshot(Guid id)
@@ -65,6 +65,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbScreenshots
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(s => new Screenshot
                 {
                     id = s.id,

@@ -48,7 +48,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(Video video)
         {
             await _context.dbVideos.AddAsync(video);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteVideo(Guid id)
@@ -65,6 +65,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbVideos
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(v => new Video
                 {
                     id = v.id,

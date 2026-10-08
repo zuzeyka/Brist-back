@@ -47,7 +47,7 @@ namespace Slush.Repositories.ChatRepository
         public async Task Add(Message message)
         {
             await _context.dbMessages.AddAsync(message);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteMessage(Guid id)
@@ -64,6 +64,7 @@ namespace Slush.Repositories.ChatRepository
         {
             var response = await _context.dbMessages
                 .Where(m => m.id == id)
+                .Where(m => m.deletedAt == null)
                 .Select(m => new Message 
                 { 
                     id = m.id,

@@ -41,7 +41,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(WishedGame game)
         {
             await _context.dbWishedGames.AddAsync(game);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteWishedGame(Guid id)
@@ -58,6 +58,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbWishedGames
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(s => new WishedGame
                 {
                     id = s.id,

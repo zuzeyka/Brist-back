@@ -9,6 +9,8 @@ namespace Slush.Repositories.IRepository
         Task AddChat(Chat chat);
         Task DeleteChat(Guid id);
         Task<Chat?> GetById(Guid id);
+        Task<List<Chat>> GetByUserId(Guid id);
+        Task<Chat?> GetBetweenUsers(Guid userA, Guid userB);
         Task<List<Chat?>> GetByIds(List<Guid> ids);
     }
 }

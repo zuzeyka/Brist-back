@@ -31,7 +31,7 @@ namespace Slush.Repositories.ProfileRepository
             var existing = await _context.dbFriends.FindAsync(friends.id);
             if (existing != null)
             {
-                existing.friendId = friends.id;
+                existing.friendId = friends.friendId;
 
                 await _context.SaveChangesAsync();
             }
@@ -42,7 +42,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(Friends friend)
         {
             await _context.dbFriends.AddAsync(friend);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteFriends(Guid id)
@@ -59,6 +59,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbFriends
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(f => new Friends
                 {
                     id = f.id,
