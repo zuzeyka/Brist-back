@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Slush.Entity.Profile;
 using Slush.Models.Profile;
 using Slush.Repositories.IRepository;
@@ -11,12 +12,10 @@ namespace Slush.Controllers
     {
         private readonly ICategoryByUserForGameRepository _categoryByUserForGameRepositories;
         private readonly IUserCategoryRepository _userCategoryRepositories;
-        private readonly IOwnedGameRepository _ownedGameRepositories;
-        public UserCategoryController(ICategoryByUserForGameRepository categoryByUserForGameRepositories, IUserCategoryRepository userCategoryRepositories, IOwnedGameRepository ownedGameRepositories)
+        public UserCategoryController(ICategoryByUserForGameRepository categoryByUserForGameRepositories, IUserCategoryRepository userCategoryRepositories)
         {
             _categoryByUserForGameRepositories = categoryByUserForGameRepositories;
             _userCategoryRepositories = userCategoryRepositories;
-            _ownedGameRepositories = ownedGameRepositories;
         }
         [HttpGet("getcategories")]
         public async Task<ActionResult<List<ICategoryByUserForGameRepository>>> GetAllCategories()
@@ -26,25 +25,22 @@ namespace Slush.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("getcategoriesbyuser")]
-        public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByUser()
-        {
-            var categories = await _userCategoryRepositories.GetAllUserCategories();
-
-            return Ok(categories);
-        }
-
-        [HttpGet("getownedgames")]
-        public async Task<ActionResult<List<IOwnedGameRepository>>> GetAllOwnedGames()
-        {
-            var games = await _ownedGameRepositories.GetAllOwnedGames();
-
-            return Ok(games);
-        }
+        // Dropped: "getcategoriesbyuser" and "getownedgames" used to return every user's
+        // category assignments / owned games with no auth check at all. Neither is
+        // called from the frontend (OwnedGameController.GetAllOwnedGames already serves
+        // the self-only version of the latter) — removed rather than guarded since
+        // there's no legitimate caller to keep working.
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<IUserCategoryRepository>>> GetAllCategoriesByGameId(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null || id != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             var categories = await _userCategoryRepositories.GetAllCategoriesByUser(id);
 
             return Ok(categories);
@@ -65,11 +61,20 @@ namespace Slush.Controllers
         }
 
         [HttpPost("usercategory")]
+        [Authorize]
         public async Task<ActionResult<UserCategory>> AddUserCategory([FromBody] UserCategoryModel model)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
+            // A category assignment can only ever be created for the caller themselves;
+            // client-supplied model.userId is ignored to prevent tagging another user's game.
             var result = new UserCategory(
                 Guid.NewGuid(),
-                model.userId,
+                currentUserId.Value,
                 model.ownedGameId,
                 model.categoryId,
                 DateTime.Now);
@@ -80,9 +85,23 @@ namespace Slush.Controllers
         }
 
         [HttpPut("updateusercategories/{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateUserCategories(Guid id, [FromBody] UserCategoryModel model)
         {
-            var result = await _userCategoryRepositories.UpdateUserCategory(new UserCategory(id, model.userId, model.ownedGameId, model.categoryId, model.createdAt));
+            var currentUserId = GetCurrentUserId();
+            var existing = await _userCategoryRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
+            // userId is intentionally not taken from the client — ownership of a
+            // category assignment can never be reassigned to another user.
+            var result = await _userCategoryRepositories.UpdateUserCategory(new UserCategory(id, existing.userId, model.ownedGameId, model.categoryId, model.createdAt));
 
             return Ok(result);
         }
@@ -103,18 +122,45 @@ namespace Slush.Controllers
         }
 
         [HttpDelete("deleteusercategoires/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteUserCategories(Guid id)
         {
+            var currentUserId = GetCurrentUserId();
+            var existing = await _userCategoryRepositories.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (currentUserId == null || existing.userId != currentUserId.Value)
+            {
+                return Forbid();
+            }
+
             await _userCategoryRepositories.Delete(id);
             return NoContent();
         }
 
         [HttpPost("usercategories/getall")]
+        [Authorize]
         public async Task<ActionResult<List<UserCategory>>> GetAllUserCategoriesByIds([FromBody] List<Guid> guidList)
         {
+            var currentUserId = GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Forbid();
+            }
+
             var response = await _userCategoryRepositories.GetByIds(guidList);
 
-            return Ok(response);
+            // Only the caller's own category assignments are ever returned, regardless
+            // of which ids were requested.
+            return Ok(response.Where(c => c != null && c.userId == currentUserId.Value).ToList());
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            var claim = User.FindFirst("userId")?.Value;
+            return Guid.TryParse(claim, out var currentUserId) ? currentUserId : null;
         }
 
         [HttpPost("getall")]
