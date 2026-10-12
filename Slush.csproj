@@ -34,4 +34,11 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
+    <Compile Remove="Slush.Tests/**" />
+    <Content Remove="Slush.Tests/**" />
+    <EmbeddedResource Remove="Slush.Tests/**" />
+    <None Remove="Slush.Tests/**" />
+  </ItemGroup>
+
+</Project>

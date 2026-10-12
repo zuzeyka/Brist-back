@@ -5,12 +5,18 @@ namespace Slush.Services.FileStorage
 {
     public class LocalFileStorageService : IFileStorageService
     {
-        private static readonly HashSet<String> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+        private static readonly HashSet<String> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
         {
             ".jpg", ".jpeg", ".png", ".gif", ".webp"
         };
 
-        private const long MaxFileSizeBytes = 10 * 1024 * 1024;
+        private static readonly HashSet<String> AllowedVideoExtensions = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".mp4", ".webm", ".mov"
+        };
+
+        private const long MaxImageSizeBytes = 10 * 1024 * 1024;
+        private const long MaxVideoSizeBytes = 200 * 1024 * 1024;
 
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,14 +30,23 @@ namespace Slush.Services.FileStorage
         public async Task<String> SaveFile(String category, Guid attachedId, String fileName, Stream fileStream)
         {
             var extension = Path.GetExtension(fileName);
-            if (String.IsNullOrEmpty(extension) || !AllowedExtensions.Contains(extension))
+            long maxSizeBytes;
+            if (!String.IsNullOrEmpty(extension) && AllowedImageExtensions.Contains(extension))
+            {
+                maxSizeBytes = MaxImageSizeBytes;
+            }
+            else if (!String.IsNullOrEmpty(extension) && AllowedVideoExtensions.Contains(extension))
+            {
+                maxSizeBytes = MaxVideoSizeBytes;
+            }
+            else
             {
                 throw new InvalidOperationException($"File type '{extension}' is not allowed.");
             }
 
-            if (fileStream.Length > MaxFileSizeBytes)
+            if (fileStream.Length > maxSizeBytes)
             {
-                throw new InvalidOperationException("File exceeds the maximum allowed size of 10 MB.");
+                throw new InvalidOperationException($"File exceeds the maximum allowed size of {maxSizeBytes / (1024 * 1024)} MB.");
             }
 
             // The name written to disk is always generated, never the client-supplied
