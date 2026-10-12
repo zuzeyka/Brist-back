@@ -105,7 +105,7 @@ namespace FullStackBrist.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateDeveloper(Guid id, [FromBody] DeveloperModel model, IFormFile avatar, IFormFile background)
         {
-            if (avatar != null || avatar.Length != 0)
+            if (avatar != null && avatar.Length != 0)
             {
                 using (var stream = avatar.OpenReadStream())
                 {
@@ -123,7 +123,7 @@ namespace FullStackBrist.Server.Controllers
                     }
                 }
             }
-            if(background != null || background.Length != 0)
+            if(background != null && background.Length != 0)
             {
                 using (var stream = background.OpenReadStream())
                 {
