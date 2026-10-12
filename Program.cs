@@ -85,6 +85,7 @@ builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddScoped<ILanguageInGameRepository, LanguageInGameRepository>();
 
 builder.Services.AddScoped<IFriendsRepository, FriendsRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IOwnedGameRepository, OwnedGameRepository>();
 builder.Services.AddScoped<IOwnedDlcRepository, OwnedDlcRepository>();
 builder.Services.AddScoped<IScreenshotRepository, ScreenshotRepository>();

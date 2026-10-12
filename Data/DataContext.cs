@@ -29,6 +29,7 @@ namespace Slush.Data
         #endregion
         #region Profile
         public DbSet<Friends>                  dbFriends                   { get; set; }
+        public DbSet<Notification>             dbNotifications             { get; set; }
         public DbSet<Video>                    dbVideos                    { get; set; }
         public DbSet<Screenshot>               dbScreenshots               { get; set; }
         public DbSet<User>                     dbUsers                     { get; set; }
@@ -231,6 +232,18 @@ namespace Slush.Data
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(u => u.friendId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(n => n.userId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(n => n.actorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OwnedGame>()

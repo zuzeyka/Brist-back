@@ -993,6 +993,39 @@ namespace Slush.Migrations
                     b.ToTable("dbFriends");
                 });
 
+            modelBuilder.Entity("Slush.Entity.Profile.Notification", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("actorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("deletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("isRead")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("actorId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("dbNotifications");
+                });
+
             modelBuilder.Entity("Slush.Entity.Profile.OwnedDlc", b =>
                 {
                     b.Property<Guid>("id")
@@ -1759,6 +1792,21 @@ namespace Slush.Migrations
                     b.HasOne("Slush.Data.Entity.Profile.User", null)
                         .WithMany()
                         .HasForeignKey("friendId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Slush.Entity.Profile.Notification", b =>
+                {
+                    b.HasOne("Slush.Data.Entity.Profile.User", null)
+                        .WithMany()
+                        .HasForeignKey("actorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

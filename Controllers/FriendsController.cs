@@ -12,10 +12,27 @@ namespace FullStackBrist.Server.Controllers
     public class FriendsController : Controller
     {
         private readonly IFriendsRepository _friendsRepositories;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly ISettingsRepository _settingsRepositories;
 
-        public FriendsController(IFriendsRepository friendsRepositories)
+        public FriendsController(IFriendsRepository friendsRepositories, INotificationRepository notificationRepository, ISettingsRepository settingsRepositories)
         {
             _friendsRepositories = friendsRepositories;
+            _notificationRepository = notificationRepository;
+            _settingsRepositories = settingsRepositories;
+        }
+
+        // Skips the notification if the recipient has no Settings row yet (brand new
+        // user — notify by default) or has explicitly turned this category off.
+        private async Task NotifyIfEnabled(Guid recipientId, NotificationType type, Guid actorId, Func<Settings, bool> isEnabled)
+        {
+            var settings = await _settingsRepositories.GetByUserId(recipientId);
+            if (settings != null && !isEnabled(settings))
+            {
+                return;
+            }
+
+            await _notificationRepository.Add(new Notification(Guid.NewGuid(), recipientId, type, actorId, DateTime.Now));
         }
 
         // Dropped: an unauthenticated "GetAllFriends" used to return every friend
@@ -38,6 +55,7 @@ namespace FullStackBrist.Server.Controllers
                 if (existing.status == FriendRequestStatus.Pending && existing.friendId == currentUserId.Value)
                 {
                     var accepted = await _friendsRepositories.Accept(existing.id);
+                    await NotifyIfEnabled(existing.userId, NotificationType.FriendRequestAccepted, currentUserId.Value, s => s.approvedFriendRequest);
                     return Ok(accepted);
                 }
 
@@ -54,6 +72,7 @@ namespace FullStackBrist.Server.Controllers
                                             FriendRequestStatus.Pending
                                             );
            await _friendsRepositories.Add(result);
+           await NotifyIfEnabled(model.friendId, NotificationType.FriendRequestReceived, currentUserId.Value, s => s.friendRequestNotification);
 
             return Ok(result);
         }
@@ -79,6 +98,7 @@ namespace FullStackBrist.Server.Controllers
             }
 
             var result = await _friendsRepositories.Accept(id);
+            await NotifyIfEnabled(existing.userId, NotificationType.FriendRequestAccepted, currentUserId.Value, s => s.approvedFriendRequest);
             return Ok(result);
         }
 
@@ -148,6 +168,14 @@ namespace FullStackBrist.Server.Controllers
             if (currentUserId == null || (existing.userId != currentUserId.Value && existing.friendId != currentUserId.Value))
             {
                 return Forbid();
+            }
+
+            // Only a distinct event from the sender's own "cancel" or either side
+            // unfriending an already-accepted relation: the recipient actively
+            // turning down a request that's still pending.
+            if (existing.status == FriendRequestStatus.Pending && currentUserId.Value == existing.friendId)
+            {
+                await NotifyIfEnabled(existing.userId, NotificationType.FriendRequestDeclined, currentUserId.Value, s => s.declinedFriendRequest);
             }
 
             await _friendsRepositories.DeleteFriends(id);
