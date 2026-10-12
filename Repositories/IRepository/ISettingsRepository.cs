@@ -4,7 +4,6 @@ namespace Slush.Repositories.IRepository
 {
     public interface ISettingsRepository
     {
-        Task<List<Settings>> GetAll();
         Task<Settings> UpdateSettings(Settings newSettings);
         Task DeleteSettings(Guid id);
         Task Add(Settings settings);

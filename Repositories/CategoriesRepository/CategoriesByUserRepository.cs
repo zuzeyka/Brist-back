@@ -45,7 +45,7 @@ namespace Slush.Repositories.CategoriesRepository
         public async Task Add(CategoryByUser category)
         {
             await _context.dbCategoriesByUsers.AddAsync(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteCategoryByUser(Guid id)

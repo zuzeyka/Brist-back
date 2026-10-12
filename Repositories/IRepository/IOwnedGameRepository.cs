@@ -4,7 +4,6 @@ namespace Slush.Repositories.IRepository
 {
     public interface IOwnedGameRepository
     {
-        Task<List<OwnedGame>> GetAllOwnedGames();
         Task<OwnedGame> UpdateOwnedGame(OwnedGame ownedGame);
         Task Add(OwnedGame game);
         Task DeleteOwnedGame(Guid id);

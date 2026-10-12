@@ -53,7 +53,7 @@ namespace Slush.Repositories.GameInShopRepository
         public async Task Add(DLCInShop dlc)
         {
             await _context.dbDLCsInShop.AddAsync(dlc);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDLCInShop(Guid id)
@@ -70,6 +70,7 @@ namespace Slush.Repositories.GameInShopRepository
         {
             var response =  await _context.dbDLCsInShop
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(d => new DLCInShop
                 {
                     id = d.id,

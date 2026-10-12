@@ -51,7 +51,7 @@ namespace Slush.Repositories.CreatorsRepository
         public async Task Add(Publisher publisher)
         {
             await _context.dbPublishers.AddAsync(publisher);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeletePublisher(Guid id)
@@ -68,6 +68,7 @@ namespace Slush.Repositories.CreatorsRepository
         {
             var response = await _context.dbPublishers
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(p => new Publisher
                 {
                     id = p.id,

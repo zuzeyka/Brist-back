@@ -49,7 +49,7 @@ namespace Slush.Repositories.RequirementsRepository
         public async Task Add(MinimalSystemRequirement systemRequirements)
         {
             await _context.dbMinimalSystemRequirements.AddAsync(systemRequirements);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteMinimalSystemRequirement(Guid id)
         {
@@ -65,6 +65,7 @@ namespace Slush.Repositories.RequirementsRepository
         {
             var response = await _context.dbMinimalSystemRequirements
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(r => new MinimalSystemRequirement
                 {
                     id = r.id,

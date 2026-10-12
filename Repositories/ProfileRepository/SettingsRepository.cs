@@ -14,24 +14,6 @@ namespace Slush.Repositories.ProfileRepository
             _context = context;
         }
 
-        public async Task<List<Settings>> GetAll()
-        {
-            return await _context.dbSettings
-                .Where(s => s.deletedAt == null)
-                .Select(s => new Settings()
-                {
-                    id = s.id,
-                    attachedUserId = s.attachedUserId,
-                    bigSaleNotification = s.bigSaleNotification,
-                    saleFromWishlistNotification = s.saleFromWishlistNotification,
-                    newCommentNotification = s.newCommentNotification,
-                    friendRequestNotification = s.friendRequestNotification,
-                    approvedFriendRequest = s.approvedFriendRequest,
-                    declinedFriendRequest = s.declinedFriendRequest,
-                    createdAt = s.createdAt
-                }).ToListAsync();
-        }
-
         public async Task<Settings> UpdateSettings(Settings newSettings)
         {
             var existing = await _context.dbSettings.FindAsync(newSettings.id);
@@ -70,9 +52,11 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbSettings
                 .Where(x => x.id == id)
+                .Where(x => x.deletedAt == null)
                 .Select(s => new Settings
-                { 
+                {
                     id = s.id ,
+                    attachedUserId = s.attachedUserId ,
                     bigSaleNotification = s.bigSaleNotification ,
                     saleFromWishlistNotification = s.saleFromWishlistNotification ,
                     newCommentNotification = s.newCommentNotification ,
@@ -96,9 +80,11 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbSettings
                 .Where(x => x.attachedUserId == id)
+                .Where(x => x.deletedAt == null)
                 .Select(s => new Settings
                 {
                     id = s.id,
+                    attachedUserId = s.attachedUserId,
                     bigSaleNotification = s.bigSaleNotification,
                     saleFromWishlistNotification = s.saleFromWishlistNotification,
                     newCommentNotification = s.newCommentNotification,
@@ -130,6 +116,7 @@ namespace Slush.Repositories.ProfileRepository
                     .Select(s => new Settings
                     {
                         id = s.id,
+                        attachedUserId = s.attachedUserId,
                         bigSaleNotification = s.bigSaleNotification,
                         saleFromWishlistNotification = s.saleFromWishlistNotification,
                         newCommentNotification = s.newCommentNotification,

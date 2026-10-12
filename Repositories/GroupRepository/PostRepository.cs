@@ -50,7 +50,7 @@ namespace Slush.Repositories.GroupRepository
         public async Task Add(Post post)
         {
             await _context.dbPosts.AddAsync(post);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeletePost(Guid id)
@@ -67,6 +67,7 @@ namespace Slush.Repositories.GroupRepository
         {
             var response = await _context.dbPosts
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(p => new Post
                 {
                     id = p.id,

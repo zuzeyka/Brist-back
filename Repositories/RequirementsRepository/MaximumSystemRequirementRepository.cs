@@ -49,7 +49,7 @@ namespace Slush.Repositories.RequirementsRepository
         public async Task Add(MaximumSystemRequirement systemRequirements)
         {
             await _context.dbMaximumSystemRequirements.AddAsync(systemRequirements);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteMaximumSystemRequirement(Guid id)
@@ -66,6 +66,7 @@ namespace Slush.Repositories.RequirementsRepository
         {
             var response = await _context.dbMaximumSystemRequirements
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(r => new MaximumSystemRequirement
                 {
                     id = r.id,

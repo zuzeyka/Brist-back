@@ -47,7 +47,7 @@ namespace Slush.Repositories.GroupRepository
         public async Task Add(Group group)
         {
             await _context.dbGroups.AddAsync(group);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteGroup(Guid id)
@@ -64,6 +64,7 @@ namespace Slush.Repositories.GroupRepository
         {
             var response = await _context.dbGroups
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(g => new Group
                 {
                     id = g.id,

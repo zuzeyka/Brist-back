@@ -46,7 +46,7 @@ namespace Slush.Repositories.CategoriesRepository
         public async Task Add(CategoryByAuthor category)
         {
             await _context.dbCategoriesByAuthors.AddAsync(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteCategoryByAuthor(Guid id)
@@ -61,7 +61,7 @@ namespace Slush.Repositories.CategoriesRepository
         
         public async Task<CategoryByAuthor?> GetById(Guid id)
         {
-            return await Task.FromResult(_context.dbCategoriesByAuthors.FirstOrDefault(c => c.id == id));
+            return await Task.FromResult(_context.dbCategoriesByAuthors.FirstOrDefault(c => c.id == id && c.deleteAt == null));
         }
         public async Task<List<CategoryByAuthor>> GetAllCategoriesByIds(List<Guid> guidList)
         {

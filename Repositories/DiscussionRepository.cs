@@ -47,7 +47,7 @@ namespace Slush.Repositories
         public async Task Add(Discussion discussion)
         {
             await _context.dbDiscussions.AddAsync(discussion);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDiscussion(Guid id)
@@ -64,6 +64,7 @@ namespace Slush.Repositories
         {
             var response = await _context.dbDiscussions
                 .Where(x => x.id == id)
+                .Where(x => x.deletedAt == null)
                 .Select(x => new Discussion
                 {
                     id = x.id,

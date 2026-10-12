@@ -33,7 +33,7 @@ namespace Slush.Repositories.ProfileRepository
 
             if(existing != null)
             {
-                existing.ownedDlcId = dlc.id;
+                existing.ownedDlcId = dlc.ownedDlcId;
                 existing.userId = dlc.userId;
 
                 await _dataContext.SaveChangesAsync();
@@ -64,10 +64,11 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _dataContext.dbOwnedDlcs
                 .Where(d => d.id == id)
+                .Where(d => d.deleteAt == null)
                 .Select(d => new OwnedDlc
                 {
                     id = d.id,
-                    ownedDlcId = d.id,
+                    ownedDlcId = d.ownedDlcId,
                     userId = d.userId,
                     createdAt = d.createdAt
                 }).FirstOrDefaultAsync();
@@ -89,7 +90,7 @@ namespace Slush.Repositories.ProfileRepository
                 .Select(d => new OwnedDlc
                 {
                     id = d.id,
-                    ownedDlcId = d.id,
+                    ownedDlcId = d.ownedDlcId,
                     userId = d.userId,
                     createdAt = d.createdAt
                 }).ToListAsync();
@@ -116,7 +117,7 @@ namespace Slush.Repositories.ProfileRepository
                 .Select(d => new OwnedDlc
                 {
                     id = d.id,
-                    ownedDlcId = d.id,
+                    ownedDlcId = d.ownedDlcId,
                     userId = d.userId,
                     createdAt = d.createdAt
                 }).FirstOrDefaultAsync();

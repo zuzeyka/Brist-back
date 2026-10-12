@@ -44,7 +44,7 @@ namespace Slush.Repositories.LanguageRepository
         public async Task Add(LanguageInGame language)
         {
             await _context.dbLanguagesInGame.AddAsync(language);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteLanguageInGame(Guid id)
@@ -61,6 +61,7 @@ namespace Slush.Repositories.LanguageRepository
         {
             var response = await _context.dbLanguagesInGame
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(l => new LanguageInGame
                 {
                     id = l.id,

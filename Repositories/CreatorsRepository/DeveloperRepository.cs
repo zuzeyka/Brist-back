@@ -53,7 +53,7 @@ namespace Slush.Repositories.CreatorsRepository
         public async Task Add(Developer developer)
         {
             await _context.dbDevelopers.AddAsync(developer);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDeveloper(Guid id)
@@ -70,6 +70,7 @@ namespace Slush.Repositories.CreatorsRepository
         {
             var response = await _context.dbDevelopers
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(d => new Developer
                 {
                     id = d.id,

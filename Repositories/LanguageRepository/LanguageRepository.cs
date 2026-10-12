@@ -40,7 +40,7 @@ namespace Slush.Repositories.LanguageRepository
         public async Task Add(Language language)
         {
             await _context.dbLanguages.AddAsync(language);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteLanguage(Guid id)
@@ -57,6 +57,7 @@ namespace Slush.Repositories.LanguageRepository
         {
             var response = await _context.dbLanguages
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(l => new Language
                 {
                     id = l.id,

@@ -65,6 +65,7 @@ namespace Slush.Repositories.GameInShopRepository
         {
             var response = await _context.dbGameBundles
                 .Where(x => x.id == id)
+                .Where(x => x.deletedAt == null)
                 .Select(g => new GameBundle
                 {
                     id = g.id,

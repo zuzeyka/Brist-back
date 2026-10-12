@@ -39,7 +39,7 @@ namespace Slush.Repositories.GameGroupRepository
         public async Task Add(GameComment comment)
         {
             await _context.dbGameComments.AddAsync(comment);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteGameComment(Guid id)
@@ -56,6 +56,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameComments
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
 
                 .Select(g => new GameComment
                 {

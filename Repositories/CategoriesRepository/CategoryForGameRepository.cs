@@ -42,7 +42,7 @@ namespace Slush.Repositories.CategoriesRepository
         public async Task Add(CategoryForGame category)
         {
             await _context.dbCategoriesForGame.AddAsync(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteCategoryForGame(Guid id)
@@ -59,6 +59,7 @@ namespace Slush.Repositories.CategoriesRepository
         {
             var response = await _context.dbCategoriesForGame
                 .Where(c => c.id == id)
+                .Where(c => c.deleteAt == null)
                 .Select(c => new CategoryForGame
                 {
                     id = c.id,

@@ -64,6 +64,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbCategoryByUserForGames
                 .Where(x => x.id == id)
+                .Where(x => x.deletedAt == null)
                 .Select(x => new CategoryByUserForGame
                 {
                     id = x.id,

@@ -14,22 +14,12 @@ namespace Slush.Repositories.ProfileRepository
             _context = context;
         }
 
-        public async Task<List<OwnedGame>> GetAllOwnedGames()
-        {
-            return await _context.dbOwnedGames
-                .Where(o => o.deleteAt == null)
-                .Select(o => new OwnedGame {
-                id = o.id,
-                ownedGameId = o.ownedGameId,
-                userId = o.userId,
-                createdAt = o.createdAt}).ToListAsync();
-        }
         public async Task<OwnedGame> UpdateOwnedGame(OwnedGame ownedGame)
         {
             var existing = await _context.dbOwnedGames.FindAsync(ownedGame.id);
             if (existing != null)
             {
-                existing.ownedGameId = ownedGame.id;
+                existing.ownedGameId = ownedGame.ownedGameId;
 
                 await _context.SaveChangesAsync();
             }
@@ -40,7 +30,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(OwnedGame game)
         {
             await _context.dbOwnedGames.AddAsync(game);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteOwnedGame(Guid id)
@@ -57,6 +47,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbOwnedGames
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(o => new OwnedGame
                 {
                     id = o.id,

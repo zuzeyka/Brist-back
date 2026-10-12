@@ -43,7 +43,7 @@ namespace Slush.Repositories.GameGroupRepository
         public async Task Add(GameTopic topics)
         {
             await _context.dbGameTopics.AddAsync(topics);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteGameTopic(Guid id)
@@ -60,6 +60,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameTopics
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(g => new GameTopic
                 {
                     id = g.id,

@@ -54,7 +54,7 @@ namespace Slush.Repositories.GameGroupRepository
         public async Task Add(GameGuide guide)
         {
             await _context.dbGameGuides.AddAsync(guide);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteGameGuide(Guid id)
@@ -71,6 +71,7 @@ namespace Slush.Repositories.GameGroupRepository
         {
             var response = await _context.dbGameGuides
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(g => new GameGuide
                 {
                     id = g.id,

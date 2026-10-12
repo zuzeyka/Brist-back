@@ -55,7 +55,7 @@ namespace Slush.Repositories.ProfileRepository
         public async Task Add(User user)
         {
             await _context.dbUsers.AddAsync(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteUser(Guid id)
@@ -72,6 +72,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbUsers
                 .Where(x => x.id == id)
+                .Where(x => x.deleteAt == null)
                 .Select(u => new User
                 {
                     id = u.id,

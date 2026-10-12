@@ -68,6 +68,7 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbAchievementByUser
                 .Where(x => x.userId == id)
+                .Where(x => x.deletedAt == null)
                 .Select(x => new AchievementByUser { 
                     id = x.id,
                     userId = x.userId,

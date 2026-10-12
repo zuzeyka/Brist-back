@@ -80,10 +80,11 @@ namespace Slush.Repositories.ProfileRepository
         {
             var response = await _context.dbUserCategories
                 .Where(c => c.id == id)
+                .Where(c => c.deletedAt == null)
                 .Select(c => new UserCategory
                 {
                     id = c.id,
-                    userId = c.id,
+                    userId = c.userId,
                     ownedGameId = c.ownedGameId,
                     categoryId = c.categoryId,
                     createdAt = c.createdAt
@@ -111,7 +112,7 @@ namespace Slush.Repositories.ProfileRepository
                     .Select(c => new UserCategory
                     {
                         id = c.id,
-                        userId = c.id,
+                        userId = c.userId,
                         ownedGameId = c.ownedGameId,
                         categoryId = c.categoryId,
                         createdAt = c.createdAt
