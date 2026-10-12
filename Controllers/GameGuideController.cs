@@ -68,7 +68,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGameGroup(Guid id, [FromBody] GameGuideModel game, IFormFile? file)
+        public async Task<ActionResult> UpdateGameGroup(Guid id, [FromForm] GameGuideModel game, IFormFile? file)
         {
             if (file != null && file.Length != 0)
             {

@@ -28,7 +28,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Developer>> CreateDeveloper([FromBody] DeveloperModel model, IFormFile avatar, IFormFile background)
+        public async Task<ActionResult<Developer>> CreateDeveloper([FromForm] DeveloperModel model, IFormFile avatar, IFormFile background)
         {
 
             if (avatar == null || avatar.Length == 0 &&
@@ -103,7 +103,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateDeveloper(Guid id, [FromBody] DeveloperModel model, IFormFile avatar, IFormFile background)
+        public async Task<ActionResult> UpdateDeveloper(Guid id, [FromForm] DeveloperModel model, IFormFile avatar, IFormFile background)
         {
             if (avatar != null && avatar.Length != 0)
             {

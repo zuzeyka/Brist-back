@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DLCInShop>> CreateDLCInShop([FromBody] DLCInShopModel model, IFormFile file)
+        public async Task<ActionResult<DLCInShop>> CreateDLCInShop([FromForm] DLCInShopModel model, IFormFile file)
         {
 
             var result = new DLCInShop(Guid.NewGuid(),
@@ -104,7 +104,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromBody] DLCInShopModel model, IFormFile file)
+        public async Task<ActionResult> UpdateDLCInShop(Guid id, [FromForm] DLCInShopModel model, IFormFile file)
         {
             if (file != null && file.Length != 0)
             {

@@ -83,7 +83,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGamePosts(Guid id, [FromBody] GamePostsModel game, IFormFile? file)
+        public async Task<ActionResult> UpdateGamePosts(Guid id, [FromForm] GamePostsModel game, IFormFile? file)
         {
             if (file != null && file.Length != 0)
             {

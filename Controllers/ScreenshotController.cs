@@ -102,7 +102,7 @@ namespace FullStackBrist.Server.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromBody] ScreenshotModel screenshot, IFormFile? file)
+        public async Task<ActionResult> UpdateScreenshot(Guid id, [FromForm] ScreenshotModel screenshot, IFormFile? file)
         {
             var currentUserId = GetCurrentUserId();
             var existing = await _screenshotRepositories.GetById(id);

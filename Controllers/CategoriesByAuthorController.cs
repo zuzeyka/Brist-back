@@ -28,7 +28,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromBody] CategoryByAuthorModel model, IFormFile file)
+        public async Task<ActionResult<CategoryByAuthor>> CreateCategoryByAuthor([FromForm] CategoryByAuthorModel model, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -48,7 +48,7 @@ namespace FullStackBrist.Server.Controllers
                 {
                     String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = _fileStorageService.GetUrlToFile(imageUrl);
+                    var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                     result.image = url.ToString();
 
@@ -83,7 +83,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromBody] CategoryByAuthorModel model, IFormFile file)
+        public async Task<ActionResult> UpdateCategoryByAuthor(Guid id, [FromForm] CategoryByAuthorModel model, IFormFile file)
         {
             if (file != null && file.Length != 0)
             {
@@ -93,7 +93,7 @@ namespace FullStackBrist.Server.Controllers
                     {
                         String imageUrl = await _fileStorageService.SaveFile("images", id, file.FileName, stream);
 
-                        var url = _fileStorageService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         model.image = url.ToString();
                     }

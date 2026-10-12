@@ -26,7 +26,7 @@ namespace FullStackBrist.Server.Controllers
             return Ok(games);
         }
         [HttpPost]
-        public async Task<ActionResult<GameInShop>> CreateGameInShop([FromBody] GameInShopModel model, IFormFile file)
+        public async Task<ActionResult<GameInShop>> CreateGameInShop([FromForm] GameInShopModel model, IFormFile file)
         {
             var result = new GameInShop(Guid.NewGuid(),
                                             model.name,
@@ -90,7 +90,7 @@ namespace FullStackBrist.Server.Controllers
             return NoContent();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameInShopModel game, IFormFile file)
+        public async Task<ActionResult> UpdateGameNews(Guid id, [FromForm] GameInShopModel game, IFormFile file)
         {
             if(file != null && file.Length != 0)
             {

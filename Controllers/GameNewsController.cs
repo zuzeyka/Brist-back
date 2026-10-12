@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GameNews>> CreateNews([FromBody] GameNewsModel model, IFormFile? file)
+        public async Task<ActionResult<GameNews>> CreateNews([FromForm] GameNewsModel model, IFormFile? file)
         {
             var result = new GameNews(Guid.NewGuid(),
                 model.title,
@@ -89,7 +89,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGameNews(Guid id, [FromBody] GameNewsModel game, IFormFile? file)
+        public async Task<ActionResult> UpdateGameNews(Guid id, [FromForm] GameNewsModel game, IFormFile? file)
         {
 
             if (file != null && file.Length != 0)

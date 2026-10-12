@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup([FromBody] GroupModel model, IFormFile file)
+        public async Task<ActionResult<Group>> CreateGroup([FromForm] GroupModel model, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -84,7 +84,7 @@ namespace FullStackBrist.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateGroup(Guid id, [FromBody] GroupModel group, IFormFile file)
+        public async Task<ActionResult> UpdateGroup(Guid id, [FromForm] GroupModel group, IFormFile file)
         {
             if (file != null && file.Length != 0)
             {

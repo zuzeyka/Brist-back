@@ -28,7 +28,7 @@ namespace Slush.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Achievement>> CreateAchievement([FromBody] Achievement achievement, IFormFile file)
+        public async Task<ActionResult<Achievement>> CreateAchievement([FromForm] Achievement achievement, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -47,7 +47,7 @@ namespace Slush.Controllers
                 {
                     String imageUrl = await _fileStorageService.SaveFile("images", result.id, file.FileName, stream);
 
-                    var url = _fileStorageService.GetUrlToFile(imageUrl);
+                    var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                     result.urlForImage = url.ToString();
 
@@ -71,7 +71,7 @@ namespace Slush.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAchievement(Guid id, [FromBody] Achievement achievement, IFormFile file)
+        public async Task<ActionResult> UpdateAchievement(Guid id, [FromForm] Achievement achievement, IFormFile file)
         {
             if (file != null && file.Length != 0)
             {
@@ -81,7 +81,7 @@ namespace Slush.Controllers
                     {
                         String imageUrl = await _fileStorageService.SaveFile("images", achievement.id, file.FileName, stream);
 
-                        var url = _fileStorageService.GetUrlToFile(imageUrl);
+                        var url = await _fileStorageService.GetUrlToFile(imageUrl);
 
                         var res = await _achievementRepositories.UpdateAchievement(new Achievement(id, url.ToString(), achievement.description, achievement.amountOfExperience, achievement.createdAt));
 

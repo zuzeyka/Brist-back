@@ -29,7 +29,7 @@ namespace FullStackBrist.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Post>> CreatePost([FromBody] PostModel model, IFormFile? file)
+        public async Task<ActionResult<Post>> CreatePost([FromForm] PostModel model, IFormFile? file)
         {
             var result = new Post(Guid.NewGuid(),
                 model.title,
@@ -87,7 +87,7 @@ namespace FullStackBrist.Server.Controllers
 
         
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePost(Guid id, [FromBody] PostModel post, IFormFile? file)
+        public async Task<ActionResult> UpdatePost(Guid id, [FromForm] PostModel post, IFormFile? file)
         {
 
             if (file != null && file.Length != 0)
