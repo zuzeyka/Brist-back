@@ -3,14 +3,16 @@ services:
     image: mysql:8.0
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: devpassword
+      # Real credentials — never hardcode these. Populate a local, untracked .env
+      # file (see .env.example) and docker compose will substitute them in.
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env, see .env.example}
       MYSQL_DATABASE: BristDB
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdevpassword"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env, see .env.example}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -26,9 +28,10 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__MySqlDb: "Server=db;Port=3306;Database=BristDB;Uid=root;Pwd=devpassword;AllowPublicKeyRetrieval=True;SslMode=None;"
       # Real credentials — never hardcode these. Populate a local, untracked .env
       # file (see .env.example) and docker compose will substitute them in.
+      ConnectionStrings__MySqlDb: "Server=db;Port=3306;Database=BristDB;Uid=root;Pwd=${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env, see .env.example};AllowPublicKeyRetrieval=True;SslMode=None;"
+      JWTOptions__SecretKey: ${JWT_SECRET_KEY:?set JWT_SECRET_KEY in .env, see .env.example}
       EmailSettings__FromEmail: ${EMAIL_FROM:-}
       EmailSettings__Username: ${EMAIL_USERNAME:-}
       EmailSettings__Password: ${EMAIL_PASSWORD:-}
